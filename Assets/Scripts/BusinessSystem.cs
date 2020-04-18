@@ -66,7 +66,7 @@ public class BusinessSystem : MonoBehaviour
                     // TODO: move event spawning into a new system
                     if (Random.Range(0f, 1f) <= 0.05f)
                     {
-                        new GameEvent().DoEvent();
+                        new ThiefEvent().DoEvent();
                     }
                 }
                 else

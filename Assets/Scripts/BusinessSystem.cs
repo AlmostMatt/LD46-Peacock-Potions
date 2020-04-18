@@ -17,6 +17,7 @@ public class BusinessSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // If in any other state (including random event), simulation will be paused
         if(GameState.currentStage == GameState.GameStage.GS_SIMULATION)
         {
             if(CustomerState.totalQuarterlyCustomers == 0)

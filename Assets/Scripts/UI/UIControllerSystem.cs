@@ -8,13 +8,13 @@ using System.Collections;
 public class UIControllerSystem : MonoBehaviour
 {
     public GameObject SummaryView;
-    public GameObject EventView;
+    public GameObject SimulationView;
+    public GameObject SimulationDefaultContent;
+    public GameObject SimulationEventContent;
 
     // Use this for initialization
     void Start()
     {
-        SummaryView.SetActive(true);
-        EventView.SetActive(false);
     }
 
     // Update is called once per frame
@@ -27,8 +27,14 @@ public class UIControllerSystem : MonoBehaviour
     private void UpdateUiVisibility()
     {
         GameState.GameStage stage = GameState.currentStage;
+        // Summary / resource allocation
         SummaryView.SetActive(stage == GameState.GameStage.GS_RESOURCE_ALLOCATION);
-        EventView.SetActive(stage == GameState.GameStage.GS_EVENT || stage == GameState.GameStage.GS_SIMULATION);
+        // UI shared by Simulation / Event
+        SimulationView.SetActive(stage == GameState.GameStage.GS_EVENT || stage == GameState.GameStage.GS_SIMULATION);
+        // Simulation
+        SimulationDefaultContent.GetComponent<CanvasGroup>().alpha = (stage == GameState.GameStage.GS_SIMULATION ? 1.0f : 0.5f);
+        // Event
+        SimulationEventContent.SetActive(stage == GameState.GameStage.GS_EVENT || stage == GameState.GameStage.GS_SIMULATION);
     }
 
     public void SummaryScreenOK()

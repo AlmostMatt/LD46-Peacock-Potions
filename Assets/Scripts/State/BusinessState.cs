@@ -16,6 +16,8 @@ public class BusinessState
         public int[] sales = new int[(int)ProductType.PT_MAX];
         public int[] unfulfilledDemand = new int[(int)ProductType.PT_MAX];
         public int[] miscLosses = new int[(int)ProductType.PT_MAX];
+
+        public int livingExpenses = 0;
     }
     public static QuarterlyReport quarterlyReport;
 }

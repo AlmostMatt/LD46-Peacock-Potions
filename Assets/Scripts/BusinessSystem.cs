@@ -35,8 +35,14 @@ public class BusinessSystem : MonoBehaviour
                 }
                 else
                 {
-                    GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
+                    // expenses. We could do this as an event at the end of the quarter, if we wanted. Though that could get a bit repetitive.
+                    int expenses = 2500;
+                    BusinessState.quarterlyReport.livingExpenses = expenses;
+                    BusinessState.money -= expenses;
+
                     BusinessState.peacock.Produce();
+
+                    GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
                 }
                 Debug.Log("game stage is now " + GameState.currentStage);
                 return;

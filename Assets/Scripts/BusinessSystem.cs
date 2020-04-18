@@ -22,10 +22,11 @@ public class BusinessSystem : MonoBehaviour
         {
             if(CustomerState.totalQuarterlyCustomers == 0)
             {
+                mPaymentTime = 0;
+
                 Debug.Log("All customers served this quarter.");
                 // Advance to the next quarter and update any other affected state
                 GameState.quarter += 1;
-                mPaymentTime = 0;
                 // Go tho the end-of-quarter summary state (or game over state)
                 if (GameState.quarter > 5)
                 {
@@ -35,6 +36,7 @@ public class BusinessSystem : MonoBehaviour
                 else
                 {
                     GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
+                    BusinessState.peacock.Produce();
                 }
                 Debug.Log("game stage is now " + GameState.currentStage);
                 return;

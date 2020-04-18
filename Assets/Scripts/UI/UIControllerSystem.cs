@@ -73,7 +73,11 @@ public class UIControllerSystem : MonoBehaviour
             BusinessState.prices[i] = Random.Range(50, 100);
             Debug.Log("Selling " + (ProductType)i + " for " + BusinessState.prices[i]);
 
-            BusinessState.inventory[i] = Random.Range(0, 30);
+            // for now, resources are 1-1 with the products
+            if(i < BusinessState.resources.Length)
+            {
+                BusinessState.inventory[i] = BusinessState.resources[i];
+            }
         }
 
         BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();

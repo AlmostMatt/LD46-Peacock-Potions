@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 /**
  * Manipulates UI objects based on the game state.
@@ -21,6 +22,7 @@ public class UIControllerSystem : MonoBehaviour
     void Update()
     {
         UpdateUiVisibility();
+        UpdateUiContent();
     }
 
     // Update the visibility of UI elements
@@ -35,6 +37,16 @@ public class UIControllerSystem : MonoBehaviour
         SimulationDefaultContent.GetComponent<CanvasGroup>().alpha = (stage == GameState.GameStage.GS_SIMULATION ? 1.0f : 0.5f);
         // Event
         SimulationEventContent.SetActive(stage == GameState.GameStage.GS_EVENT);
+    }
+
+    // Change text and other fields in UI content
+    private void UpdateUiContent()
+    {
+        GameState.GameStage stage = GameState.currentStage;
+        if (EventState.currentEvent != null)
+        {
+            SimulationEventContent.transform.Find("DecisionPanel/Text").GetComponent<Text>().text = EventState.currentEventText;
+        }
     }
 
     public void SummaryScreenOK()

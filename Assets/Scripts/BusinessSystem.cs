@@ -19,7 +19,7 @@ public class BusinessSystem : MonoBehaviour
     {
         if(GameState.currentStage == GameState.GameStage.GS_SIMULATION)
         {
-            if(WorldState.totalQuarterlyCustomers == 0)
+            if(CustomerState.totalQuarterlyCustomers == 0)
             {
                 Debug.Log("All customers served this quarter.");
                 GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
@@ -31,7 +31,7 @@ public class BusinessSystem : MonoBehaviour
             // running code on state changes really does want an event-driven style thing, I guess
             if(mPaymentTime == 0)
             {
-                mPaymentTime = QUARTER_TIME / WorldState.totalQuarterlyCustomers;
+                mPaymentTime = QUARTER_TIME / CustomerState.totalQuarterlyCustomers;
                 mPaymentTimer = mPaymentTime;
             }
 
@@ -39,7 +39,7 @@ public class BusinessSystem : MonoBehaviour
             if(mPaymentTimer <= 0)
             {
                 int product = Random.Range(0, (int)ProductType.PT_MAX);
-                while(WorldState.customers[product] == 0)
+                while(CustomerState.customers[product] == 0)
                 {
                     product = (product + 1) % (int)ProductType.PT_MAX;
                 }
@@ -56,7 +56,7 @@ public class BusinessSystem : MonoBehaviour
                 }
 
                 mPaymentTimer = Random.Range(mPaymentTime * 0.9f, mPaymentTime * 1.1f);
-                --WorldState.totalQuarterlyCustomers;
+                --CustomerState.totalQuarterlyCustomers;
             }
         }
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldState
+public class CustomerState
 {
     public static int totalPopulation = 1000;
     public static float storePopularity = 0;

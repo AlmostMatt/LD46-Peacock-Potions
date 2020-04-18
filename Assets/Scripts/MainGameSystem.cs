@@ -69,13 +69,13 @@ public class MainGameSystem : MonoBehaviour
     private void InitWorldParams()
     {
         // some initial values for demand calculation
-        WorldState.totalPopulation = 1000;
-        WorldState.storePopularity = 0.1f;
+        CustomerState.totalPopulation = 1000;
+        CustomerState.storePopularity = 0.1f;
 
         for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
         {
-            WorldState.productDemand[i] = Random.Range(0.1f, 0.9f); // TODO: ensure they sum to 1? maybe... not necessarily needed, but it would be good to ensure some minimum sum so that players at least get SOME customers
-            WorldState.optimalPrices[i] = Random.Range(50, 100);
+            CustomerState.productDemand[i] = Random.Range(0.1f, 0.9f); // TODO: ensure they sum to 1? maybe... not necessarily needed, but it would be good to ensure some minimum sum so that players at least get SOME customers
+            CustomerState.optimalPrices[i] = Random.Range(50, 100);
         }
     }
 
@@ -88,14 +88,14 @@ public class MainGameSystem : MonoBehaviour
         // N = (total population) * (demand for product) * (popularity of store) * (price curve)
         float[] prices = BusinessState.prices;
 
-        WorldState.totalQuarterlyCustomers = 0;
-        float incomingCustomers = WorldState.totalPopulation * WorldState.storePopularity;
+        CustomerState.totalQuarterlyCustomers = 0;
+        float incomingCustomers = CustomerState.totalPopulation * CustomerState.storePopularity;
         for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
         {
-            float willingToPay = Mathf.Clamp(((WorldState.optimalPrices[i] * 2) - prices[i]) / (WorldState.optimalPrices[i] * 2), 0, 1);
-            WorldState.customers[i] = Mathf.RoundToInt(incomingCustomers * WorldState.productDemand[i] * willingToPay);
-            WorldState.totalQuarterlyCustomers += WorldState.customers[i];
-            Debug.Log(WorldState.customers[i] + " customers are willing to buy " + (ProductType)i + " for " + prices[i]);
+            float willingToPay = Mathf.Clamp(((CustomerState.optimalPrices[i] * 2) - prices[i]) / (CustomerState.optimalPrices[i] * 2), 0, 1);
+            CustomerState.customers[i] = Mathf.RoundToInt(incomingCustomers * CustomerState.productDemand[i] * willingToPay);
+            CustomerState.totalQuarterlyCustomers += CustomerState.customers[i];
+            Debug.Log(CustomerState.customers[i] + " customers are willing to buy " + (ProductType)i + " for " + prices[i]);
         }
     }
 

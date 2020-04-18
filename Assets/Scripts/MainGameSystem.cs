@@ -34,6 +34,7 @@ public class MainGameSystem : MonoBehaviour
     {
         // initialize events here for the moment...
         SonEventChain.Init();
+        InvestmentEventChain.Init();
 
         // BusinessState.animals[(int)AnimalType.AT_TURTLE] = true; // player starts with a turtle
 
@@ -51,7 +52,7 @@ public class MainGameSystem : MonoBehaviour
     {
         // some initial values for demand calculation
         CustomerState.totalPopulation = 1000;
-        CustomerState.storePopularity = 0.1f;
+        CustomerState.storePopularity = 0.01f;
 
         for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
         {

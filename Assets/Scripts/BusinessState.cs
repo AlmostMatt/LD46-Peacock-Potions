@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class BusinessState
 {
-    public static float Money = 0;
+    public static float money = 0;
 }

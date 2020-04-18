@@ -15,13 +15,15 @@ public class BusinessSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Money: " + BusinessState.Money);
-        mPaymentTimer -= Time.deltaTime;
-        if(mPaymentTimer <= 0)
+        if(GameState.currentStage == GameState.GameStage.GS_SIMULATION)
         {
-            BusinessState.Money += 100;
-            mPaymentTimer = Random.Range(0.25f, 2);
+            mPaymentTimer -= Time.deltaTime;
+            if(mPaymentTimer <= 0)
+            {
+                BusinessState.money += 100;
+                mPaymentTimer = Random.Range(0.25f, 2);
+                Debug.Log("Money: " + BusinessState.money);
+            }
         }
-        
     }
 }

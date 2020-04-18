@@ -6,7 +6,7 @@ public class BusinessSystem : MonoBehaviour
 {
     private float mPaymentTimer = 0;
     private float mPaymentTime = 0;
-    private float QUARTER_TIME = 15;
+    private float QUARTER_TIME = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -23,8 +23,20 @@ public class BusinessSystem : MonoBehaviour
             if(CustomerState.totalQuarterlyCustomers == 0)
             {
                 Debug.Log("All customers served this quarter.");
-                GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
+                // Advance to the next quarter and update any other affected state
+                GameState.quarter += 1;
                 mPaymentTime = 0;
+                // Go tho the end-of-quarter summary state (or game over state)
+                if (GameState.quarter > 5)
+                {
+                    // TODO: something somewhere will check for proper game over (player death or business going under)
+                    GameState.currentStage = GameState.GameStage.GS_GAME_OVER;
+                }
+                else
+                {
+                    GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
+                }
+                Debug.Log("game stage is now " + GameState.currentStage);
                 return;
             }
 
@@ -50,6 +62,12 @@ public class BusinessSystem : MonoBehaviour
                     BusinessState.money += BusinessState.prices[product];
                     BusinessState.inventory[product] -= 1;
                     Debug.Log("Sold a " + (ProductType)product + "! money: " + BusinessState.money);
+                    // Have a random chance to spawn an event
+                    // TODO: move event spawning into a new system
+                    if (Random.Range(0f, 1f) <= 0.05f)
+                    {
+                        new GameEvent().DoEvent();
+                    }
                 }
                 else
                 {

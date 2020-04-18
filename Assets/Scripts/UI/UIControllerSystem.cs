@@ -34,7 +34,7 @@ public class UIControllerSystem : MonoBehaviour
         // Simulation
         SimulationDefaultContent.GetComponent<CanvasGroup>().alpha = (stage == GameState.GameStage.GS_SIMULATION ? 1.0f : 0.5f);
         // Event
-        SimulationEventContent.SetActive(stage == GameState.GameStage.GS_EVENT || stage == GameState.GameStage.GS_SIMULATION);
+        SimulationEventContent.SetActive(stage == GameState.GameStage.GS_EVENT);
     }
 
     public void SummaryScreenOK()
@@ -57,18 +57,7 @@ public class UIControllerSystem : MonoBehaviour
     public void MakeDecision()
     {
         // Made a choice
-        // State change - from simulation to summary (or game over)
-
-        GameState.quarter += 1;
-        if (GameState.quarter > 5)
-        {
-            // TEMP. later, something somewhere will check for proper game over (player death or business going under)
-            GameState.currentStage = GameState.GameStage.GS_GAME_OVER;
-        }
-        else
-        {
-            GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
-        }
-        Debug.Log("game stage is now " + GameState.currentStage);
+        // TODO: pass in the ID of the decision
+        EventState.currentEvent.PlayerDecision(0);
     }
 }

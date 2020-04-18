@@ -19,5 +19,9 @@ public class GameEvent
     {
         // callback from the UI
         Debug.Log("Player made choice " + choice);
+
+        // End the event and return to simulation
+        EventState.currentEvent = null;
+        GameState.currentStage = GameState.GameStage.GS_SIMULATION;
     }
 }

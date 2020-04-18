@@ -389,6 +389,26 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8846099240228677354, guid: b5d07784ae3cca141983501b90c00790,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846099240228677354, guid: b5d07784ae3cca141983501b90c00790,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846099240228677354, guid: b5d07784ae3cca141983501b90c00790,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846099240228677354, guid: b5d07784ae3cca141983501b90c00790,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5833434569556291537, guid: b5d07784ae3cca141983501b90c00790,
         type: 3}
       propertyPath: m_IsActive

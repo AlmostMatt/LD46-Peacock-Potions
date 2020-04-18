@@ -70,6 +70,6 @@ public class UIControllerSystem : MonoBehaviour
     {
         // Made a choice
         // TODO: pass in the ID of the decision
-        EventState.currentEvent.PlayerDecision(0);
+        EventState.currentEvent.PlayerDecision(1);
     }
 }

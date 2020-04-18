@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 /**
  * Manipulates UI objects based on the game state.
@@ -13,9 +14,14 @@ public class UIControllerSystem : MonoBehaviour
     public GameObject SimulationDefaultContent;
     public GameObject SimulationEventContent;
 
+    private RenderableGroup<string> mEventOptionRenderGroup;
+
     // Use this for initialization
     void Start()
     {
+        mEventOptionRenderGroup = new RenderableGroup<string>(
+            SimulationEventContent.transform.Find("DecisionPanel/Options"),
+            RenderFunctions.RenderToText);
     }
 
     // Update is called once per frame
@@ -43,12 +49,16 @@ public class UIControllerSystem : MonoBehaviour
     private void UpdateUiContent()
     {
         GameState.GameStage stage = GameState.currentStage;
+        // Summary Screen
+        SummaryView.transform.Find("SummaryText").GetComponent<Text>().text = string.Format("Money: {0}$", BusinessState.money);
+        // Simulation / Event
+        SimulationView.transform.Find("Info Overlay/TopRight/Text").GetComponent<Text>().text = string.Format("Money: {0}$", BusinessState.money);
+        // Event
         if (EventState.currentEvent != null)
         {
             SimulationEventContent.transform.Find("DecisionPanel/Text").GetComponent<Text>().text = EventState.currentEventText;
+            mEventOptionRenderGroup.UpdateRenderables(new List<string>(EventState.currentEventOptions));
         }
-        SummaryView.transform.Find("SummaryText").GetComponent<Text>().text = string.Format("Money: {0}$", BusinessState.money);
-        SimulationView.transform.Find("Info Overlay/TopRight/Text").GetComponent<Text>().text = string.Format("Money: {0}$", BusinessState.money);
     }
 
     public void SummaryScreenOK()

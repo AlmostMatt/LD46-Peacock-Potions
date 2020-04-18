@@ -11,7 +11,9 @@ public class BusinessState
     public static int[] resources = new int[(int)ResourceType.RT_MAX];
     public static int[] inventory = new int[(int)ProductType.PT_MAX];
     public static float[] prices = new float[(int)ProductType.PT_MAX];
-    
+
+    public static int peacockFood = 0;
+
     public class QuarterlyReport
     {
         public int[] production = new int[(int)ProductType.PT_MAX];

@@ -64,7 +64,7 @@ public class BusinessSystem : MonoBehaviour
                     Debug.Log("Sold a " + (ProductType)product + "! money: " + BusinessState.money);
                     // Have a random chance to spawn an event
                     // TODO: move event spawning into a new system
-                    if(Random.Range(0f, 1f) <= 0.05f)
+                    if(Random.Range(0f, 1f) <= 0.01f)
                     {
                         EventState.PushEvent(new ThiefEvent(), GameState.quarter);
                     }

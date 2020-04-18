@@ -8,6 +8,7 @@ public class EventState
     public static GameEvent currentEvent;
     public static string currentEventText = "DEFAULT TEXT!";
     public static string[] currentEventOptions = new string[]{ "uninitialized option 1", "uninitialized option 2" };
+    public static string[] OK_OPTION = new string[] { "Ok" }; // many events might want this, so this is here for common use
 
     private class ScheduledEvent
     {
@@ -27,7 +28,7 @@ public class EventState
         // TODO: give more control over scheduling events? e.g. we should be able to schedule an event for "next year" or whatever, and it inserts it sorted or something
         ScheduledEvent se = new ScheduledEvent(e, gameTime);
         int insertIdx = 0;
-        while(insertIdx < eventQueue.Count && eventQueue[insertIdx].mGameTime < se.mGameTime)
+        while(insertIdx < eventQueue.Count && eventQueue[insertIdx].mGameTime <= se.mGameTime)
         {
             ++insertIdx;
         }

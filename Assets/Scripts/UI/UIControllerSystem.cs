@@ -75,6 +75,9 @@ public class UIControllerSystem : MonoBehaviour
 
             BusinessState.inventory[i] = Random.Range(0, 30);
         }
+
+        BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
+
         Debug.Log("game stage is now " + GameState.currentStage);
     }
 

@@ -62,6 +62,9 @@ public class BusinessSystem : MonoBehaviour
                     BusinessState.money += BusinessState.prices[product];
                     BusinessState.inventory[product] -= 1;
                     Debug.Log("Sold a " + (ProductType)product + "! money: " + BusinessState.money);
+
+                    BusinessState.quarterlyReport.sales[product] += 1;
+
                     // Have a random chance to spawn an event
                     // TODO: move event spawning into a new system
                     if(Random.Range(0f, 1f) <= 0.01f)
@@ -71,6 +74,7 @@ public class BusinessSystem : MonoBehaviour
                 }
                 else
                 {
+                    BusinessState.quarterlyReport.unfulfilledDemand[product] += 1;
                     Debug.Log("A customer wanted " + (ProductType)product + " but we were out of stock");
                 }
 

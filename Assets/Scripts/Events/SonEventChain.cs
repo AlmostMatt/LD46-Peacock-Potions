@@ -54,6 +54,11 @@ public class SonEventChain
                 "Get him to clean it up",
                 "Tell him to go play outside"
             };
+            
+            int product = Random.Range(0, (int)ProductType.PT_MAX);
+            int numPotions = Mathf.Min(BusinessState.inventory[product], 3);
+            BusinessState.quarterlyReport.miscLosses[product] += numPotions;
+            BusinessState.inventory[product] -= numPotions;
         }
 
         protected override bool OnPlayerDecision(int choice)

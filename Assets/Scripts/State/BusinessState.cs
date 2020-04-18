@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class BusinessState
     
     public class QuarterlyReport
     {
+        public int[] production = new int[(int)ProductType.PT_MAX];
         public int[] sales = new int[(int)ProductType.PT_MAX];
         public int[] unfulfilledDemand = new int[(int)ProductType.PT_MAX];
         public int[] miscLosses = new int[(int)ProductType.PT_MAX];
@@ -20,4 +22,34 @@ public class BusinessState
         public int livingExpenses = 0;
     }
     public static QuarterlyReport quarterlyReport;
+
+    public struct PerItemReport
+    {
+        public ProductType itemType;
+        public int previousStock;
+        public int currentStock;
+        public int numProduced;
+        public int numSold;
+        public int numLost;
+    }
+
+    public static List<PerItemReport> GetPerItemReports()
+    {
+        List<PerItemReport> reports = new List<PerItemReport>();
+        for (int product = 0; product < (int)ProductType.PT_MAX; product++) {
+            PerItemReport report = new PerItemReport();
+            report.itemType = (ProductType) product;
+            report.currentStock = inventory[product];
+            if (quarterlyReport != null)
+            {
+                report.numProduced = quarterlyReport.production[product];
+                report.numSold = quarterlyReport.sales[product];
+                report.numLost = quarterlyReport.miscLosses[product];
+                report.previousStock = report.currentStock - report.numProduced + report.numSold + report.numLost;
+                // TODO: only add non-zero reports
+            }
+            reports.Add(report);
+        }
+        return reports;
+    }
 }

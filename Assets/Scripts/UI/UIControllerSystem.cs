@@ -15,7 +15,7 @@ public class UIControllerSystem : MonoBehaviour
     public GameObject SimulationEventContent;
 
     private RenderableGroup<string> mEventOptionRenderGroup;
-    private RenderableGroup<string> mItemQuarterlySummary;
+    private RenderableGroup<BusinessState.PerItemReport> mItemQuarterlySummary;
 
     // Use this for initialization
     void Start()
@@ -23,7 +23,7 @@ public class UIControllerSystem : MonoBehaviour
         mEventOptionRenderGroup = new RenderableGroup<string>(
             SimulationEventContent.transform.Find("DecisionPanel/Options"),
             RenderFunctions.RenderToText);
-        mItemQuarterlySummary = new RenderableGroup<string>(
+        mItemQuarterlySummary = new RenderableGroup<BusinessState.PerItemReport>(
             SummaryView.transform.Find("ItemSummaries"),
             RenderFunctions.RenderItemQuarterlySummary);
     }
@@ -57,10 +57,9 @@ public class UIControllerSystem : MonoBehaviour
         if (SummaryView.activeInHierarchy)
         {
             SummaryView.transform.Find("SummaryText").GetComponent<Text>().text = string.Format("Money: {0}$", BusinessState.money);
+
             List<string> summaries = new List<string>();
-            summaries.Add("potion1");
-            summaries.Add("potion2");
-            mItemQuarterlySummary.UpdateRenderables(summaries);
+            mItemQuarterlySummary.UpdateRenderables(BusinessState.GetPerItemReports());
         }
         // Simulation / Event
         SimulationView.transform.Find("Info Overlay/TopRight/Text").GetComponent<Text>().text = string.Format("Money: {0}$", BusinessState.money);

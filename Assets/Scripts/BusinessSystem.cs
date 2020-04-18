@@ -89,6 +89,8 @@ public class BusinessSystem : MonoBehaviour
                 mPaymentTimer = Random.Range(mPaymentTime * 0.9f, mPaymentTime * 1.1f);
                 --CustomerState.totalQuarterlyCustomers;
             }
+
+            BusinessState.peacock.Update();
         }
     }
 

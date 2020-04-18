@@ -31,7 +31,7 @@ public abstract class GameEvent
         if(OnPlayerDecision(choice)) // derived classes implement whatever they need here. return true to indicate the event is over.
         {        
             // return to the simluation
-            GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
+            GameState.currentStage = GameState.GameStage.GS_SIMULATION;
         }
     }
 

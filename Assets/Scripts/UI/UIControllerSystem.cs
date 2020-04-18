@@ -78,10 +78,9 @@ public class UIControllerSystem : MonoBehaviour
         Debug.Log("game stage is now " + GameState.currentStage);
     }
 
-    public void MakeDecision()
+    public void MakeDecision(Button button)
     {
         // Made a choice
-        // TODO: pass in the ID of the decision
-        EventState.currentEvent.PlayerDecision(1);
+        EventState.currentEvent.PlayerDecision(button.transform.GetSiblingIndex());
     }
 }

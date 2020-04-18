@@ -27,7 +27,7 @@ public class BusinessState
 
     public struct PerItemReport
     {
-        public ProductType itemType;
+        public ProductType productType;
         public int previousStock;
         public int currentStock;
         public int numProduced;
@@ -41,7 +41,7 @@ public class BusinessState
         List<PerItemReport> reports = new List<PerItemReport>();
         for (int product = 0; product < (int)ProductType.PT_MAX; product++) {
             PerItemReport report = new PerItemReport();
-            report.itemType = (ProductType) product;
+            report.productType = (ProductType) product;
             report.currentStock = inventory[product];
             if (quarterlyReport != null)
             {

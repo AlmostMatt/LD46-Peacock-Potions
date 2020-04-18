@@ -5,6 +5,8 @@ using UnityEngine;
 public class BusinessSystem : MonoBehaviour
 {
     private float mPaymentTimer = 0;
+    private float mPaymentTime = 0;
+    private float QUARTER_TIME = 15;
 
     // Start is called before the first frame update
     void Start()
@@ -17,13 +19,46 @@ public class BusinessSystem : MonoBehaviour
     {
         if(GameState.currentStage == GameState.GameStage.GS_SIMULATION)
         {
+            if(WorldState.totalQuarterlyCustomers == 0)
+            {
+                Debug.Log("All customers served this quarter.");
+                GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
+                mPaymentTime = 0;
+                return;
+            }
+
+            // yeah like it's slightly gross to do this here in this way...
+            // running code on state changes really does want an event-driven style thing, I guess
+            if(mPaymentTime == 0)
+            {
+                mPaymentTime = QUARTER_TIME / WorldState.totalQuarterlyCustomers;
+                mPaymentTimer = mPaymentTime;
+            }
+
             mPaymentTimer -= Time.deltaTime;
             if(mPaymentTimer <= 0)
             {
-                BusinessState.money += 100;
-                mPaymentTimer = Random.Range(0.25f, 2);
-                Debug.Log("Money: " + BusinessState.money);
+                int product = Random.Range(0, (int)ProductType.PT_MAX);
+                while(WorldState.customers[product] == 0)
+                {
+                    product = (product + 1) % (int)ProductType.PT_MAX;
+                }
+
+                if(BusinessState.inventory[product] > 0)
+                {
+                    BusinessState.money += BusinessState.prices[product];
+                    BusinessState.inventory[product] -= 1;
+                    Debug.Log("Sold a " + (ProductType)product + "! money: " + BusinessState.money);
+                }
+                else
+                {
+                    Debug.Log("A customer wanted " + (ProductType)product + " but we were out of stock");
+                }
+
+                mPaymentTimer = Random.Range(mPaymentTime * 0.9f, mPaymentTime * 1.1f);
+                --WorldState.totalQuarterlyCustomers;
             }
         }
     }
+
 }

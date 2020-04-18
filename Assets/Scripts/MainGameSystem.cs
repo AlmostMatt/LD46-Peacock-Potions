@@ -24,6 +24,7 @@ public class MainGameSystem : MonoBehaviour
     {
         BusinessState.animals[(int)AnimalType.AT_TURTLE] = true; // player starts with a turtle
         BusinessState.money = 500; // some starting money
+        InitWorldParams();
     }
 
     private void AdvanceStage()
@@ -36,6 +37,17 @@ public class MainGameSystem : MonoBehaviour
                 break;
             case GameState.GameStage.GS_RESOURCE_ALLOCATION:
                 GameState.currentStage = GameState.GameStage.GS_SIMULATION;
+
+                for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
+                {
+                    BusinessState.prices[i] = Random.Range(50, 100);
+                    Debug.Log("Selling " + (ProductType)i + " for " + BusinessState.prices[i]);
+
+                    BusinessState.inventory[i] = Random.Range(0, 30);
+                }
+
+                CalculateDemand();
+
                 break;
             case GameState.GameStage.GS_SIMULATION:
                 GameState.quarter += 1;
@@ -53,4 +65,38 @@ public class MainGameSystem : MonoBehaviour
         Debug.Log("game stage is now " + GameState.currentStage);
         
     }
+
+    private void InitWorldParams()
+    {
+        // some initial values for demand calculation
+        WorldState.totalPopulation = 1000;
+        WorldState.storePopularity = 0.1f;
+
+        for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
+        {
+            WorldState.productDemand[i] = Random.Range(0.1f, 0.9f); // TODO: ensure they sum to 1? maybe... not necessarily needed, but it would be good to ensure some minimum sum so that players at least get SOME customers
+            WorldState.optimalPrices[i] = Random.Range(50, 100);
+        }
+    }
+
+    private void CalculateDemand()
+    {
+        // model demand for each product for the quarter, based on some hidden factors
+        // each of these factors could be modified by events, the current time of year, the total time passed, etc.
+
+        // number of customers for a given product:
+        // N = (total population) * (demand for product) * (popularity of store) * (price curve)
+        float[] prices = BusinessState.prices;
+
+        WorldState.totalQuarterlyCustomers = 0;
+        float incomingCustomers = WorldState.totalPopulation * WorldState.storePopularity;
+        for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
+        {
+            float willingToPay = Mathf.Clamp(((WorldState.optimalPrices[i] * 2) - prices[i]) / (WorldState.optimalPrices[i] * 2), 0, 1);
+            WorldState.customers[i] = Mathf.RoundToInt(incomingCustomers * WorldState.productDemand[i] * willingToPay);
+            WorldState.totalQuarterlyCustomers += WorldState.customers[i];
+            Debug.Log(WorldState.customers[i] + " customers are willing to buy " + (ProductType)i + " for " + prices[i]);
+        }
+    }
+
 }

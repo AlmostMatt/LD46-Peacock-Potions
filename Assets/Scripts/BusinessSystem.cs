@@ -6,7 +6,7 @@ public class BusinessSystem : MonoBehaviour
 {
     private float mPaymentTimer = 0;
     private float mPaymentTime = 0;
-    private float QUARTER_TIME = 3;
+    private float QUARTER_TIME = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -64,9 +64,9 @@ public class BusinessSystem : MonoBehaviour
                     Debug.Log("Sold a " + (ProductType)product + "! money: " + BusinessState.money);
                     // Have a random chance to spawn an event
                     // TODO: move event spawning into a new system
-                    if (Random.Range(0f, 1f) <= 0.05f)
+                    if(Random.Range(0f, 1f) <= 0.05f)
                     {
-                        new ThiefEvent().DoEvent();
+                        EventState.PushEvent(new ThiefEvent(), GameState.quarter);
                     }
                 }
                 else

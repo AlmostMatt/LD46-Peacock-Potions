@@ -35,5 +35,7 @@ public abstract class GameEvent
         }
     }
 
+    public virtual bool CanHappen() { return true; }
+
     protected abstract bool OnPlayerDecision(int choice);
 }

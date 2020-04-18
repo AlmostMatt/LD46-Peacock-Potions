@@ -35,8 +35,15 @@ public class MainGameSystem : MonoBehaviour
         // initialize events here for the moment...
         SonEventChain.Init();
 
-        BusinessState.animals[(int)AnimalType.AT_TURTLE] = true; // player starts with a turtle
+        // BusinessState.animals[(int)AnimalType.AT_TURTLE] = true; // player starts with a turtle
+
         BusinessState.money = 500; // some starting money
+        // starting resources
+        for(int i = 0; i < BusinessState.resources.Length; ++i)
+        {
+            BusinessState.resources[i] = Random.Range(1, 10);
+        }
+
         InitWorldParams();
     }
     

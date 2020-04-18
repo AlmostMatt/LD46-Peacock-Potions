@@ -7,7 +7,20 @@ public class CustomerState
     public static int totalPopulation = 1000;
     public static float storePopularity = 0;
     
-    public static float[] productDemand = new float[(int)ProductType.PT_MAX];
+    private static float[] _productDemand = new float[(int)ProductType.PT_MAX];
+    public static float[] productDemand
+    {
+        get
+        {
+            for(int i = 0; i < _productDemand.Length; ++i)
+            {
+                _productDemand[i] = ((ProductType)i).SeasonalDemand()[(int)GameState.season];
+            }
+            return _productDemand;
+        }
+    }
+
+    
     public static float[] optimalPrices = new float[(int)ProductType.PT_MAX];
 
     // recomputed each quarter by MainGameSystem

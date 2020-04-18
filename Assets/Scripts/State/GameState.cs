@@ -21,4 +21,16 @@ public class GameState
 
     public static GameStage currentStage = GameStage.GS_MAIN_MENU;
     public static int quarter = 0;
+
+    public enum Season
+    {
+        SPRING,
+        SUMMER,
+        FALL,
+        WINTER
+    }
+    public static Season season
+    {
+        get { return (Season)(quarter % 4); }
+    }
 }

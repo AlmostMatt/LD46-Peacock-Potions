@@ -33,6 +33,7 @@ public class BusinessState
         public int numProduced;
         public int numSold;
         public int numLost;
+        public int salePrice; // the price at time of sale (not necessarily the price for the next quarter)
     }
 
     public static List<PerItemReport> GetPerItemReports()
@@ -48,7 +49,8 @@ public class BusinessState
                 report.numSold = quarterlyReport.sales[product];
                 report.numLost = quarterlyReport.miscLosses[product];
                 report.previousStock = report.currentStock - report.numProduced + report.numSold + report.numLost;
-                // TODO: only add non-zero reports
+                report.salePrice = (int)prices[product];
+                // TODO: only add non-zero reports (though you might still want to craft something even if the report is a bunch of 0s)
             }
             reports.Add(report);
         }

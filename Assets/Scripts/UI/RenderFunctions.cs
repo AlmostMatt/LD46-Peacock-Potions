@@ -14,10 +14,12 @@ public class RenderFunctions
     {
         // TODO: customize the image
         // obj.transform.Find("H/Icon").GetComponent<Image>().sprite = null;
-        obj.transform.Find("H/Text1").GetComponent<Text>().text = string.Format("Had {0}", report.previousStock);
-        obj.transform.Find("H/Text2").GetComponent<Text>().text = string.Format("Created {0}", report.numProduced);
-        obj.transform.Find("H/Text3").GetComponent<Text>().text = string.Format("Sold {0}", report.numSold);
-        obj.transform.Find("H/Text4").GetComponent<Text>().text = string.Format("Lost {0}", report.numLost);
-        obj.transform.Find("H/Text5").GetComponent<Text>().text = string.Format("Have {0}", report.currentStock);
+        // TODO: set some fields to empty string for zero values
+        obj.transform.Find("H/Text1").GetComponent<Text>().text = string.Format("{0}", report.numLost);
+        obj.transform.Find("H/Text2").GetComponent<Text>().text = string.Format("{0}x${1} = ${2}", report.numSold, report.salePrice, report.numSold*report.salePrice);
+        // TODO: don't set num to create and price for next quarter if they have already been edited by the player
+        obj.transform.Find("H/Text3").GetComponent<Text>().text = string.Format("0"); // num to create
+        obj.transform.Find("H/Text4").GetComponent<Text>().text = string.Format("{0}", report.currentStock);
+        obj.transform.Find("H/Text5").GetComponent<Text>().text = string.Format("${0}", report.salePrice); // price for next quarter
     }
 }

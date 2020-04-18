@@ -31,6 +31,7 @@ public static class ProductTypeExtensions
                 return new float[] { 0.2f, 0.5f, 0.5f, 0.1f };
         }
         return new float[] { 0.1f, 0.1f, 0.1f, 0.1f };
+    }
 
     public static ResourceAndCount[] GetIngredients(this ProductType productType)
     {
@@ -43,11 +44,15 @@ public static class ProductTypeExtensions
                 return new ResourceAndCount[] {
                     new ResourceAndCount(ResourceType.RT_RED_FEATHER, 1),
                     new ResourceAndCount(ResourceType.RT_BLUE_FEATHER, 1)};
-            case ProductType.PT_MAGICAL_QUILL:
+            case ProductType.PT_FIRE_POTION:
                 return new ResourceAndCount[] {
                     new ResourceAndCount(ResourceType.RT_BLUE_FEATHER, 1),
                     new ResourceAndCount(ResourceType.RT_GREEN_FEATHER, 1)};
-            case ProductType.PT_MAGIC_EGG:
+            case ProductType.PT_LUCK_POTION:
+                return new ResourceAndCount[] {
+                    new ResourceAndCount(ResourceType.RT_RED_FEATHER, 1),
+                    new ResourceAndCount(ResourceType.RT_GREEN_FEATHER, 1)};
+            case ProductType.PT_POISON_POTION:
                 return new ResourceAndCount[] {
                     new ResourceAndCount(ResourceType.RT_GOLD_FEATHER, 1)};
         default: return new ResourceAndCount[] { };

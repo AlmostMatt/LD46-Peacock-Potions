@@ -40,8 +40,8 @@ public class RenderFunctions
         }
         // 1 2
         // TODO: don't set num to create and price for next quarter if they have already been edited by the player
-        obj.transform.Find("H/Text3").GetComponent<Text>().text = string.Format("0"); // num to create
+        obj.transform.Find("H/InputGroup").GetComponent<InputGroup>().SetInitialValue(0);
         obj.transform.Find("H/Text4").GetComponent<Text>().text = string.Format("{0}", report.currentStock);
-        obj.transform.Find("H/Text5").GetComponent<Text>().text = string.Format("${0}", report.salePrice); // price for next quarter
+        obj.transform.Find("H/InputGroup (1)").GetComponent<InputGroup>().SetInitialValue(report.salePrice); // price from the previous quarter
     }
 }

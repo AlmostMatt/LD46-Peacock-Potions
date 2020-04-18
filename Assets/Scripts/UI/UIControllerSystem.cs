@@ -84,6 +84,13 @@ public class UIControllerSystem : MonoBehaviour
 
     public void SummaryScreenOK()
     {
+        // Reset all InputGroups - so that they will accept initial values at the start of the next summary.
+        InputGroup[] inputGroups = SummaryView.GetComponentsInChildren<InputGroup>();
+        foreach (InputGroup inputGroup in inputGroups)
+        {
+            inputGroup.ClearValue();
+        }
+
         // State change - from summary to simulation (or event)
         GameState.currentStage = GameState.GameStage.GS_SIMULATION; //  GS_EVENT;
 

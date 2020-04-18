@@ -91,13 +91,32 @@ public class UIControllerSystem : MonoBehaviour
         // TODO: read this information from the UI
         for (int i = 0; i < (int)ProductType.PT_MAX; ++i)
         {
+            ProductType productType = (ProductType)i;
             BusinessState.prices[i] = Random.Range(50, 100);
-            Debug.Log("Selling " + (ProductType)i + " for " + BusinessState.prices[i]);
+            Debug.Log("Selling " + productType + " for " + BusinessState.prices[i]);
 
-            // for now, resources are 1-1 with the products
-            if(i < BusinessState.resources.Length)
+            // TODO: depend on the UI to spend resources and craft products
+            // Craft as many things as possible and pay the resource-cost of all products crafted
+            ResourceAndCount[] price = productType.GetIngredients();
+            while (true)
             {
-                BusinessState.inventory[i] = BusinessState.resources[i];
+                // Check if can afford
+                bool canAfford = true;
+                for (int r = 0; r < price.Length; r++)
+                {
+                    if (BusinessState.resources[(int)price[r].type] < price[r].count)
+                    {
+                        canAfford = false;
+                    }
+                }
+                if (!canAfford) { break; }
+                // Decrease funds
+                for (int r = 0; r < price.Length; r++)
+                {
+                    BusinessState.resources[(int)price[r].type] -= price[r].count;
+                }
+                BusinessState.inventory[i] += 1;
+                Debug.Log("crafted a " + productType);
             }
         }
 

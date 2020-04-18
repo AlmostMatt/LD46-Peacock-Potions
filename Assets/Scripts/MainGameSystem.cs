@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class MainGameSystem : MonoBehaviour
 {
-    // probably temporary; just a way for me to advance the game without any UI
+    // Updated to the current quarter once demand has been generated for that quarter
+    private int mQuarterlyDemandGenerated = -1;
 
     // Start is called before the first frame update
     void Start()
@@ -14,9 +15,18 @@ public class MainGameSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Submit"))
+        // auto-start the game
+        // TODO: 
+        if (GameState.currentStage == GameState.GameStage.GS_MAIN_MENU)
         {
-            AdvanceStage();
+            InitNewGame();
+            GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
+        }
+
+        if (mQuarterlyDemandGenerated < GameState.quarter)
+        {
+            CalculateDemand();
+            mQuarterlyDemandGenerated = GameState.quarter;
         }
     }
 
@@ -26,46 +36,7 @@ public class MainGameSystem : MonoBehaviour
         BusinessState.money = 500; // some starting money
         InitWorldParams();
     }
-
-    private void AdvanceStage()
-    {
-        switch(GameState.currentStage)
-        {
-            case GameState.GameStage.GS_MAIN_MENU:
-                InitNewGame();
-                GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
-                break;
-            case GameState.GameStage.GS_RESOURCE_ALLOCATION:
-                GameState.currentStage = GameState.GameStage.GS_SIMULATION;
-
-                for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
-                {
-                    BusinessState.prices[i] = Random.Range(50, 100);
-                    Debug.Log("Selling " + (ProductType)i + " for " + BusinessState.prices[i]);
-
-                    BusinessState.inventory[i] = Random.Range(0, 30);
-                }
-
-                CalculateDemand();
-
-                break;
-            case GameState.GameStage.GS_SIMULATION:
-                GameState.quarter += 1;
-                if(GameState.quarter > 5)
-                {
-                    // TEMP. later, something somewhere will check for proper game over (player death or business going under)
-                    GameState.currentStage = GameState.GameStage.GS_GAME_OVER;
-                }
-                else
-                {
-                    GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
-                }
-                break;
-        }
-        Debug.Log("game stage is now " + GameState.currentStage);
-        
-    }
-
+    
     private void InitWorldParams()
     {
         // some initial values for demand calculation

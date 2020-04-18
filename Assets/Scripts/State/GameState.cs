@@ -7,10 +7,15 @@ public class GameState
     // does this really need to be separate from BusinessState? enh whatever
     public enum GameStage
     {
+        // before the game starts
         GS_MAIN_MENU,
+        // summary screen + allocating resources
         GS_RESOURCE_ALLOCATION,
+        // time is passing
         GS_SIMULATION,
+        // time is paused - an event has occurred and a decision is being made
         GS_EVENT,
+        // the game has ended
         GS_GAME_OVER
     };
 

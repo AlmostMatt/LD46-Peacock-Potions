@@ -9,7 +9,6 @@ public class MainGameSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -21,11 +20,18 @@ public class MainGameSystem : MonoBehaviour
         }
     }
 
+    private void InitNewGame()
+    {
+        BusinessState.animals[(int)AnimalType.AT_TURTLE] = true; // player starts with a turtle
+        BusinessState.money = 500; // some starting money
+    }
+
     private void AdvanceStage()
     {
         switch(GameState.currentStage)
         {
             case GameState.GameStage.GS_MAIN_MENU:
+                InitNewGame();
                 GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
                 break;
             case GameState.GameStage.GS_RESOURCE_ALLOCATION:

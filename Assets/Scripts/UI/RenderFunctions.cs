@@ -10,6 +10,14 @@ public class RenderFunctions
         obj.GetComponentInChildren<Text>().text = str;
     }
 
+    // Render a ResourceAndCount (struct) to an IconAndCount (prefab)
+    public static void RenderResourceAndCount(ResourceAndCount resAndCount, GameObject obj)
+    {
+        // TODO: set icon and icon color
+        obj.GetComponentInChildren<Image>().color = resAndCount.type.GetColor();
+        obj.GetComponentInChildren<Text>().text = resAndCount.count.ToString();
+    }
+
     public static void RenderItemQuarterlySummary(BusinessState.PerItemReport report, GameObject obj)
     {
         // TODO: customize the image

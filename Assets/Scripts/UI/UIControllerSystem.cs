@@ -15,7 +15,8 @@ public class UIControllerSystem : MonoBehaviour
     public GameObject SimulationEventContent;
 
     private RenderableGroup<string> mEventOptionRenderGroup;
-    private RenderableGroup<BusinessState.PerItemReport> mItemQuarterlySummary;
+    private RenderableGroup<BusinessState.PerItemReport> mItemQuarterlySummaryRenderGroup;
+    private RenderableGroup<ResourceAndCount> mResourceInventoryRenderGroup;
 
     // Use this for initialization
     void Start()
@@ -23,9 +24,12 @@ public class UIControllerSystem : MonoBehaviour
         mEventOptionRenderGroup = new RenderableGroup<string>(
             SimulationEventContent.transform.Find("DecisionPanel/Options"),
             RenderFunctions.RenderToText);
-        mItemQuarterlySummary = new RenderableGroup<BusinessState.PerItemReport>(
+        mItemQuarterlySummaryRenderGroup = new RenderableGroup<BusinessState.PerItemReport>(
             SummaryView.transform.Find("ItemSummaries"),
             RenderFunctions.RenderItemQuarterlySummary);
+        mResourceInventoryRenderGroup = new RenderableGroup<ResourceAndCount>(
+            SummaryView.transform.Find("InventoryFeathers"),
+            RenderFunctions.RenderResourceAndCount);
     }
 
     // Update is called once per frame
@@ -56,13 +60,20 @@ public class UIControllerSystem : MonoBehaviour
         // Summary Screen
         if (SummaryView.activeInHierarchy)
         {
-            SummaryView.transform.Find("SummaryText").GetComponent<Text>().text = string.Format("Money: {0}$", BusinessState.money);
-
-            List<string> summaries = new List<string>();
-            mItemQuarterlySummary.UpdateRenderables(BusinessState.GetPerItemReports());
+            // Inventory (cash)
+            SummaryView.transform.Find("InventoryCash/Text").GetComponent<Text>().text = string.Format("Balance: ${0}", BusinessState.money);
+            // Inventory (feathers)
+            List<ResourceAndCount> resourceCounts = new List<ResourceAndCount>();
+            for (int i=0; i<(int)ResourceType.RT_MAX; i++)
+            {
+                resourceCounts.Add(new ResourceAndCount((ResourceType)i, BusinessState.resources[i]));
+            }
+            mResourceInventoryRenderGroup.UpdateRenderables(resourceCounts);
+            // Per-item reports
+            mItemQuarterlySummaryRenderGroup.UpdateRenderables(BusinessState.GetPerItemReports());
         }
         // Simulation / Event
-        SimulationView.transform.Find("Info Overlay/TopRight/Text").GetComponent<Text>().text = string.Format("Money: {0}$", BusinessState.money);
+        SimulationView.transform.Find("Info Overlay/TopRight/Text").GetComponent<Text>().text = string.Format("Money: ${0}", BusinessState.money);
         // Event
         if (EventState.currentEvent != null)
         {

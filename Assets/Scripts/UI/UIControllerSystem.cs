@@ -47,6 +47,8 @@ public class UIControllerSystem : MonoBehaviour
         {
             SimulationEventContent.transform.Find("DecisionPanel/Text").GetComponent<Text>().text = EventState.currentEventText;
         }
+        SummaryView.transform.Find("SummaryText").GetComponent<Text>().text = string.Format("Money: {0}$", BusinessState.money);
+        SimulationView.transform.Find("Info Overlay/TopRight/Text").GetComponent<Text>().text = string.Format("Money: {0}$", BusinessState.money);
     }
 
     public void SummaryScreenOK()

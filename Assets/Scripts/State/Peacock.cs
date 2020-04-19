@@ -12,16 +12,37 @@ public class Peacock
     public PeacockActivityType quarterlyActivity = PeacockActivityType.PA_STORY;
     public PeacockInteraction quarterlyInteraction;
 
-    public int quarterlyTotalCost = 0;
+    private int mQuarterlyTotalCost = 0;
+    public int quarterlyTotalCost
+    {
+        get { return mQuarterlyTotalCost; }
+    }
     private int mQuarterlyFoodCost = 0;
     public int quarterlyFoodCost
     {
         get { return mQuarterlyFoodCost; }
         set
         {
-            quarterlyTotalCost -= mQuarterlyFoodCost;
+            mQuarterlyTotalCost -= mQuarterlyFoodCost;
             mQuarterlyFoodCost = value;
-            quarterlyTotalCost += value;
+            mQuarterlyTotalCost += value;
+        }
+    }
+    private bool[] mQuarterlyExtras = new bool[(int)PeacockExtraType.ET_MAX];
+    public void SetQuarterlyExtra(int extraType, bool active)
+    {
+        if(mQuarterlyExtras[extraType] != active)
+        {
+            int price = ((PeacockExtraType)extraType).GetPrice();
+            if(active)
+            {
+                mQuarterlyTotalCost += price;
+            }
+            else
+            {
+                mQuarterlyTotalCost -= price;
+            }
+            mQuarterlyExtras[extraType] = active;
         }
     }
 

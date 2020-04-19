@@ -161,6 +161,22 @@ public class UIControllerSystem : MonoBehaviour
         Debug.Log("game stage is now " + GameState.currentStage);
     }
 
+    public void MakeDecision(Button button)
+    {
+        // Made a choice
+        EventState.currentEvent.PlayerDecision(button.transform.GetSiblingIndex());
+    }
+
+    
+    // --------- PEACOCK SCREEN ------------ //
+
+    public void PeacockScreenOK()
+    {
+        // State change - from peacock management to simulation
+        GameState.currentStage = GameState.GameStage.GS_SIMULATION;
+        BusinessState.peacock.StartQuarter();
+    }
+
     private void ShowPeacockSummary()
     {
         for(int i = 0; i < PeacockView.transform.childCount; ++i)
@@ -176,18 +192,6 @@ public class UIControllerSystem : MonoBehaviour
         PeacockView.transform.Find("StatusReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.generalDesc;
     }
 
-    public void PeacockScreenOK()
-    {
-        // State change - from peacock management to simulation
-        GameState.currentStage = GameState.GameStage.GS_SIMULATION;
-        BusinessState.peacock.StartQuarter();
-    }
-
-    public void MakeDecision(Button button)
-    {
-        // Made a choice
-        EventState.currentEvent.PlayerDecision(button.transform.GetSiblingIndex());
-    }
 
     public void PeacockScreenFood(int foodType)
     {
@@ -226,4 +230,21 @@ public class UIControllerSystem : MonoBehaviour
         
         BusinessState.peacock.quarterlyActivity = (PeacockActivityType)activityType;
     }
+
+    public void PeacockScreenExtra(int extraType)
+    {
+        Debug.Log("extra peacock " + extraType);
+        Transform extras = PeacockView.transform.Find("ExtraPlan");
+        Transform button = extras.GetChild(extraType);
+        Image img = button.GetComponent<Image>();        
+        img.color = new Color(1f, 1f, 1f, 1 - img.color.a);
+        bool selected = img.color.a == 1f;
+        BusinessState.peacock.SetQuarterlyExtra(extraType, selected);
+
+        button.Find("Cost").GetComponent<Text>().text = Utilities.FormatMoney(selected ? ((PeacockExtraType)extraType).GetPrice() : 0);
+
+        PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(BusinessState.peacock.quarterlyTotalCost);
+    }
+
+    // --------- END PEACOCK SCREEN ------------ //
 }

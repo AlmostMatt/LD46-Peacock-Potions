@@ -16,12 +16,12 @@ public class Peacock
     public FoodType quarterlyFoodType = FoodType.FT_BASIC;
     public PeacockActivityType quarterlyActivity = PeacockActivityType.PA_STORY;
 
-    private int mQuarterlyTotalCost = 0;
+    private int mQuarterlyTotalCost = FoodType.FT_BASIC.GetPrice();
     public int quarterlyTotalCost
     {
         get { return mQuarterlyTotalCost; }
     }
-    private int mQuarterlyFoodCost = 0;
+    private int mQuarterlyFoodCost = FoodType.FT_BASIC.GetPrice();
     public int quarterlyFoodCost
     {
         get { return mQuarterlyFoodCost; }
@@ -51,6 +51,10 @@ public class Peacock
             }
             mQuarterlyExtras[extraType] = active;
         }
+    }
+    public bool HasQuarterlyExtra(int extraType)
+    {
+        return mQuarterlyExtras[extraType];
     }
 
     public class QuarterlyReport

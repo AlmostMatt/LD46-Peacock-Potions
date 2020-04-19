@@ -210,15 +210,40 @@ public class UIControllerSystem : MonoBehaviour
         for(int i = 0; i < (int)FoodType.FT_MAX; ++i)
         {
             FoodType food = ((FoodType)i);
-            foodPlan.GetChild(i).GetChild(0).GetComponent<Text>().text = food.GetLabel();
+            Transform button = foodPlan.GetChild(i);
+            button.GetChild(0).GetComponent<Text>().text = food.GetLabel();
+            if((int)BusinessState.peacock.quarterlyFoodType == i)
+            {
+                 button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            }
         }
+
+        Transform activityPlan = PeacockView.transform.Find("ActivityPlan");
+        for(int i = 0; i < (int)PeacockActivityType.PA_MAX; ++i)
+        {
+            PeacockActivityType activity = ((PeacockActivityType)i);
+            Transform button = activityPlan.GetChild(i);
+            button.GetChild(0).GetComponent<Text>().text = activity.GetLabel();
+            if((int)BusinessState.peacock.quarterlyActivity == i)
+            {
+                 button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            }
+        }
+
 
         Transform extraPlan = PeacockView.transform.Find("ExtraPlan");
         for(int i = 0; i < (int)PeacockExtraType.ET_MAX; ++i)
         {
             PeacockExtraType extra = ((PeacockExtraType)i);
-            extraPlan.GetChild(i).GetChild(0).GetComponent<Text>().text = extra.GetLabel();
-        }   
+            Transform button = extraPlan.GetChild(i);
+            button.GetChild(0).GetComponent<Text>().text = extra.GetLabel();
+            if(BusinessState.peacock.HasQuarterlyExtra(i))
+            {
+                 button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            }
+        }
+
+        PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(BusinessState.peacock.quarterlyTotalCost);
     }
 
 

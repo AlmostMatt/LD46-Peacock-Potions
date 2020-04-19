@@ -10,7 +10,9 @@ using System.Collections.Generic;
 public class UIControllerSystem : MonoBehaviour
 {
     public GameObject SummaryView;
+    public GameObject PeacockView;
     public GameObject SimulationView;
+
     public GameObject SimulationDefaultContent;
     public GameObject SimulationEventContent;
 
@@ -88,6 +90,8 @@ public class UIControllerSystem : MonoBehaviour
         GameState.GameStage stage = GameState.currentStage;
         // Summary / resource allocation
         SummaryView.SetActive(stage == GameState.GameStage.GS_RESOURCE_ALLOCATION);
+        // Peacock UI
+        PeacockView.SetActive(stage == GameState.GameStage.GS_PEACOCK);
         // UI shared by Simulation / Event
         SimulationView.SetActive(stage == GameState.GameStage.GS_EVENT || stage == GameState.GameStage.GS_SIMULATION);
         // Simulation
@@ -134,8 +138,8 @@ public class UIControllerSystem : MonoBehaviour
             inputGroup.ClearValue();
         }
 
-        // State change - from summary to simulation (or event)
-        GameState.currentStage = GameState.GameStage.GS_SIMULATION; //  GS_EVENT;
+        // State change - from summary to peacock management
+        GameState.currentStage = GameState.GameStage.GS_PEACOCK;
 
         BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
         // TODO: populate production based on the inputGroup values
@@ -143,6 +147,12 @@ public class UIControllerSystem : MonoBehaviour
         BusinessState.quarterlyReport.salePrices = BusinessState.prices;
 
         Debug.Log("game stage is now " + GameState.currentStage);
+    }
+
+    public void PeacockScreenOK()
+    {
+        // State change - from peacock management to simulation
+        GameState.currentStage = GameState.GameStage.GS_SIMULATION;
     }
 
     public void MakeDecision(Button button)

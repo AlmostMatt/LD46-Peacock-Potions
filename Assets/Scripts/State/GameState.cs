@@ -11,6 +11,8 @@ public class GameState
         GS_MAIN_MENU,
         // summary screen + allocating resources
         GS_RESOURCE_ALLOCATION,
+        // Interacting with and feeding the peacock
+        GS_PEACOCK,
         // time is passing
         GS_SIMULATION,
         // time is paused - an event has occurred and a decision is being made

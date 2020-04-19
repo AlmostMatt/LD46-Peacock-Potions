@@ -22,8 +22,8 @@ public class RenderFunctions
     {
         // TODO: customize the image
         // obj.transform.Find("H/Icon").GetComponent<Image>().sprite = null;   productType
-        // TODO: set some fields to empty string for zero values
-
+        obj.transform.Find("H/Icon").GetComponent<Image>().color = report.productType.GetColor();
+        
         // Losses (from events)
         obj.transform.Find("H/Text1").GetComponent<Text>().text = string.Format("{0}", report.numLost);
         obj.transform.Find("H/Text1").GetComponent<CanvasGroup>().alpha = (report.numLost == 0 ? 0f : 1f);

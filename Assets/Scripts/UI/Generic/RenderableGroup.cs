@@ -34,7 +34,7 @@ public class RenderableGroup<RenderableType>
         // Disable and detach the child, we just want to be able to copy it later
         GameObject child = container.GetChild(0).gameObject;
         child.SetActive(false);
-        child.transform.SetParent(null);
+        child.transform.SetParent(null, false);
         // The child game object will act as a template for the renderables in this group.
         mNewObjectInstance = child;
         mRenderFunction = renderFunction;

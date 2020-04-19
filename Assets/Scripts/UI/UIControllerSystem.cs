@@ -38,7 +38,6 @@ public class UIControllerSystem : MonoBehaviour
         mPeacockFeatherRenderGroup = new RenderableGroup<ResourceAndCount>(
             PeacockView.transform.Find("InventoryFeathers"),
             RenderFunctions.RenderResourceAndCount);
-
     }
 
     // Update is called once per frame
@@ -208,6 +207,45 @@ public class UIControllerSystem : MonoBehaviour
         PeacockView.transform.Find("ActivityReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.activityDesc;
         PeacockView.transform.Find("ExtraReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.extraDesc;
         PeacockView.transform.Find("StatusReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.generalDesc;
+
+        Transform foodPlan = PeacockView.transform.Find("FoodPlan");
+        for(int i = 0; i < (int)FoodType.FT_MAX; ++i)
+        {
+            FoodType food = ((FoodType)i);
+            Transform button = foodPlan.GetChild(i);
+            button.GetChild(0).GetComponent<Text>().text = food.GetLabel();
+            if((int)BusinessState.peacock.quarterlyFoodType == i)
+            {
+                 button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            }
+        }
+
+        Transform activityPlan = PeacockView.transform.Find("ActivityPlan");
+        for(int i = 0; i < (int)PeacockActivityType.PA_MAX; ++i)
+        {
+            PeacockActivityType activity = ((PeacockActivityType)i);
+            Transform button = activityPlan.GetChild(i);
+            button.GetChild(0).GetComponent<Text>().text = activity.GetLabel();
+            if((int)BusinessState.peacock.quarterlyActivity == i)
+            {
+                 button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            }
+        }
+
+
+        Transform extraPlan = PeacockView.transform.Find("ExtraPlan");
+        for(int i = 0; i < (int)PeacockExtraType.ET_MAX; ++i)
+        {
+            PeacockExtraType extra = ((PeacockExtraType)i);
+            Transform button = extraPlan.GetChild(i);
+            button.GetChild(0).GetComponent<Text>().text = extra.GetLabel();
+            if(BusinessState.peacock.HasQuarterlyExtra(i))
+            {
+                 button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            }
+        }
+
+        PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(BusinessState.peacock.quarterlyTotalCost);
     }
 
 
@@ -221,12 +259,12 @@ public class UIControllerSystem : MonoBehaviour
             Image img = button.GetComponent<Image>();
             if (img != null)
             {
-                img.color = new Color(1f, 1f, 1f, (i == foodType) ? 1f : 0f);
+                img.color = new Color(1f, 1f, 1f, (i == foodType) ? 1f : 0.1f);
             }
         }
         FoodType food = ((FoodType)foodType);
         int price = food.GetPrice();
-        selections.Find("FoodCost").GetComponent<Text>().text = Utilities.FormatMoney(price);
+        //selections.Find("FoodCost").GetComponent<Text>().text = Utilities.FormatMoney(price);
         BusinessState.peacock.quarterlyFoodCost = price;
         PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(BusinessState.peacock.quarterlyTotalCost);
         BusinessState.peacock.quarterlyFoodType = (FoodType)foodType;
@@ -242,7 +280,7 @@ public class UIControllerSystem : MonoBehaviour
             Image img = button.GetComponent<Image>();
             if (img != null)
             {
-                img.color = new Color(1f, 1f, 1f, (i == activityType) ? 1f : 0f);
+                img.color = new Color(1f, 1f, 1f, (i == activityType) ? 1f : 0.1f);
             }
         }
 
@@ -255,11 +293,11 @@ public class UIControllerSystem : MonoBehaviour
         Transform extras = PeacockView.transform.Find("ExtraPlan");
         Transform button = extras.GetChild(extraType);
         Image img = button.GetComponent<Image>();
-        img.color = new Color(1f, 1f, 1f, 1 - img.color.a);
-        bool selected = img.color.a == 1f;
-        BusinessState.peacock.SetQuarterlyExtra(extraType, selected);
+        bool prevSelected = img.color.a == 1f;
+        img.color = new Color(1f, 1f, 1f, prevSelected ? 0.1f : 1f);
+        BusinessState.peacock.SetQuarterlyExtra(extraType, !prevSelected);
 
-        button.Find("Cost").GetComponent<Text>().text = Utilities.FormatMoney(selected ? ((PeacockExtraType)extraType).GetPrice() : 0);
+        // button.Find("Cost").GetComponent<Text>().text = Utilities.FormatMoney(selected ? ((PeacockExtraType)extraType).GetPrice() : 0);
 
         PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(BusinessState.peacock.quarterlyTotalCost);
     }

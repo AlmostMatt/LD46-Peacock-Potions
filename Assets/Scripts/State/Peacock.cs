@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class Peacock
 {
-    public float health = 75;
+    private float mHealth = 75;
+    public float health
+    {
+        get { return mHealth; }
+        set { mHealth = Mathf.Clamp(value, 0, 100); }
+    }
     public float happiness = 25;
     public float comfort = 50;
 
     public FoodType quarterlyFoodType = FoodType.FT_BASIC;
     public PeacockActivityType quarterlyActivity = PeacockActivityType.PA_STORY;
 
-    private int mQuarterlyTotalCost = 0;
+    private int mQuarterlyTotalCost = FoodType.FT_BASIC.GetPrice();
     public int quarterlyTotalCost
     {
         get { return mQuarterlyTotalCost; }
     }
-    private int mQuarterlyFoodCost = 0;
+    private int mQuarterlyFoodCost = FoodType.FT_BASIC.GetPrice();
     public int quarterlyFoodCost
     {
         get { return mQuarterlyFoodCost; }
@@ -46,6 +51,10 @@ public class Peacock
             }
             mQuarterlyExtras[extraType] = active;
         }
+    }
+    public bool HasQuarterlyExtra(int extraType)
+    {
+        return mQuarterlyExtras[extraType];
     }
 
     public class QuarterlyReport
@@ -115,6 +124,11 @@ public class Peacock
             health += 30;
         }
 
+        if(mQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
+        {
+            health -= 20;
+        }
+
         float totalDist = 0;
         for(int i = 0; i < producableResources.Length; ++i)
         {
@@ -143,6 +157,10 @@ public class Peacock
         }
 
         float baseNumFeathers = Mathf.Lerp(10, 100, (happiness / 100));
+        if(mQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
+        {
+            baseNumFeathers *= 1.5f;
+        }
         int totalFeathers = Mathf.RoundToInt(baseNumFeathers * Random.Range(0.9f, 1.1f));
         for(int i = 0; i < producableResources.Length; ++i)
         {

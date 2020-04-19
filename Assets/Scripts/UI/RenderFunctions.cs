@@ -51,7 +51,11 @@ public class RenderFunctions
         createPotionGroup.SetOnChangeCallback(NewNumPotionChangeCallback(report.productType));
         // Input group 2: sale price
         InputGroup setPriceGroup = obj.transform.Find("H/InputGroup (1)").GetComponent<InputGroup>();
+        setPriceGroup.increments = 10;
         setPriceGroup.SetInitialValue(report.salePrice); // price from the previous quarter
+        setPriceGroup.SetCanDecrement(setPriceGroup.GetValue() > setPriceGroup.increments);
+        setPriceGroup.SetCanIncrement(setPriceGroup.GetValue() + setPriceGroup.increments <= 100); // TODO: generalize this max price
+        setPriceGroup.SetOnChangeCallback(NewSetPriceCallback(report.productType));
     }
 
     /** 
@@ -76,6 +80,15 @@ public class RenderFunctions
                 BusinessState.inventory[(int)productType] -= 1;
                 delta += 1;
             }
+        };
+    }
+
+    public static System.Action<int, int> NewSetPriceCallback(ProductType productType)
+    {
+        return (int delta, int newValue) =>
+        {
+            BusinessState.prices[(int)productType] = newValue;
+            Debug.Log("Selling " + productType + " for " + BusinessState.prices[(int)productType]);
         };
     }
 }

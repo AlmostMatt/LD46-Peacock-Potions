@@ -137,27 +137,8 @@ public class UIControllerSystem : MonoBehaviour
         // State change - from summary to simulation (or event)
         GameState.currentStage = GameState.GameStage.GS_SIMULATION; //  GS_EVENT;
 
-        // Randomize prices and inventory
-        // TODO: read this information from the UI
-        for (int i = 0; i < (int)ProductType.PT_MAX; ++i)
-        {
-            ProductType productType = (ProductType)i;
-            BusinessState.prices[i] = Random.Range(50, 100);
-            Debug.Log("Selling " + productType + " for " + BusinessState.prices[i]);
-
-            // TODO: depend on the UI to spend resources and craft products
-            // Craft as many things as possible and pay the resource-cost of all products crafted
-            ResourceAndCount[] price = productType.GetIngredients();
-            while (true)
-            {
-                if (!productType.PlayerHasIngredients()) { break; }
-                productType.SpendPlayerIngredients();
-                BusinessState.inventory[i] += 1;
-                Debug.Log("crafted a " + productType);
-            }
-        }
-
         BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
+        // TODO: populate production based on the inputGroup values
 
         Debug.Log("game stage is now " + GameState.currentStage);
     }

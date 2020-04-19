@@ -128,7 +128,7 @@ public class UIControllerSystem : MonoBehaviour
             mItemQuarterlySummaryRenderGroup.UpdateRenderables(BusinessState.GetPerItemReports());
         }
         else if (PeacockView.activeInHierarchy)
-        {
+        {            
             mPeacockFeatherRenderGroup.UpdateRenderables(BusinessState.peacock.quarterlyReport.featherCounts);
         }
         // Simulation / Event
@@ -165,10 +165,8 @@ public class UIControllerSystem : MonoBehaviour
             inputGroup.ClearValue();
         }
 
-        // State change - from summary to peacock management
-        ShowPeacockSummary();
+        StartNextQuarter();
 
-        BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
         // TODO: populate production based on the inputGroup values
         // Take a snapshot of the current prices for reference at the end of the quarter
         BusinessState.quarterlyReport.salePrices = BusinessState.prices;
@@ -182,17 +180,21 @@ public class UIControllerSystem : MonoBehaviour
         EventState.currentEvent.PlayerDecision(button.transform.GetSiblingIndex());
     }
 
+    private void StartNextQuarter()
+    {
+        BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
+        BusinessState.peacock.StartQuarter();
+        GameState.currentStage = GameState.GameStage.GS_SIMULATION;
+    }
 
     // --------- PEACOCK SCREEN ------------ //
 
     public void PeacockScreenOK()
     {
-        // State change - from peacock management to simulation
-        GameState.currentStage = GameState.GameStage.GS_SIMULATION;
-        BusinessState.peacock.StartQuarter();
+        GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
     }
 
-    private void ShowPeacockSummary()
+    private void PreparePeacockSummary()
     {
         for (int i = 0; i < PeacockView.transform.childCount; ++i)
         {
@@ -247,7 +249,6 @@ public class UIControllerSystem : MonoBehaviour
 
         PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(BusinessState.peacock.quarterlyTotalCost);
     }
-
 
     public void PeacockScreenFood(int foodType)
     {
@@ -320,5 +321,11 @@ public class UIControllerSystem : MonoBehaviour
         StartCoroutine(SimpleAnimations.FadeInOut(animatedText, 1f));
         StartCoroutine(SimpleAnimations.MoveOverTime(animatedText, new Vector3(0f, 60f, 0f), 1f));
         Destroy(animatedText, 1f);
+    }
+
+    public void EndOfQuarter()
+    {
+        PreparePeacockSummary();
+        GameState.currentStage = GameState.GameStage.GS_PEACOCK;
     }
 }

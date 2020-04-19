@@ -40,4 +40,26 @@ public static class PeacockExtraTypeExtensions
         }
         return "????";
     }
+
+    
+    public static string GetProperName(this PeacockExtraType extraType)
+    {
+        switch(extraType)
+        {
+            case PeacockExtraType.ET_MEDICINE:
+                return "Medicine";
+            case PeacockExtraType.ET_PILLOW:
+                return "Pillow";
+            case PeacockExtraType.ET_HORMONES:
+                return "Growth Hormones"; // TODO: probably change this to something more fantasy-sounding
+        }
+        return "Unknown";
+    }
+
+    public static string GetLabel(this PeacockExtraType extraType)
+    {
+        string name = extraType.GetProperName();
+        string price = Utilities.FormatMoney(extraType.GetPrice());
+        return name + " " + price;
+    }
 }

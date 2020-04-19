@@ -13,9 +13,9 @@ public enum PeacockExtraType
 
 public static class PeacockExtraTypeExtensions
 {
-    public static int GetPrice(this PeacockExtraType food)
+    public static int GetPrice(this PeacockExtraType extraType)
     {
-        switch(food)
+        switch(extraType)
         {
             case PeacockExtraType.ET_MEDICINE:
                 return 1500;
@@ -25,5 +25,19 @@ public static class PeacockExtraTypeExtensions
                 return 1000;
         }
         return 0;
+    }
+
+    public static string GetName(this PeacockExtraType extraType)
+    {
+        switch(extraType)
+        {
+            case PeacockExtraType.ET_MEDICINE:
+                return "medicine";
+            case PeacockExtraType.ET_PILLOW:
+                return "a pillow";
+            case PeacockExtraType.ET_HORMONES:
+                return "growth hormones"; // TODO: probably change this to something more fantasy-sounding
+        }
+        return "????";
     }
 }

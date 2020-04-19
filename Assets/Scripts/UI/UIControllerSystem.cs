@@ -189,6 +189,8 @@ public class UIControllerSystem : MonoBehaviour
 
         // I assume there's a more proper way to do this, but I'm too lazy to figure it out
         PeacockView.transform.Find("FoodReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.foodDesc;
+        PeacockView.transform.Find("ActivityReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.activityDesc;
+        PeacockView.transform.Find("ExtraReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.extraDesc;
         PeacockView.transform.Find("StatusReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.generalDesc;
     }
 

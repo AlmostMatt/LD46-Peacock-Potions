@@ -191,7 +191,6 @@ public class UIControllerSystem : MonoBehaviour
         for(int i = 0; i < selections.childCount; ++i)
         {
             Transform button = selections.GetChild(i);
-            Debug.Log(i + " vs " + foodType);
             Image img = button.GetComponent<Image>();
             if(img != null)
             {
@@ -200,5 +199,22 @@ public class UIControllerSystem : MonoBehaviour
         }
         
         BusinessState.peacock.quarterlyFoodType = (FoodType)foodType;
+    }
+
+    public void PeacockScreenActivity(int activityType)
+    {
+        Debug.Log("activity select " + (PeacockActivityType)activityType);
+        Transform selections = PeacockView.transform.Find("ActivityPlan");
+        for(int i = 0; i < selections.childCount; ++i)
+        {
+            Transform button = selections.GetChild(i);
+            Image img = button.GetComponent<Image>();
+            if(img != null)
+            {
+                img.color = new Color(1f, 1f, 1f, (i == activityType) ? 1f : 0f);
+            }
+        }
+        
+        BusinessState.peacock.quarterlyActivity = (PeacockActivityType)activityType;
     }
 }

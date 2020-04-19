@@ -142,11 +142,11 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 2
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -197,6 +197,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SummaryView
+      objectReference: {fileID: 0}
+    - target: {fileID: 6003660503206174367, guid: 85e920af0e3b0c6408a049120cac1dee,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6003660503206174364, guid: 85e920af0e3b0c6408a049120cac1dee,
         type: 3}
@@ -943,7 +948,7 @@ PrefabInstance:
     - target: {fileID: 2037451802381639648, guid: 241044fcbfa98834cae03ba1da8bfc3a,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2037451802381639649, guid: 241044fcbfa98834cae03ba1da8bfc3a,
         type: 3}
@@ -1053,22 +1058,22 @@ PrefabInstance:
     - target: {fileID: 2037451803578189819, guid: 241044fcbfa98834cae03ba1da8bfc3a,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2037451803578189819, guid: 241044fcbfa98834cae03ba1da8bfc3a,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2037451803578189819, guid: 241044fcbfa98834cae03ba1da8bfc3a,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 331.5
       objectReference: {fileID: 0}
     - target: {fileID: 2037451803578189819, guid: 241044fcbfa98834cae03ba1da8bfc3a,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -23.35
       objectReference: {fileID: 0}
     - target: {fileID: 2037451803578189812, guid: 241044fcbfa98834cae03ba1da8bfc3a,
         type: 3}
@@ -1112,6 +1117,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PeacockView
+      objectReference: {fileID: 0}
+    - target: {fileID: 4319734211471912248, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5072951764472765697, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
         type: 3}
@@ -1221,22 +1231,22 @@ PrefabInstance:
     - target: {fileID: 3770116140579431505, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3770116140579431505, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3770116140579431505, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 3770116140579431505, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -31.75
       objectReference: {fileID: 0}
     - target: {fileID: 6222663946800464364, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
         type: 3}

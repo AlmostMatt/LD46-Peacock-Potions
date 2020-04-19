@@ -11,7 +11,8 @@ public class InputGroup : MonoBehaviour
     private Button mButton1;
     private Button mButton2;
     private Text mText;
-    private bool hasValue = false;
+    private bool mHasValue = false;
+    private System.Action<int, int> mOnChangeCallback = null;
 
     // Use this for initialization
     void Start()
@@ -30,33 +31,56 @@ public class InputGroup : MonoBehaviour
 
     public void ClearValue()
     {
-        hasValue = false;
+        mHasValue = false;
     }
 
     // Calls SetValue but only if has-value is false
     public void SetInitialValue(int value)
     {
-        if (!hasValue)
+        if (!mHasValue)
         {
             SetValue(value);
         }
     }
 
-    public void SetValue(int value)
+    public void SetValue(int newValue)
     {
-        hasValue = true;
         if (mText == null)
         {
             // Hack for edge-case where value is set before start
             Start();
         }
-        mCurrentValue = value;
-        mText.text = value.ToString();
+        int oldValue = mCurrentValue;
+        mCurrentValue = newValue;
+        mText.text = newValue.ToString();
+        // Only call the callback function if the InputGroup already had a value (onChange)
+        if (mHasValue && mOnChangeCallback != null)
+        {
+            mOnChangeCallback(newValue - oldValue, newValue);
+        }
+        mHasValue = true;
     }
 
     public int GetValue()
     {
         return mCurrentValue;
+    }
+
+    public void SetCanDecrement(bool canDecrement)
+    {
+        mButton1.interactable = canDecrement;
+    }
+
+    public void SetCanIncrement(bool canIncrement)
+    {
+        mButton2.interactable = canIncrement;
+    }
+
+    // Sets a function that will be called when the value changes.
+    // The function will be called with args (valueDelta, newValue)
+    public void SetOnChangeCallback(System.Action<int, int> onChangeCallback)
+    {
+        mOnChangeCallback = onChangeCallback;
     }
 
     public void IncreaseValue()

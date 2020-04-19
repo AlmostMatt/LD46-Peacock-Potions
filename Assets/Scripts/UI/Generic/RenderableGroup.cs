@@ -6,7 +6,6 @@ using System.Collections.Generic;
 public class RenderableGroup<RenderableType>
 {
     private List<GameObject> mObjectPool = new List<GameObject>();
-    private BidirectionalMap<RenderableType, GameObject> mRenderableObjectMap = new BidirectionalMap<RenderableType, GameObject>();
     private Transform mContainer;
     private GameObject mNewObjectInstance;
     private System.Action<RenderableType, GameObject> mRenderFunction;
@@ -45,15 +44,14 @@ public class RenderableGroup<RenderableType>
     // Should be called once per frame
     public void UpdateRenderables(List<RenderableType> renderables)
     {
-        // Put all GameObjects in a set, and remove the objects that are still in use
-        HashSet<GameObject> unusedObjects = new HashSet<GameObject>(mRenderableObjectMap.Values);
+        int index = 0;
         if (renderables != null)
         {
             foreach (RenderableType renderable in renderables)
             {
                 GameObject renderObject;
                 // Spawn new renderable
-                if (!mRenderableObjectMap.ContainsKey(renderable))
+                if (index >= mContainer.childCount)
                 {
                     if (mObjectPool.Count > 0)
                     {
@@ -64,9 +62,7 @@ public class RenderableGroup<RenderableType>
                     {
                         renderObject = GameObject.Instantiate(mNewObjectInstance);
                     }
-                    renderObject.SetActive(true);
                     renderObject.transform.SetParent(mContainer, false);
-                    mRenderableObjectMap.Add(renderable, renderObject);
                     if (mOnCreateCallback != null)
                     {
                         mOnCreateCallback(renderObject);
@@ -74,35 +70,20 @@ public class RenderableGroup<RenderableType>
                 }
                 else
                 {
-                    renderObject = mRenderableObjectMap.GetValue(renderable);
-                    unusedObjects.Remove(renderObject);
+                    renderObject = mContainer.GetChild(index).gameObject;
+                    renderObject.SetActive(true);
                 }
                 mRenderFunction(renderable, renderObject);
+                index++;
             }
         }
-        foreach (GameObject renderObject in unusedObjects)
+        // Disable any excess children
+        for (int i = index; i < mContainer.childCount; i++)
         {
-            mRenderableObjectMap.RemoveValue(renderObject);
-            mObjectPool.Add(renderObject);
-            renderObject.SetActive(false);
-            renderObject.transform.SetParent(null, false);
+            GameObject excessObject = mContainer.GetChild(i).gameObject;
+            mObjectPool.Add(excessObject);
+            excessObject.SetActive(false);
+            excessObject.transform.SetParent(null, false);
         }
-    }
-
-    // Get the Renderable that was rendered to a GameObject.
-    public RenderableType GetRenderableFromGameObject(GameObject renderObject)
-    {
-        return mRenderableObjectMap.GetKey(renderObject);
-    }
-
-    // Get the GameObject to which a Renderable was rendered.
-    public GameObject GetGameObjectFromRenderable(RenderableType renderable)
-    {
-        return mRenderableObjectMap.GetValue(renderable);
-    }
-
-    public Dictionary<RenderableType, GameObject>.ValueCollection GetGameObjects()
-    {
-        return mRenderableObjectMap.Values;
     }
 }

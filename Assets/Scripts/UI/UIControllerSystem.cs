@@ -107,21 +107,8 @@ public class UIControllerSystem : MonoBehaviour
             ResourceAndCount[] price = productType.GetIngredients();
             while (true)
             {
-                // Check if can afford
-                bool canAfford = true;
-                for (int r = 0; r < price.Length; r++)
-                {
-                    if (BusinessState.resources[(int)price[r].type] < price[r].count)
-                    {
-                        canAfford = false;
-                    }
-                }
-                if (!canAfford) { break; }
-                // Decrease funds
-                for (int r = 0; r < price.Length; r++)
-                {
-                    BusinessState.resources[(int)price[r].type] -= price[r].count;
-                }
+                if (!productType.PlayerHasIngredients()) { break; }
+                productType.SpendPlayerIngredients();
                 BusinessState.inventory[i] += 1;
                 Debug.Log("crafted a " + productType);
             }

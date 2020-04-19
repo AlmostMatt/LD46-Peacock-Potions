@@ -17,7 +17,7 @@ public static class ProductTypeExtensions
 {
     public static float[] SeasonalDemand(this ProductType product)
     {
-        switch(product)
+        switch (product)
         {
             case ProductType.PT_FIRE_POTION:
                 return new float[] { 0.3f, 0.1f, 0.5f, 0.7f };
@@ -55,7 +55,48 @@ public static class ProductTypeExtensions
             case ProductType.PT_POISON_POTION:
                 return new ResourceAndCount[] {
                     new ResourceAndCount(ResourceType.RT_GOLD_FEATHER, 1)};
-        default: return new ResourceAndCount[] { };
+            default: return new ResourceAndCount[] { };
+        }
+    }
+
+    // Compares the ingredients to make a product with the BusinessState's resources
+    public static bool PlayerHasIngredients(this ProductType productType)
+    {
+        ResourceAndCount[] price = productType.GetIngredients();
+        if (price.Length == 0)
+        {
+            // Don't let the player buy anything that is free (to avoid infinite loops)
+            return false;
+        }
+        for (int r = 0; r < price.Length; r++)
+        {
+            if (BusinessState.resources[(int)price[r].type] < price[r].count)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Decreases BusinessState's resources by the price
+    public static void SpendPlayerIngredients(this ProductType productType)
+    {
+        ResourceAndCount[] price = productType.GetIngredients();
+        // Decrease funds
+        for (int r = 0; r < price.Length; r++)
+        {
+            BusinessState.resources[(int)price[r].type] -= price[r].count;
+        }
+    }
+
+    // Increases BusinessState's resources by the price
+    public static void RefundPlayerIngredients(this ProductType productType)
+    {
+        ResourceAndCount[] price = productType.GetIngredients();
+        // Increase funds
+        for (int r = 0; r < price.Length; r++)
+        {
+            BusinessState.resources[(int)price[r].type] += price[r].count;
         }
     }
 }

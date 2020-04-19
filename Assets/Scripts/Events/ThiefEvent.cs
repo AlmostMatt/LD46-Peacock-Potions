@@ -14,6 +14,7 @@ public class ThiefEvent : GameEvent
     protected override void EventStart()
     {
         // populate data for the UI to pull from
+        EventState.currentEventImage = "faceOther";
         EventState.currentEventText = "You caught a thief trying to steal some potions. What do you want to do?";
         EventState.currentEventOptions = new string[]
             {
@@ -31,10 +32,12 @@ public class ThiefEvent : GameEvent
                     switch(choice)
                     {
                         case 0:
+                            EventState.currentEventImage = "faceOther";
                             EventState.currentEventText = "The thief thanks you and promises never to steal again.";
                             EventState.currentEventOptions = EventState.OK_OPTION;
                             return true;
                         case 1:
+                            EventState.currentEventImage = "faceOther";
                             EventState.currentEventText = "Everyone stares as you punch the thief in the nose.";
                             EventState.currentEventOptions = new string[] { "Back off", "Stick to your guns" };
                             mStage = Stage.REVENGE;
@@ -47,9 +50,11 @@ public class ThiefEvent : GameEvent
                     switch(choice)
                     {
                         case 0:
+                            EventState.currentEventImage = "faceOther";
                             EventState.currentEventText = "The thief scrambles out of the store and people return to shopping.";                            
                             break;
                         case 1:
+                            EventState.currentEventImage = "faceOther";
                             EventState.currentEventText = "People crowd around the thief to protect him. Some people leave the shop.";
                             break;
                     }

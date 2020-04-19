@@ -10,7 +10,6 @@ public class Peacock
 
     public FoodType quarterlyFoodType = FoodType.FT_BASIC;
     public PeacockActivityType quarterlyActivity = PeacockActivityType.PA_STORY;
-    public PeacockInteraction quarterlyInteraction;
 
     private int mQuarterlyTotalCost = 0;
     public int quarterlyTotalCost
@@ -51,10 +50,10 @@ public class Peacock
 
     public class QuarterlyReport
     {
-        public string foodDesc;
-        public string activityDesc;
-        public string extraDesc;
-        public string generalDesc;
+        public string foodDesc = "Fed it good food.";
+        public string activityDesc = "Read it a story every night.";
+        public string extraDesc = "Gave it nothing extra.";
+        public string generalDesc = "It looks healthy, relaxed, and happy.";
         public List<ResourceAndCount> featherCounts = new List<ResourceAndCount>();
     }
     public QuarterlyReport quarterlyReport = new QuarterlyReport();
@@ -90,7 +89,7 @@ public class Peacock
                 break;
             case FoodType.FT_DELUXE:
                 quarterlyReport.foodDesc = "Fed it deluxe food.";
-                health += 20;
+                happiness += 5;
                 break;
         }
 
@@ -98,13 +97,22 @@ public class Peacock
         {
             case PeacockActivityType.PA_STORY:
                 quarterlyReport.activityDesc = "Read it a story every night.";
+                comfort += 10;
                 break;
             case PeacockActivityType.PA_SING:
                 quarterlyReport.activityDesc = "Sang it a song every week.";
+                comfort += 5;
+                happiness += 5;
                 break;
             case PeacockActivityType.PA_HUG:
                 quarterlyReport.activityDesc = "Hugged it every day.";
+                happiness += 10;
                 break;
+        }
+
+        if(mQuarterlyExtras[(int)PeacockExtraType.ET_MEDICINE])
+        {
+            health += 30;
         }
 
         float totalDist = 0;
@@ -148,7 +156,7 @@ public class Peacock
         int numExtrasSoFar = 0;
         if(mNumExtras == 0)
         {
-            extraDesc += " nothing extra";
+            extraDesc += "nothing extra";
         }
         else
         {

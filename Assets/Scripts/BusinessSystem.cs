@@ -42,7 +42,7 @@ public class BusinessSystem : MonoBehaviour
 
                     BusinessState.peacock.QuarterOver();
 
-                    GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
+                    GameObject.FindObjectsOfType<UIControllerSystem>()[0].EndOfQuarter();
                 }
                 Debug.Log("game stage is now " + GameState.currentStage);
                 return;

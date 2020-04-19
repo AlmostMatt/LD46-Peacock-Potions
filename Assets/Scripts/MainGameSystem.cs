@@ -20,7 +20,7 @@ public class MainGameSystem : MonoBehaviour
         if (GameState.currentStage == GameState.GameStage.GS_MAIN_MENU)
         {
             InitNewGame();
-            GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
+            GameState.currentStage = GameState.GameStage.GS_SIMULATION;
         }
 
         if (mQuarterlyDemandGenerated < GameState.quarter)
@@ -32,17 +32,25 @@ public class MainGameSystem : MonoBehaviour
 
     private void InitNewGame()
     {
-        // initialize events here for the moment...
+        // initialize events here for the moment..
+        EventState.PushEvent(new IntroductionEvent(), 0);
         SonEventChain.Init();
         InvestmentEventChain.Init();
-
-        // BusinessState.animals[(int)AnimalType.AT_TURTLE] = true; // player starts with a turtle
-
+        
         BusinessState.money = 500; // some starting money
+
         // starting resources
         for(int i = 0; i < BusinessState.resources.Length; ++i)
         {
             BusinessState.resources[i] = Random.Range(1, 10);
+        }
+
+        // starting inventory
+        for(int i = 0; i < BusinessState.inventory.Length; ++i)
+        {
+            BusinessState.inventory[i] = 5;
+            BusinessState.prices[i] = 10;
+            BusinessState.quarterlyReport.salePrices[i] = 10;
         }
 
         InitWorldParams();

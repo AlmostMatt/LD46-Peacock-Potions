@@ -19,6 +19,7 @@ public class UIControllerSystem : MonoBehaviour
     private RenderableGroup<string> mEventOptionRenderGroup;
     private RenderableGroup<BusinessState.PerItemReport> mItemQuarterlySummaryRenderGroup;
     private RenderableGroup<ResourceAndCount> mResourceInventoryRenderGroup;
+    private RenderableGroup<ResourceAndCount> mPeacockFeatherRenderGroup;
 
     // Use this for initialization
     void Start()
@@ -32,6 +33,10 @@ public class UIControllerSystem : MonoBehaviour
         mResourceInventoryRenderGroup = new RenderableGroup<ResourceAndCount>(
             SummaryView.transform.Find("InventoryFeathers"),
             RenderFunctions.RenderResourceAndCount);
+        mPeacockFeatherRenderGroup = new RenderableGroup<ResourceAndCount>(
+            PeacockView.transform.Find("InventoryFeathers"),
+            RenderFunctions.RenderResourceAndCount);
+
     }
 
     // Update is called once per frame
@@ -118,6 +123,10 @@ public class UIControllerSystem : MonoBehaviour
             mResourceInventoryRenderGroup.UpdateRenderables(resourceCounts);
             // Per-item reports
             mItemQuarterlySummaryRenderGroup.UpdateRenderables(BusinessState.GetPerItemReports());
+        }
+        else if(PeacockView.activeInHierarchy)
+        {
+            mPeacockFeatherRenderGroup.UpdateRenderables(BusinessState.peacock.quarterlyReport.featherCounts);
         }
         // Simulation / Event
         SimulationView.transform.Find("Info Overlay/TopRight/Text").GetComponent<Text>().text = string.Format("Money: ${0}", BusinessState.money);

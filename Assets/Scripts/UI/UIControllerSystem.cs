@@ -49,6 +49,8 @@ public class UIControllerSystem : MonoBehaviour
         {
             UpdateCustomers();
         }
+
+        FancyUIAnimations.Update();
     }
 
     // TODO: move this somewhere else, probably. clean it up, too.
@@ -149,7 +151,7 @@ public class UIControllerSystem : MonoBehaviour
         }
 
         // State change - from summary to peacock management
-        GameState.currentStage = GameState.GameStage.GS_PEACOCK;
+        ShowPeacockSummary();
 
         BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
         // TODO: populate production based on the inputGroup values
@@ -157,6 +159,17 @@ public class UIControllerSystem : MonoBehaviour
         BusinessState.quarterlyReport.salePrices = BusinessState.prices;
 
         Debug.Log("game stage is now " + GameState.currentStage);
+    }
+
+    private void ShowPeacockSummary()
+    {
+        for(int i = 0; i <  PeacockView.transform.childCount; ++i)
+        {
+            GameObject go = PeacockView.transform.GetChild(i).gameObject;
+            go.GetComponent<CanvasGroup>().alpha = 0;
+            FancyUIAnimations.PushAnimation(FancyUIAnimations.AnimationType.FADE_IN, go);
+            GameState.currentStage = GameState.GameStage.GS_PEACOCK;
+        }
     }
 
     public void PeacockScreenOK()

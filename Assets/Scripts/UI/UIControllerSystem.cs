@@ -132,6 +132,20 @@ public class UIControllerSystem : MonoBehaviour
         }
         // Simulation / Event
         SimulationView.transform.Find("Info Overlay/TopRight/Text").GetComponent<Text>().text = string.Format("Money: ${0}", BusinessState.money);
+        if (SimulationDefaultContent.activeInHierarchy)
+        {
+            // Color and show/hide potions in the shop
+            for (int i=0; i< (int)ProductType.PT_MAX; i++)
+            {
+                var PotionGroup = SimulationDefaultContent.transform.Find("Potions").GetChild(i);
+                for (int j=0; j< PotionGroup.childCount; j++)
+                {
+                    PotionGroup.GetChild(j).gameObject.SetActive(j < BusinessState.inventory[i]);
+                    PotionGroup.GetChild(j).GetComponent<Image>().color = ((ProductType)i).GetColor();
+                    // TODO: if a potion stopped being visible it was just sold. Show the +money animation there
+                }
+            }
+        }
         // Event
         if (EventState.currentEvent != null)
         {

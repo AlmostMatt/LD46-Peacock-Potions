@@ -186,6 +186,8 @@ MonoBehaviour:
   SimulationView: {fileID: 8846099239277756145}
   SimulationDefaultContent: {fileID: 6412913996843647344}
   SimulationEventContent: {fileID: 5833434569556291537}
+  AnimatedTextPrefab: {fileID: 3634520083722111612, guid: 8e077cb78ebc57b428f1da82f040e79f,
+    type: 3}
 --- !u!1001 &2995704130877511591
 PrefabInstance:
   m_ObjectHideFlags: 0

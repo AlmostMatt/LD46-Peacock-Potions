@@ -11,16 +11,16 @@ public class BusinessSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         // If in any other state (including random event), simulation will be paused
-        if(GameState.currentStage == GameState.GameStage.GS_SIMULATION)
+        if (GameState.currentStage == GameState.GameStage.GS_SIMULATION)
         {
-            if(CustomerState.totalQuarterlyCustomers == 0)
+            if (CustomerState.totalQuarterlyCustomers == 0)
             {
                 mPaymentTime = 0;
 
@@ -50,35 +50,24 @@ public class BusinessSystem : MonoBehaviour
 
             // yeah like it's slightly gross to do this here in this way...
             // running code on state changes really does want an event-driven style thing, I guess
-            if(mPaymentTime == 0)
+            if (mPaymentTime == 0)
             {
                 mPaymentTime = QUARTER_TIME / CustomerState.totalQuarterlyCustomers;
                 mPaymentTimer = mPaymentTime;
             }
 
             mPaymentTimer -= Time.deltaTime;
-            if(mPaymentTimer <= 0)
+            if (mPaymentTimer <= 0)
             {
                 int product = Random.Range(0, (int)ProductType.PT_MAX);
-                while(CustomerState.customers[product] == 0)
+                while (CustomerState.customers[product] == 0)
                 {
                     product = (product + 1) % (int)ProductType.PT_MAX;
                 }
 
-                if(BusinessState.inventory[product] > 0)
+                if (BusinessState.inventory[product] > 0)
                 {
-                    BusinessState.money += BusinessState.prices[product];
-                    BusinessState.inventory[product] -= 1;
-                    Debug.Log("Sold a " + (ProductType)product + "! money: " + BusinessState.money);
-
-                    BusinessState.quarterlyReport.sales[product] += 1;
-
-                    // Have a random chance to spawn an event
-                    // TODO: move event spawning into a new system
-                    if(Random.Range(0f, 1f) <= 0.01f)
-                    {
-                        EventState.PushEvent(new ThiefEvent(), GameState.quarter);
-                    }
+                    SellProduct(product);
                 }
                 else
                 {
@@ -92,4 +81,22 @@ public class BusinessSystem : MonoBehaviour
         }
     }
 
+    private void SellProduct(int product)
+    {
+        BusinessState.money += BusinessState.prices[product];
+        BusinessState.inventory[product] -= 1;
+        Debug.Log("Sold a " + (ProductType)product + "! money: " + BusinessState.money);
+
+        BusinessState.quarterlyReport.sales[product] += 1;
+
+        // Hacky way to call code from another system
+        GameObject.FindObjectsOfType<UIControllerSystem>()[0].ShowSale((ProductType) product);
+
+        // Have a random chance to spawn an event
+        // TODO: move event spawning into a new system
+        if (Random.Range(0f, 1f) <= 0.01f)
+        {
+            EventState.PushEvent(new ThiefEvent(), GameState.quarter);
+        }
+    }
 }

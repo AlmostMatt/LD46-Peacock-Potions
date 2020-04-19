@@ -16,6 +16,8 @@ public class UIControllerSystem : MonoBehaviour
     public GameObject SimulationDefaultContent;
     public GameObject SimulationEventContent;
 
+    public GameObject AnimatedTextPrefab;
+
     private RenderableGroup<string> mEventOptionRenderGroup;
     private RenderableGroup<BusinessState.PerItemReport> mItemQuarterlySummaryRenderGroup;
     private RenderableGroup<ResourceAndCount> mResourceInventoryRenderGroup;
@@ -45,7 +47,7 @@ public class UIControllerSystem : MonoBehaviour
         UpdateUiVisibility();
         UpdateUiContent();
 
-        if(GameState.currentStage == GameState.GameStage.GS_SIMULATION)
+        if (GameState.currentStage == GameState.GameStage.GS_SIMULATION)
         {
             UpdateCustomers();
         }
@@ -61,15 +63,15 @@ public class UIControllerSystem : MonoBehaviour
     {
         // naively fade customers in and out. TODO: make it linked to number/frequency of customers
         Transform customers = SimulationDefaultContent.transform.Find("Customers");
-        if(customerFade == null) { customerFade = new int[customers.childCount]; }
-        if(customerFadeTransitioning == null) { customerFadeTransitioning = new bool[customers.childCount]; }
-        if(customerFadeTimers == null) { customerFadeTimers = new float[customers.childCount]; }
-        for(int customerIdx = 0; customerIdx < customers.childCount; ++customerIdx)
+        if (customerFade == null) { customerFade = new int[customers.childCount]; }
+        if (customerFadeTransitioning == null) { customerFadeTransitioning = new bool[customers.childCount]; }
+        if (customerFadeTimers == null) { customerFadeTimers = new float[customers.childCount]; }
+        for (int customerIdx = 0; customerIdx < customers.childCount; ++customerIdx)
         {
-            if(!customerFadeTransitioning[customerIdx])
+            if (!customerFadeTransitioning[customerIdx])
             {
                 customerFadeTimers[customerIdx] -= Time.deltaTime;
-                if(customerFadeTimers[customerIdx] <= 0)
+                if (customerFadeTimers[customerIdx] <= 0)
                 {
                     customerFade[customerIdx] = 1 - customerFade[customerIdx];
                     customerFadeTransitioning[customerIdx] = true;
@@ -80,9 +82,9 @@ public class UIControllerSystem : MonoBehaviour
                 Transform customer = customers.GetChild(customerIdx);
                 Image img = customer.GetComponent<Image>();
                 float alpha = img.color.a;
-                float newAlpha = Mathf.Clamp(alpha + Time.deltaTime * (customerFade[customerIdx] == 1 ? 5: -5), 0, 1);
+                float newAlpha = Mathf.Clamp(alpha + Time.deltaTime * (customerFade[customerIdx] == 1 ? 5 : -5), 0, 1);
                 img.color = new Color(img.color.r, img.color.g, img.color.b, newAlpha);
-                if(newAlpha == 0 || newAlpha == 1)
+                if (newAlpha == 0 || newAlpha == 1)
                 {
                     customerFadeTransitioning[customerIdx] = false;
                     customerFadeTimers[customerIdx] = Random.Range(2f, 9f);
@@ -118,7 +120,7 @@ public class UIControllerSystem : MonoBehaviour
             SummaryView.transform.Find("InventoryCash/Text").GetComponent<Text>().text = string.Format("Balance: ${0}", BusinessState.money);
             // Inventory (feathers)
             List<ResourceAndCount> resourceCounts = new List<ResourceAndCount>();
-            for (int i=0; i<(int)ResourceType.RT_MAX; i++)
+            for (int i = 0; i < (int)ResourceType.RT_MAX; i++)
             {
                 resourceCounts.Add(new ResourceAndCount((ResourceType)i, BusinessState.resources[i]));
             }
@@ -126,7 +128,7 @@ public class UIControllerSystem : MonoBehaviour
             // Per-item reports
             mItemQuarterlySummaryRenderGroup.UpdateRenderables(BusinessState.GetPerItemReports());
         }
-        else if(PeacockView.activeInHierarchy)
+        else if (PeacockView.activeInHierarchy)
         {
             mPeacockFeatherRenderGroup.UpdateRenderables(BusinessState.peacock.quarterlyReport.featherCounts);
         }
@@ -135,10 +137,10 @@ public class UIControllerSystem : MonoBehaviour
         if (SimulationDefaultContent.activeInHierarchy)
         {
             // Color and show/hide potions in the shop
-            for (int i=0; i< (int)ProductType.PT_MAX; i++)
+            for (int i = 0; i < (int)ProductType.PT_MAX; i++)
             {
                 var PotionGroup = GetPotionGroup((ProductType)i);
-                for (int j=0; j< PotionGroup.childCount; j++)
+                for (int j = 0; j < PotionGroup.childCount; j++)
                 {
                     PotionGroup.GetChild(j).gameObject.SetActive(j < BusinessState.inventory[i]);
                     PotionGroup.GetChild(j).GetComponent<Image>().color = ((ProductType)i).GetColor();
@@ -181,7 +183,7 @@ public class UIControllerSystem : MonoBehaviour
         EventState.currentEvent.PlayerDecision(button.transform.GetSiblingIndex());
     }
 
-    
+
     // --------- PEACOCK SCREEN ------------ //
 
     public void PeacockScreenOK()
@@ -193,14 +195,14 @@ public class UIControllerSystem : MonoBehaviour
 
     private void ShowPeacockSummary()
     {
-        for(int i = 0; i < PeacockView.transform.childCount; ++i)
+        for (int i = 0; i < PeacockView.transform.childCount; ++i)
         {
             GameObject go = PeacockView.transform.GetChild(i).gameObject;
             go.GetComponent<CanvasGroup>().alpha = 0;
             FancyUIAnimations.PushAnimation(FancyUIAnimations.AnimationType.FADE_IN, go);
             GameState.currentStage = GameState.GameStage.GS_PEACOCK;
         }
-        
+
         // I assume there's a more proper way to do this, but I'm too lazy to figure it out
         PeacockView.transform.Find("FoodReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.foodDesc;
         PeacockView.transform.Find("ActivityReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.activityDesc;
@@ -213,11 +215,11 @@ public class UIControllerSystem : MonoBehaviour
     {
         Debug.Log("food select " + (FoodType)foodType);
         Transform selections = PeacockView.transform.Find("FoodPlan");
-        for(int i = 0; i < selections.childCount; ++i)
+        for (int i = 0; i < selections.childCount; ++i)
         {
             Transform button = selections.GetChild(i);
             Image img = button.GetComponent<Image>();
-            if(img != null)
+            if (img != null)
             {
                 img.color = new Color(1f, 1f, 1f, (i == foodType) ? 1f : 0f);
             }
@@ -234,16 +236,16 @@ public class UIControllerSystem : MonoBehaviour
     {
         Debug.Log("activity select " + (PeacockActivityType)activityType);
         Transform selections = PeacockView.transform.Find("ActivityPlan");
-        for(int i = 0; i < selections.childCount; ++i)
+        for (int i = 0; i < selections.childCount; ++i)
         {
             Transform button = selections.GetChild(i);
             Image img = button.GetComponent<Image>();
-            if(img != null)
+            if (img != null)
             {
                 img.color = new Color(1f, 1f, 1f, (i == activityType) ? 1f : 0f);
             }
         }
-        
+
         BusinessState.peacock.quarterlyActivity = (PeacockActivityType)activityType;
     }
 
@@ -252,7 +254,7 @@ public class UIControllerSystem : MonoBehaviour
         Debug.Log("extra peacock " + extraType);
         Transform extras = PeacockView.transform.Find("ExtraPlan");
         Transform button = extras.GetChild(extraType);
-        Image img = button.GetComponent<Image>();        
+        Image img = button.GetComponent<Image>();
         img.color = new Color(1f, 1f, 1f, 1 - img.color.a);
         bool selected = img.color.a == 1f;
         BusinessState.peacock.SetQuarterlyExtra(extraType, selected);
@@ -267,5 +269,17 @@ public class UIControllerSystem : MonoBehaviour
     private Transform GetPotionGroup(ProductType productType)
     {
         return SimulationDefaultContent.transform.Find("Potions").GetChild((int)productType);
+    }
+
+    // UI or audio feedback for a sale happening.
+    // This is called from BusinessSystem
+    public void ShowSale(ProductType productType)
+    {
+        Transform potionGroup = GetPotionGroup(productType);
+        // Same position as potion group but not a child of the potion group
+        GameObject animatedText = Instantiate(AnimatedTextPrefab, potionGroup.position, Quaternion.identity, potionGroup.parent);
+        StartCoroutine(SimpleAnimations.FadeInOut(animatedText, 1f));
+        StartCoroutine(SimpleAnimations.MoveOverTime(animatedText, new Vector3(0f, 60f, 0f), 1f));
+        Destroy(animatedText, 1f);
     }
 }

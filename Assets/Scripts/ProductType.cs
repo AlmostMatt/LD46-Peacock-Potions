@@ -15,6 +15,23 @@ public enum ProductType
 
 public static class ProductTypeExtensions
 {
+    public static string GetName(this ProductType productType)
+    {
+        switch (productType)
+        {
+            case ProductType.PT_LOVE_POTION:
+                return "Love";
+            case ProductType.PT_INVIS_POTION:
+                return "Invisibility";
+            case ProductType.PT_FIRE_POTION:
+                return "Fire";
+            case ProductType.PT_LUCK_POTION:
+                return "Luck";
+            case ProductType.PT_POISON_POTION:
+                return "Poison";
+            default: return productType.ToString();
+        }
+    }
     public static Color GetColor(this ProductType productType)
     {
         switch (productType)
@@ -32,6 +49,7 @@ public static class ProductTypeExtensions
             default: return Color.white;
         }
     }
+
     public static float[] SeasonalDemand(this ProductType product)
     {
         switch (product)

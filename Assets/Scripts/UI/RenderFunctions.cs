@@ -20,18 +20,22 @@ public class RenderFunctions
 
     public static void RenderItemQuarterlySummary(BusinessState.PerItemReport report, GameObject obj)
     {
+        obj.transform.Find("H/Name").GetComponent<Text>().text = string.Format("{0}\nPotion",report.productType.GetName());
         // TODO: customize the image
         // obj.transform.Find("H/Icon").GetComponent<Image>().sprite = null;   productType
         obj.transform.Find("H/Icon").GetComponent<Image>().color = report.productType.GetColor();
-        
+
         // Losses (from events)
-        obj.transform.Find("H/Text1").GetComponent<Text>().text = string.Format("{0}", report.numLost);
-        obj.transform.Find("H/Text1").GetComponent<CanvasGroup>().alpha = (report.numLost == 0 ? 0f : 1f);
+        obj.transform.Find("H/Losses").GetComponent<Text>().text = string.Format("{0}", report.numLost);
+        obj.transform.Find("H/Losses").GetComponent<CanvasGroup>().alpha = (report.numLost == 0 ? 0f : 1f);
         // Sales
-        obj.transform.Find("H/Text2").GetComponent<Text>().text = string.Format("{0}x${1} = ${2}", report.numSold, report.salePrice, report.numSold * report.salePrice);
-        obj.transform.Find("H/Text2").GetComponent<CanvasGroup>().alpha = (report.numSold == 0 ? 0f : 1f);
+        obj.transform.Find("H/Sales").GetComponent<Text>().text = string.Format("{0}x${1}", report.numSold, report.salePrice);
+        obj.transform.Find("H/Sales").GetComponent<CanvasGroup>().alpha = (report.numSold == 0 ? 0f : 1f);
+        obj.transform.Find("H/Profit").GetComponent<Text>().text = string.Format("${0}", report.numSold * report.salePrice);
+        obj.transform.Find("H/Profit").GetComponent<CanvasGroup>().alpha = (report.numSold == 0 ? 0f : 1f);
         // Inventory
-        obj.transform.Find("H/Text4").GetComponent<Text>().text = string.Format("{0}", report.currentStock);
+        // TODO: show the previous stock
+        obj.transform.Find("H/Inventory").GetComponent<Text>().text = string.Format("{0}", report.currentStock);
 
         // Show the ingredients necessary to make a product
         ResourceAndCount[] price = report.productType.GetIngredients();

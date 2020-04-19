@@ -124,6 +124,7 @@ public class UIControllerSystem : MonoBehaviour
         // Event
         if (EventState.currentEvent != null)
         {
+            SimulationEventContent.transform.Find("Focus image").GetComponent<Image>().sprite = SpriteManager.GetSprite("cactus");
             SimulationEventContent.transform.Find("DecisionPanel/Text").GetComponent<Text>().text = EventState.currentEventText;
             mEventOptionRenderGroup.UpdateRenderables(new List<string>(EventState.currentEventOptions));
         }

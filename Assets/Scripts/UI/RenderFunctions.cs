@@ -24,8 +24,13 @@ public class RenderFunctions
         // obj.transform.Find("H/Icon").GetComponent<Image>().sprite = null;   productType
         // TODO: set some fields to empty string for zero values
 
+        // Losses (from events)
         obj.transform.Find("H/Text1").GetComponent<Text>().text = string.Format("{0}", report.numLost);
-        obj.transform.Find("H/Text2").GetComponent<Text>().text = string.Format("{0}x${1} = ${2}", report.numSold, report.salePrice, report.numSold*report.salePrice);
+        obj.transform.Find("H/Text1").GetComponent<CanvasGroup>().alpha = (report.numLost == 0 ? 0f : 1f);
+        // Sales
+        obj.transform.Find("H/Text2").GetComponent<Text>().text = string.Format("{0}x${1} = ${2}", report.numSold, report.salePrice, report.numSold * report.salePrice);
+        obj.transform.Find("H/Text2").GetComponent<CanvasGroup>().alpha = (report.numSold == 0 ? 0f : 1f);
+        // Inventory
         obj.transform.Find("H/Text4").GetComponent<Text>().text = string.Format("{0}", report.currentStock);
 
         // Show the ingredients necessary to make a product
@@ -56,6 +61,8 @@ public class RenderFunctions
         setPriceGroup.SetCanDecrement(setPriceGroup.GetValue() > setPriceGroup.increments);
         setPriceGroup.SetCanIncrement(setPriceGroup.GetValue() + setPriceGroup.increments <= 100); // TODO: generalize this max price
         setPriceGroup.SetOnChangeCallback(NewSetPriceCallback(report.productType));
+        // Only show price if inventory is non-zero
+        setPriceGroup.transform.GetComponent<CanvasGroup>().alpha = (report.currentStock == 0 ? 0f : 1f);
     }
 
     /** 

@@ -40,7 +40,7 @@ public class BusinessSystem : MonoBehaviour
                     BusinessState.quarterlyReport.livingExpenses = expenses;
                     BusinessState.money -= expenses;
 
-                    BusinessState.peacock.Produce();
+                    BusinessState.peacock.QuarterOver();
 
                     GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
                 }
@@ -89,8 +89,6 @@ public class BusinessSystem : MonoBehaviour
                 mPaymentTimer = Random.Range(mPaymentTime * 0.9f, mPaymentTime * 1.1f);
                 --CustomerState.totalQuarterlyCustomers;
             }
-
-            BusinessState.peacock.Update();
         }
     }
 

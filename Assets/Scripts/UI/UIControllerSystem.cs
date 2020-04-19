@@ -180,6 +180,7 @@ public class UIControllerSystem : MonoBehaviour
     {
         // State change - from peacock management to simulation
         GameState.currentStage = GameState.GameStage.GS_SIMULATION;
+        BusinessState.peacock.StartQuarter();
     }
 
     public void MakeDecision(Button button)
@@ -201,7 +202,11 @@ public class UIControllerSystem : MonoBehaviour
                 img.color = new Color(1f, 1f, 1f, (i == foodType) ? 1f : 0f);
             }
         }
-        
+        FoodType food = ((FoodType)foodType);
+        int price = food.GetPrice();
+        selections.Find("FoodCost").GetComponent<Text>().text = Utilities.FormatMoney(price);
+        BusinessState.peacock.quarterlyFoodCost = price;
+        PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(BusinessState.peacock.quarterlyTotalCost);
         BusinessState.peacock.quarterlyFoodType = (FoodType)foodType;
     }
 

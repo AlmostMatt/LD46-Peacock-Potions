@@ -11,7 +11,20 @@ public class Peacock
     public FoodType quarterlyFoodType = FoodType.FT_BASIC;
     public PeacockActivityType quarterlyActivity = PeacockActivityType.PA_STORY;
     public PeacockInteraction quarterlyInteraction;
-    
+
+    public int quarterlyTotalCost = 0;
+    private int mQuarterlyFoodCost = 0;
+    public int quarterlyFoodCost
+    {
+        get { return mQuarterlyFoodCost; }
+        set
+        {
+            quarterlyTotalCost -= mQuarterlyFoodCost;
+            mQuarterlyFoodCost = value;
+            quarterlyTotalCost += value;
+        }
+    }
+
     public class QuarterlyReport
     {
         public string foodDesc;
@@ -30,6 +43,12 @@ public class Peacock
         ResourceType.RT_GOLD_FEATHER
     };
     private float[] mProductionDistribution = new float[producableResources.Length];
+
+    public void StartQuarter()
+    {
+        BusinessState.money -= quarterlyTotalCost;
+        // TODO: include in expenses?
+    }
 
     public void QuarterOver()
     {

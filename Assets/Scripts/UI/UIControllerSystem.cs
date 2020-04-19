@@ -137,7 +137,7 @@ public class UIControllerSystem : MonoBehaviour
             // Color and show/hide potions in the shop
             for (int i=0; i< (int)ProductType.PT_MAX; i++)
             {
-                var PotionGroup = SimulationDefaultContent.transform.Find("Potions").GetChild(i);
+                var PotionGroup = GetPotionGroup((ProductType)i);
                 for (int j=0; j< PotionGroup.childCount; j++)
                 {
                     PotionGroup.GetChild(j).gameObject.SetActive(j < BusinessState.inventory[i]);
@@ -263,4 +263,9 @@ public class UIControllerSystem : MonoBehaviour
     }
 
     // --------- END PEACOCK SCREEN ------------ //
+
+    private Transform GetPotionGroup(ProductType productType)
+    {
+        return SimulationDefaultContent.transform.Find("Potions").GetChild((int)productType);
+    }
 }

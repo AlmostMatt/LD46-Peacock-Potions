@@ -102,7 +102,7 @@ public class UIControllerSystem : MonoBehaviour
         // UI shared by Simulation / Event
         SimulationView.SetActive(stage == GameState.GameStage.GS_EVENT || stage == GameState.GameStage.GS_SIMULATION);
         // Simulation
-        SimulationDefaultContent.GetComponent<CanvasGroup>().alpha = (stage == GameState.GameStage.GS_SIMULATION ? 1.0f : 0.5f);
+        //SimulationDefaultContent.GetComponent<CanvasGroup>().alpha = (stage == GameState.GameStage.GS_SIMULATION ? 1.0f : 0.5f);
         // Event
         SimulationEventContent.SetActive(stage == GameState.GameStage.GS_EVENT);
     }

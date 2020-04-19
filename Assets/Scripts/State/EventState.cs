@@ -13,7 +13,7 @@ public class EventState
 
     private class ScheduledEvent
     {
-        public ScheduledEvent(GameEvent e, int quarter)            
+        public ScheduledEvent(GameEvent e, int quarter)
         {
             mEvent = e;
             mGameTime = quarter;

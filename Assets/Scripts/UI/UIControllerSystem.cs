@@ -36,7 +36,6 @@ public class UIControllerSystem : MonoBehaviour
         mPeacockFeatherRenderGroup = new RenderableGroup<ResourceAndCount>(
             PeacockView.transform.Find("InventoryFeathers"),
             RenderFunctions.RenderResourceAndCount);
-
     }
 
     // Update is called once per frame
@@ -219,8 +218,7 @@ public class UIControllerSystem : MonoBehaviour
         {
             PeacockExtraType extra = ((PeacockExtraType)i);
             extraPlan.GetChild(i).GetChild(0).GetComponent<Text>().text = extra.GetLabel();
-        }
-        
+        }   
     }
 
 
@@ -234,7 +232,7 @@ public class UIControllerSystem : MonoBehaviour
             Image img = button.GetComponent<Image>();
             if(img != null)
             {
-                img.color = new Color(1f, 1f, 1f, (i == foodType) ? 1f : 0f);
+                img.color = new Color(1f, 1f, 1f, (i == foodType) ? 1f : 0.1f);
             }
         }
         FoodType food = ((FoodType)foodType);
@@ -255,7 +253,7 @@ public class UIControllerSystem : MonoBehaviour
             Image img = button.GetComponent<Image>();
             if(img != null)
             {
-                img.color = new Color(1f, 1f, 1f, (i == activityType) ? 1f : 0f);
+                img.color = new Color(1f, 1f, 1f, (i == activityType) ? 1f : 0.1f);
             }
         }
         
@@ -267,10 +265,10 @@ public class UIControllerSystem : MonoBehaviour
         Debug.Log("extra peacock " + extraType);
         Transform extras = PeacockView.transform.Find("ExtraPlan");
         Transform button = extras.GetChild(extraType);
-        Image img = button.GetComponent<Image>();        
-        img.color = new Color(1f, 1f, 1f, 1 - img.color.a);
-        bool selected = img.color.a == 1f;
-        BusinessState.peacock.SetQuarterlyExtra(extraType, selected);
+        Image img = button.GetComponent<Image>();
+        bool prevSelected = img.color.a == 1f;
+        img.color = new Color(1f, 1f, 1f, prevSelected ? 0.1f : 1f);
+        BusinessState.peacock.SetQuarterlyExtra(extraType, !prevSelected);
 
         // button.Find("Cost").GetComponent<Text>().text = Utilities.FormatMoney(selected ? ((PeacockExtraType)extraType).GetPrice() : 0);
 

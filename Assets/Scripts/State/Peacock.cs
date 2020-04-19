@@ -120,6 +120,11 @@ public class Peacock
             health += 30;
         }
 
+        if(mQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
+        {
+            health -= 20;
+        }
+
         float totalDist = 0;
         for(int i = 0; i < producableResources.Length; ++i)
         {
@@ -148,6 +153,10 @@ public class Peacock
         }
 
         float baseNumFeathers = Mathf.Lerp(10, 100, (happiness / 100));
+        if(mQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
+        {
+            baseNumFeathers *= 1.5f;
+        }
         int totalFeathers = Mathf.RoundToInt(baseNumFeathers * Random.Range(0.9f, 1.1f));
         for(int i = 0; i < producableResources.Length; ++i)
         {

@@ -71,8 +71,8 @@ public class RenderableGroup<RenderableType>
                 else
                 {
                     renderObject = mContainer.GetChild(index).gameObject;
-                    renderObject.SetActive(true);
                 }
+                renderObject.SetActive(true);
                 mRenderFunction(renderable, renderObject);
                 index++;
             }

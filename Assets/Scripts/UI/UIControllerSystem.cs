@@ -37,6 +37,49 @@ public class UIControllerSystem : MonoBehaviour
     {
         UpdateUiVisibility();
         UpdateUiContent();
+
+        if(GameState.currentStage == GameState.GameStage.GS_SIMULATION)
+        {
+            UpdateCustomers();
+        }
+    }
+
+    // TODO: move this somewhere else, probably. clean it up, too.
+    private int[] customerFade;
+    private bool[] customerFadeTransitioning;
+    private float[] customerFadeTimers;
+    private void UpdateCustomers()
+    {
+        // naively fade customers in and out. TODO: make it linked to number/frequency of customers
+        Transform customers = SimulationDefaultContent.transform.Find("Customers");
+        if(customerFade == null) { customerFade = new int[customers.childCount]; }
+        if(customerFadeTransitioning == null) { customerFadeTransitioning = new bool[customers.childCount]; }
+        if(customerFadeTimers == null) { customerFadeTimers = new float[customers.childCount]; }
+        for(int customerIdx = 0; customerIdx < customers.childCount; ++customerIdx)
+        {
+            if(!customerFadeTransitioning[customerIdx])
+            {
+                customerFadeTimers[customerIdx] -= Time.deltaTime;
+                if(customerFadeTimers[customerIdx] <= 0)
+                {
+                    customerFade[customerIdx] = 1 - customerFade[customerIdx];
+                    customerFadeTransitioning[customerIdx] = true;
+                }
+            }
+            else
+            {
+                Transform customer = customers.GetChild(customerIdx);
+                Image img = customer.GetComponent<Image>();
+                float alpha = img.color.a;
+                float newAlpha = Mathf.Clamp(alpha + Time.deltaTime * (customerFade[customerIdx] == 1 ? 5: -5), 0, 1);
+                img.color = new Color(img.color.r, img.color.g, img.color.b, newAlpha);
+                if(newAlpha == 0 || newAlpha == 1)
+                {
+                    customerFadeTransitioning[customerIdx] = false;
+                    customerFadeTimers[customerIdx] = Random.Range(2f, 9f);
+                }
+            }
+        }
     }
 
     // Update the visibility of UI elements

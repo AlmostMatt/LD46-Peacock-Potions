@@ -26,7 +26,7 @@ public class BusinessState
 
         public int livingExpenses = 0;
     }
-    public static QuarterlyReport quarterlyReport;
+    public static QuarterlyReport quarterlyReport = new QuarterlyReport();
 
     public struct PerItemReport
     {

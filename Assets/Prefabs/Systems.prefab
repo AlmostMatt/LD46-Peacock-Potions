@@ -87,4 +87,14 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 6e1a21a515a0a4241b923846257dc3e1, type: 3}
   - name: peacock
     sprite: {fileID: 21300000, guid: af1bd3ea7f6f11740be3946d4e0749c7, type: 3}
-  namedImages2: []
+  namedImages2:
+  - name: facePlayer
+    sprite: {fileID: 21300000, guid: 40c619ca47c65dd438cee7a8ff9ce84e, type: 3}
+  - name: faceSpouse
+    sprite: {fileID: 21300000, guid: f5b26c7dc9d3eeb45941986bbea5ed9a, type: 3}
+  - name: faceChild
+    sprite: {fileID: 21300000, guid: 12cfa8871139add4893b9b597ddf2799, type: 3}
+  - name: faceRelative
+    sprite: {fileID: 21300000, guid: 3c3ad40872a31a14bb533b4288a90313, type: 3}
+  - name: faceOther
+    sprite: {fileID: 21300000, guid: 164fca9ea5f7f6046811cab731e9bdc8, type: 3}

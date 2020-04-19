@@ -183,4 +183,38 @@ public class UIControllerSystem : MonoBehaviour
         // Made a choice
         EventState.currentEvent.PlayerDecision(button.transform.GetSiblingIndex());
     }
+
+    public void PeacockScreenFood(int foodType)
+    {
+        Debug.Log("food select " + (FoodType)foodType);
+        Transform selections = PeacockView.transform.Find("FoodPlan");
+        for(int i = 0; i < selections.childCount; ++i)
+        {
+            Transform button = selections.GetChild(i);
+            Image img = button.GetComponent<Image>();
+            if(img != null)
+            {
+                img.color = new Color(1f, 1f, 1f, (i == foodType) ? 1f : 0f);
+            }
+        }
+        
+        BusinessState.peacock.quarterlyFoodType = (FoodType)foodType;
+    }
+
+    public void PeacockScreenActivity(int activityType)
+    {
+        Debug.Log("activity select " + (PeacockActivityType)activityType);
+        Transform selections = PeacockView.transform.Find("ActivityPlan");
+        for(int i = 0; i < selections.childCount; ++i)
+        {
+            Transform button = selections.GetChild(i);
+            Image img = button.GetComponent<Image>();
+            if(img != null)
+            {
+                img.color = new Color(1f, 1f, 1f, (i == activityType) ? 1f : 0f);
+            }
+        }
+        
+        BusinessState.peacock.quarterlyActivity = (PeacockActivityType)activityType;
+    }
 }

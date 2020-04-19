@@ -9,6 +9,7 @@ public class Peacock
     public float comfort = 50;
 
     public FoodType quarterlyFoodType = FoodType.FT_BASIC;
+    public PeacockActivityType quarterlyActivity = PeacockActivityType.PA_STORY;
     public PeacockInteraction quarterlyInteraction;
     
     public class QuarterlyReport

@@ -29,6 +29,7 @@ public class Peacock
         }
     }
     private bool[] mQuarterlyExtras = new bool[(int)PeacockExtraType.ET_MAX];
+    private int mNumExtras = 0;
     public void SetQuarterlyExtra(int extraType, bool active)
     {
         if(mQuarterlyExtras[extraType] != active)
@@ -37,10 +38,12 @@ public class Peacock
             if(active)
             {
                 mQuarterlyTotalCost += price;
+                ++mNumExtras;
             }
             else
             {
                 mQuarterlyTotalCost -= price;
+                --mNumExtras;
             }
             mQuarterlyExtras[extraType] = active;
         }
@@ -140,6 +143,56 @@ public class Peacock
             quarterlyReport.featherCounts.Add(new ResourceAndCount((ResourceType)resource, numFeathers));
             BusinessState.resources[resource] += numFeathers;
         }
+
+        string extraDesc = "Gave it ";
+        int numExtrasSoFar = 0;
+        if(mNumExtras == 0)
+        {
+            extraDesc += " nothing extra";
+        }
+        else
+        {
+            for(int i = 0; i < mQuarterlyExtras.Length; ++i)
+            {
+                if(mQuarterlyExtras[i])
+                {
+                    string name = ((PeacockExtraType)i).GetName();
+                    if(mNumExtras == 1)
+                    {
+                        extraDesc += name;
+                        break;
+                    }
+                    else if(mNumExtras == 2)
+                    {
+                        if(numExtrasSoFar == 0)
+                        {
+                            extraDesc += name + " and ";
+                        }
+                        else
+                        {
+                            extraDesc += name;
+                            break;
+                        }
+                    }
+                    else // mNumExtras == 3
+                    {
+                        switch(numExtrasSoFar)
+                        {
+                            case 0:
+                            case 1:
+                                extraDesc += name + ", ";
+                                break;
+                            case 2:
+                                extraDesc += "and " + name;
+                                break;
+                        }
+                    }
+                    ++numExtrasSoFar;
+                }
+            }
+        }
+        extraDesc += ".";
+        quarterlyReport.extraDesc = extraDesc;
 
         string generalDesc;
         List<string> goodStrings = new List<string>();

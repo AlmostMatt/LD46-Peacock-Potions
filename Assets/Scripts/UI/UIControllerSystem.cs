@@ -139,6 +139,8 @@ public class UIControllerSystem : MonoBehaviour
 
         BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
         // TODO: populate production based on the inputGroup values
+        // Take a snapshot of the current prices for reference at the end of the quarter
+        BusinessState.quarterlyReport.salePrices = BusinessState.prices;
 
         Debug.Log("game stage is now " + GameState.currentStage);
     }

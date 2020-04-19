@@ -19,6 +19,7 @@ public class BusinessState
     public class QuarterlyReport
     {
         public int[] production = new int[(int)ProductType.PT_MAX];
+        public float[] salePrices = new float[(int)ProductType.PT_MAX];
         public int[] sales = new int[(int)ProductType.PT_MAX];
         public int[] unfulfilledDemand = new int[(int)ProductType.PT_MAX];
         public int[] miscLosses = new int[(int)ProductType.PT_MAX];
@@ -51,8 +52,12 @@ public class BusinessState
                 report.numSold = quarterlyReport.sales[product];
                 report.numLost = quarterlyReport.miscLosses[product];
                 report.previousStock = report.currentStock - report.numProduced + report.numSold + report.numLost;
+                report.salePrice = (int)quarterlyReport.salePrices[product];
             }
-            report.salePrice = (int)prices[product];
+            else
+            {
+                report.salePrice = (int)prices[product];
+            }
             reports.Add(report);
         }
         return reports;

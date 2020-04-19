@@ -1123,16 +1123,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8846099239408276572}
     m_Modifications:
-    - target: {fileID: 4319734211471912248, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
-        type: 3}
-      propertyPath: m_Name
-      value: PeacockView
-      objectReference: {fileID: 0}
-    - target: {fileID: 4319734211471912248, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5072951764472765697, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1238,6 +1228,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4319734211471912248, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_Name
+      value: PeacockView
+      objectReference: {fileID: 0}
+    - target: {fileID: 4319734211471912248, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3770116140579431505, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -1267,6 +1267,61 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: PeacockScreenOK
+      objectReference: {fileID: 0}
+    - target: {fileID: 2737359000575180051, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8846099239408276575}
+    - target: {fileID: 2737359000575180051, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PeacockScreenFood
+      objectReference: {fileID: 0}
+    - target: {fileID: 2737359000575180051, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3810147998196170013, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8846099239408276575}
+    - target: {fileID: 3810147998196170013, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PeacockScreenFood
+      objectReference: {fileID: 0}
+    - target: {fileID: 3810147998196170013, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3810147998196170013, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422963193430830864, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8846099239408276575}
+    - target: {fileID: 5422963193430830864, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PeacockScreenFood
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422963193430830864, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422963193430830864, guid: dfcef0f3cc5cfbf45a49a73e009bed75,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dfcef0f3cc5cfbf45a49a73e009bed75, type: 3}

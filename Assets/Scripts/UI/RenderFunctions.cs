@@ -29,8 +29,8 @@ public class RenderFunctions
         obj.transform.Find("H/Losses").GetComponent<Text>().text = string.Format("{0}", report.numLost);
         obj.transform.Find("H/Losses").GetComponent<CanvasGroup>().alpha = (report.numLost == 0 ? 0f : 1f);
         // Sales
-        obj.transform.Find("H/Price").GetComponent<Text>().text = string.Format("{0}", report.salePrice);
-        obj.transform.Find("H/Sales").GetComponent<Text>().text = string.Format("{0}x${1}", report.numSold);
+        obj.transform.Find("H/Price").GetComponent<Text>().text = string.Format("${0}", report.salePrice);
+        obj.transform.Find("H/Sales").GetComponent<Text>().text = string.Format("{0}", report.numSold);
         obj.transform.Find("H/Profit").GetComponent<Text>().text = string.Format("${0}", report.numSold * report.salePrice);
         obj.transform.Find("H/Price").GetComponent<CanvasGroup>().alpha = (report.numSold == 0 ? 0f : 1f);
         obj.transform.Find("H/Sales").GetComponent<CanvasGroup>().alpha = (report.numSold == 0 ? 0f : 1f);

@@ -320,7 +320,8 @@ public class UIControllerSystem : MonoBehaviour
         animatedText.GetComponent<Text>().text = string.Format("+{0}", BusinessState.prices[(int)productType]);
         StartCoroutine(SimpleAnimations.FadeInOut(animatedText, 1f));
         StartCoroutine(SimpleAnimations.MoveOverTime(animatedText, new Vector3(0f, 60f, 0f), 1f));
-        Destroy(animatedText, 1f);
+        // Destroy it 2s later (1s after animation ends)
+        Destroy(animatedText, 2f);
     }
 
     public void EndOfQuarter()

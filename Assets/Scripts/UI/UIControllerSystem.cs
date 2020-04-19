@@ -163,13 +163,17 @@ public class UIControllerSystem : MonoBehaviour
 
     private void ShowPeacockSummary()
     {
-        for(int i = 0; i <  PeacockView.transform.childCount; ++i)
+        for(int i = 0; i < PeacockView.transform.childCount; ++i)
         {
             GameObject go = PeacockView.transform.GetChild(i).gameObject;
             go.GetComponent<CanvasGroup>().alpha = 0;
             FancyUIAnimations.PushAnimation(FancyUIAnimations.AnimationType.FADE_IN, go);
             GameState.currentStage = GameState.GameStage.GS_PEACOCK;
         }
+
+        // I assume there's a more proper way to do this, but I'm too lazy to figure it out
+        PeacockView.transform.Find("FoodReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.foodDesc;
+        PeacockView.transform.Find("StatusReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.generalDesc;
     }
 
     public void PeacockScreenOK()

@@ -14,6 +14,10 @@ public class Peacock
     
     public class QuarterlyReport
     {
+        public string foodDesc;
+        public string activityDesc;
+        public string extraDesc;
+        public string generalDesc;
         public List<ResourceAndCount> featherCounts = new List<ResourceAndCount>();
     }
     public QuarterlyReport quarterlyReport = new QuarterlyReport();
@@ -36,11 +40,27 @@ public class Peacock
         {
             case FoodType.FT_CRAP:
                 health -= 20;
+                quarterlyReport.foodDesc = "Fed it cheap food.";
                 break;
             case FoodType.FT_BASIC:
+                quarterlyReport.foodDesc = "Fed it good food.";
                 break;
             case FoodType.FT_DELUXE:
+                quarterlyReport.foodDesc = "Fed it deluxe food.";
                 health += 20;
+                break;
+        }
+
+        switch(quarterlyActivity)
+        {
+            case PeacockActivityType.PA_STORY:
+                quarterlyReport.activityDesc = "Read it a story every night.";
+                break;
+            case PeacockActivityType.PA_SING:
+                quarterlyReport.activityDesc = "Sang it a song every week.";
+                break;
+            case PeacockActivityType.PA_HUG:
+                quarterlyReport.activityDesc = "Hugged it every day.";
                 break;
         }
 
@@ -71,7 +91,6 @@ public class Peacock
             mProductionDistribution[i] /= totalDist;
         }
 
-        // TODO: some mapping between animal state and what it produces
         float baseNumFeathers = Mathf.Lerp(10, 100, (happiness / 100));
         int totalFeathers = Mathf.RoundToInt(baseNumFeathers * Random.Range(0.9f, 1.1f));
         for(int i = 0; i < producableResources.Length; ++i)
@@ -82,27 +101,53 @@ public class Peacock
             BusinessState.resources[resource] += numFeathers;
         }
 
-        string foodRating = "";
-        if(health <= 0)
+        string generalDesc;
+        List<string> goodStrings = new List<string>();
+        List<string> badStrings = new List<string>();
+        if(health < 50)
         {
-            foodRating = "The peacock is skin and bone. It seems very weak.";
-        }
-        else if(health <= 25)
-        {
-            foodRating = "The peacock looks thin.";
-        }
-        else if(health <= 75)
-        {
-            foodRating = "The peacock looks fine.";
-        }
-        else if(health <= 100)
-        {
-            foodRating = "The peacock looks chubby. It seems relaxed.";
+            badStrings.Add("a little sick");
         }
         else
         {
-            foodRating = "The peacock is clearly overweight. Its breathing is laboured.";
+            goodStrings.Add("healthy");
         }
-        Debug.Log(foodRating + " " + health);
+
+        if(comfort < 50)
+        {
+            badStrings.Add("stressed");
+        }
+        else
+        {
+            goodStrings.Add("relaxed");
+        }
+
+        if(happiness < 50)
+        {
+            badStrings.Add("sad");
+        }
+        else
+        {
+            goodStrings.Add("happy");
+        }
+
+        if(goodStrings.Count == 3)
+        {
+            generalDesc = string.Format("It looks {0}, {1} and {2}.", goodStrings[0], goodStrings[1], goodStrings[2]);
+        }
+        else if(badStrings.Count == 3)
+        {
+            generalDesc = string.Format("It looks {0}, {1} and {2}.", badStrings[0], badStrings[1], badStrings[2]);
+        }
+        else if(goodStrings.Count > badStrings.Count)
+        {
+            generalDesc = string.Format("It looks {0} and {1}, but {2}.", goodStrings[0], goodStrings[1], badStrings[0]);
+        }
+        else
+        {
+            generalDesc = string.Format("It looks {0} and {1}, but {2}.", badStrings[0], badStrings[1], goodStrings[0]);
+        }
+        quarterlyReport.generalDesc = generalDesc;
+
     }
 }

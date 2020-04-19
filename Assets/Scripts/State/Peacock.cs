@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Peacock
 {
-    public float health = 75;
+    private float mHealth = 75;
+    public float health
+    {
+        get { return mHealth; }
+        set { mHealth = Mathf.Clamp(value, 0, 100); }
+    }
     public float happiness = 25;
     public float comfort = 50;
 

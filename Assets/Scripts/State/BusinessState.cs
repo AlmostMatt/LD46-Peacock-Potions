@@ -26,8 +26,24 @@ public class BusinessState
         public int initialBalance = 0;
         public int finalBalance = 0;
         public int livingExpenses = 0;
+        public int eventIncome = 0;
+        public int eventExpenses = 0;
     }
     public static QuarterlyReport quarterlyReport = new QuarterlyReport();
+
+    public static void MoneyChangeFromEvent(int eventMoney)
+    {
+        // TODO: make event income and expenses into [string, amount] pairs so that the event can be named
+        if (eventMoney > 0)
+        {
+            BusinessState.quarterlyReport.eventIncome += eventMoney;
+        } else
+        {
+            // Make expenses a positive number
+            BusinessState.quarterlyReport.eventExpenses -= eventMoney;
+        }
+        BusinessState.money += eventMoney;
+    }
 
     public struct PerItemReport
     {

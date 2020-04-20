@@ -49,7 +49,7 @@ public class InvestmentEventChain
                                 EventState.currentEventImage = "faceOther";
                                 EventState.currentEventText = "\"You won't regret this!\", he says. He takes your $1000 and leaves.";
                                 EventState.PushEvent(new InvestmentReturnEvent(), GameState.quarter + 4);
-                                BusinessState.money -= 1000;
+                                BusinessState.MoneyChangeFromEvent(-1000);
                                 break;
                             case 1:
                                 EventState.currentEventImage = "faceOther";
@@ -86,7 +86,7 @@ public class InvestmentEventChain
             EventState.currentEventImage = "faceOther";
             EventState.currentEventText = "\"Didn't I tell you you wouldn't regret it?\" He hands you $2000, then goes on his way.";
             EventState.currentEventOptions = EventState.OK_OPTION;
-            BusinessState.money += 2000;
+            BusinessState.MoneyChangeFromEvent(+2000);
             return EventResult.DONE;
         }
     }

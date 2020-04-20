@@ -10,6 +10,16 @@ public class RenderFunctions
         obj.GetComponentInChildren<Text>().text = str;
     }
 
+    // Renders a list of strings to an object that has that many Text children
+    public static void RenderStringArrayToTextChildren(string[] strings, GameObject obj)
+    {
+        for (int i = 0; i < strings.Length; i++)
+        {
+
+            obj.transform.GetChild(i).GetComponent<Text>().text = strings[i];
+        }
+    }
+
     // Render a ResourceAndCount (struct) to an IconAndCount (prefab)
     public static void RenderResourceAndCount(ResourceAndCount resAndCount, GameObject obj)
     {

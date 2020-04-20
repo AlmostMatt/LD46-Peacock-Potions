@@ -13,6 +13,7 @@ public class RenderFunctions
     // Render a ResourceAndCount (struct) to an IconAndCount (prefab)
     public static void RenderResourceAndCount(ResourceAndCount resAndCount, GameObject obj)
     {
+        obj.GetComponentInChildren<Image>().sprite = null; // clear the sprite in case of weird sprite change bug
         obj.GetComponentInChildren<Image>().sprite = SpriteManager.GetSprite(resAndCount.type.GetImage());
         obj.GetComponentInChildren<Image>().color = resAndCount.type.GetColor();
         obj.GetComponentInChildren<Text>().text = resAndCount.count.ToString();
@@ -21,6 +22,7 @@ public class RenderFunctions
     // Render a ProductAndCount (struct) to an IconAndCount (prefab)
     public static void RenderProductAndCount(ProductAndCount prodAndCount, GameObject obj)
     {
+        obj.GetComponentInChildren<Image>().sprite = null; // clear the sprite in case of weird sprite change bug
         obj.GetComponentInChildren<Image>().sprite = SpriteManager.GetSprite(prodAndCount.type.GetImage());
         obj.GetComponentInChildren<Image>().color = prodAndCount.type.GetColor();
         obj.GetComponentInChildren<Text>().text = prodAndCount.count.ToString();

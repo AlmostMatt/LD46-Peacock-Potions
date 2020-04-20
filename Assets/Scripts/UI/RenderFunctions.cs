@@ -13,9 +13,17 @@ public class RenderFunctions
     // Render a ResourceAndCount (struct) to an IconAndCount (prefab)
     public static void RenderResourceAndCount(ResourceAndCount resAndCount, GameObject obj)
     {
-        // TODO: set icon and icon color
+        obj.GetComponentInChildren<Image>().sprite = SpriteManager.GetSprite(resAndCount.type.GetImage());
         obj.GetComponentInChildren<Image>().color = resAndCount.type.GetColor();
         obj.GetComponentInChildren<Text>().text = resAndCount.count.ToString();
+    }
+
+    // Render a ProductAndCount (struct) to an IconAndCount (prefab)
+    public static void RenderProductAndCount(ProductAndCount prodAndCount, GameObject obj)
+    {
+        obj.GetComponentInChildren<Image>().sprite = SpriteManager.GetSprite(prodAndCount.type.GetImage());
+        obj.GetComponentInChildren<Image>().color = prodAndCount.type.GetColor();
+        obj.GetComponentInChildren<Text>().text = prodAndCount.count.ToString();
     }
 
     public static void RenderItemQuarterlySummary(BusinessState.PerItemReport report, GameObject obj)

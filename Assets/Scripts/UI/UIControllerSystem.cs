@@ -12,6 +12,7 @@ public class UIControllerSystem : MonoBehaviour
     public GameObject SummaryView;
     public GameObject PeacockView;
     public GameObject SimulationView;
+    public GameObject InventoryView;
 
     public GameObject SimulationDefaultContent;
     public GameObject SimulationEventContent;
@@ -20,9 +21,11 @@ public class UIControllerSystem : MonoBehaviour
 
     private RenderableGroup<string> mEventOptionRenderGroup;
     private RenderableGroup<BusinessState.PerItemReport> mItemQuarterlySummaryRenderGroup;
-    private RenderableGroup<ResourceAndCount> mResourceInventoryRenderGroup;
-    private RenderableGroup<ResourceAndCount> mPeacockFeatherRenderGroup;
+    private RenderableGroup<ResourceAndCount> mInventoryResourceRenderGroup;
+    private RenderableGroup<ProductAndCount> mInventoryProductRenderGroup;
 
+    private RenderableGroup<ResourceAndCount> mPeacockFeatherRenderGroup;
+    
     // Use this for initialization
     void Start()
     {
@@ -32,9 +35,14 @@ public class UIControllerSystem : MonoBehaviour
         mItemQuarterlySummaryRenderGroup = new RenderableGroup<BusinessState.PerItemReport>(
             SummaryView.transform.Find("ItemSummaries"),
             RenderFunctions.RenderItemQuarterlySummary);
-        mResourceInventoryRenderGroup = new RenderableGroup<ResourceAndCount>(
-            SummaryView.transform.Find("InventoryFeathers"),
+
+        mInventoryResourceRenderGroup = new RenderableGroup<ResourceAndCount>(
+            InventoryView.transform.Find("InvGroups/InventoryFeathers"),
             RenderFunctions.RenderResourceAndCount);
+        mInventoryProductRenderGroup = new RenderableGroup<ProductAndCount>(
+            InventoryView.transform.Find("InvGroups/InventoryPotions"),
+            RenderFunctions.RenderProductAndCount);
+   
         mPeacockFeatherRenderGroup = new RenderableGroup<ResourceAndCount>(
             PeacockView.transform.Find("InventoryFeathers"),
             RenderFunctions.RenderResourceAndCount);
@@ -112,27 +120,46 @@ public class UIControllerSystem : MonoBehaviour
     private void UpdateUiContent()
     {
         GameState.GameStage stage = GameState.currentStage;
-        // Summary Screen
-        if (SummaryView.activeInHierarchy)
+        /**
+         * Inventory
+         */
         {
             // Inventory (cash)
-            SummaryView.transform.Find("InventoryCash/Text").GetComponent<Text>().text = string.Format("Balance: ${0}", BusinessState.money);
+            InventoryView.transform.Find("InvGroups/InventoryCash/IconAndCount/Count")
+                .GetComponent<Text>().text = string.Format("{0}", BusinessState.money);
             // Inventory (feathers)
             List<ResourceAndCount> resourceCounts = new List<ResourceAndCount>();
             for (int i = 0; i < (int)ResourceType.RT_MAX; i++)
             {
                 resourceCounts.Add(new ResourceAndCount((ResourceType)i, BusinessState.resources[i]));
             }
-            mResourceInventoryRenderGroup.UpdateRenderables(resourceCounts);
+            mInventoryResourceRenderGroup.UpdateRenderables(resourceCounts);
+            // Inventory (feathers)
+            List<ProductAndCount> productCounts = new List<ProductAndCount>();
+            for (int i = 0; i < (int)ProductType.PT_MAX; i++)
+            {
+                productCounts.Add(new ProductAndCount((ProductType)i, BusinessState.inventory[i]));
+            }
+            mInventoryProductRenderGroup.UpdateRenderables(productCounts);
+        }
+        /**
+         * Summary
+         */
+        if (SummaryView.activeInHierarchy)
+        {
             // Per-item reports
             mItemQuarterlySummaryRenderGroup.UpdateRenderables(BusinessState.GetPerItemReports());
         }
-        else if (PeacockView.activeInHierarchy)
+        /**
+         * Peacock view
+         */
+        if (PeacockView.activeInHierarchy)
         {            
             mPeacockFeatherRenderGroup.UpdateRenderables(BusinessState.peacock.quarterlyReport.featherCounts);
         }
-        // Simulation / Event
-        SimulationView.transform.Find("Info Overlay/TopRight/Text").GetComponent<Text>().text = string.Format("Money: ${0}", BusinessState.money);
+        /**
+         * Simulation / Event
+         */
         if (SimulationDefaultContent.activeInHierarchy)
         {
             // Color and show/hide potions in the shop
@@ -147,7 +174,9 @@ public class UIControllerSystem : MonoBehaviour
                 }
             }
         }
-        // Event
+        /**
+         * Event
+         */
         if (EventState.currentEvent != null)
         {
             SimulationEventContent.transform.Find("Focus image").GetComponent<Image>().sprite = SpriteManager.GetSprite(EventState.currentEventImage);

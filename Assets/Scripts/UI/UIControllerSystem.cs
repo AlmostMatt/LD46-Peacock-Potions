@@ -440,10 +440,28 @@ public class UIControllerSystem : MonoBehaviour
         Destroy(animatedText, 2f);
     }
 
-    // called after the tutorial next
+
     public void RestoreNormalSummaryPosition()
     {
         GameObject overlays = transform.Find("Overlays").gameObject;
         FancyUIAnimations.PushTranslation(overlays, new Vector2(485, overlays.GetComponent<RectTransform>().anchoredPosition.y), 0.5f);
+    }
+
+    private Vector2 mPreviousEventOverlayPos;
+    private Vector2 mPreviousEventOverlayFacePos;
+    public void MoveEventOverlayForTutorial()
+    {
+        mPreviousEventOverlayPos = SimulationEventContent.GetComponent<RectTransform>().anchoredPosition;
+        RectTransform faceRect = SimulationEventContent.transform.Find("Face").GetComponent<RectTransform>();
+        mPreviousEventOverlayFacePos = faceRect.anchoredPosition;
+        SimulationEventContent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-145, 0);
+        faceRect.anchoredPosition = new Vector2(-450, 0);
+    }
+
+    public void RestoreNormalEventOverlayPosition()
+    {
+        SimulationEventContent.GetComponent<RectTransform>().anchoredPosition = mPreviousEventOverlayPos;
+        SimulationEventContent.transform.Find("Face").GetComponent<RectTransform>().anchoredPosition = mPreviousEventOverlayFacePos
+            ;
     }
 }

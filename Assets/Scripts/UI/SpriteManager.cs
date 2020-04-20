@@ -12,7 +12,9 @@ public class SpriteManager : MonoBehaviour
     }
     // These fields are functionally equivalent, but they logically group icons
     public NamedSprite[] namedImages1;
-    public NamedSprite[] namedImages2;
+    public NamedSprite[] customers;
+    public NamedSprite[] wifeImages;
+    public NamedSprite[] sonImages;
 
     private Dictionary<string, Sprite> stringToSpriteMap = new Dictionary<string, Sprite>();
     private static SpriteManager mSpriteManagerSingleton;
@@ -35,7 +37,23 @@ public class SpriteManager : MonoBehaviour
             }
             stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
         }
-        foreach (NamedSprite namedSprite in namedImages2)
+        foreach (NamedSprite namedSprite in customers)
+        {
+            if (stringToSpriteMap.ContainsKey(namedSprite.name))
+            {
+                Debug.LogWarning("Multiple sprites with name: " + namedSprite.name);
+            }
+            stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
+        }
+        foreach (NamedSprite namedSprite in wifeImages)
+        {
+            if (stringToSpriteMap.ContainsKey(namedSprite.name))
+            {
+                Debug.LogWarning("Multiple sprites with name: " + namedSprite.name);
+            }
+            stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
+        }
+        foreach (NamedSprite namedSprite in sonImages)
         {
             if (stringToSpriteMap.ContainsKey(namedSprite.name))
             {

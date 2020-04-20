@@ -93,14 +93,32 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: be3324ac468905a4a9186f480f34a129, type: 3}
   - name: money
     sprite: {fileID: 21300000, guid: ca4dd7995b11e3741a017cf7344398fa, type: 3}
-  namedImages2:
-  - name: facePlayer
-    sprite: {fileID: 21300000, guid: 429dad345eb3da74fbad324e3ef1fb88, type: 3}
-  - name: faceSpouse
-    sprite: {fileID: 21300000, guid: 4c4a990582f248a458639e73493331c2, type: 3}
+  customers:
   - name: faceChild
     sprite: {fileID: 21300000, guid: 2755ebabd9d042a4586b4a2c22eebc5f, type: 3}
+  - name: faceGeneric
+    sprite: {fileID: 21300000, guid: 3402cb989207a7a4ba0979c9f4a49c2e, type: 3}
+  - name: facePlayer
+    sprite: {fileID: 21300000, guid: 429dad345eb3da74fbad324e3ef1fb88, type: 3}
   - name: faceRelative
     sprite: {fileID: 21300000, guid: 171bab272bc8359468b283f8a2e393aa, type: 3}
-  - name: faceOther
-    sprite: {fileID: 21300000, guid: 3402cb989207a7a4ba0979c9f4a49c2e, type: 3}
+  - name: faceWoman
+    sprite: {fileID: 21300000, guid: 4c4a990582f248a458639e73493331c2, type: 3}
+  wifeImages:
+  - name: faceWifeNeutral
+    sprite: {fileID: 21300000, guid: 5c9d0c24fec79e84ea576d7d5063a618, type: 3}
+  - name: faceWifeSad
+    sprite: {fileID: 21300000, guid: 4a9cf643d5e4ffe4ba8eb2c7ace9e047, type: 3}
+  - name: faceWifeHappy
+    sprite: {fileID: 21300000, guid: c5584d2118070f24182908094c2523ba, type: 3}
+  sonImages:
+  - name: faceSonNeutral
+    sprite: {fileID: 21300000, guid: cc3793f396466e147b29948e53cc48a0, type: 3}
+  - name: faceSonHappy
+    sprite: {fileID: 21300000, guid: 38917658065abe2419451294882b5e2d, type: 3}
+  - name: faceSonSad
+    sprite: {fileID: 21300000, guid: bf37485e956a44847bae9396eb36dbff, type: 3}
+  - name: faceSonPensive
+    sprite: {fileID: 21300000, guid: 3770654a448a7d246bd6040d5c14af72, type: 3}
+  - name: faceSonSurprise
+    sprite: {fileID: 21300000, guid: d15bb56ffd71f984ea7c7787685836d9, type: 3}

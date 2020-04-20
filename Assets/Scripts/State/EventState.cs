@@ -14,23 +14,28 @@ public class EventState
 
     private class ScheduledEvent
     {
-        public ScheduledEvent(GameEvent e, int quarter)
+        public ScheduledEvent(GameEvent e, int quarter, float minDelay)
         {
             mEvent = e;
-            mGameTime = quarter;
+            mQuarter = quarter;
+            mMinDelay = minDelay;
         }
 
         public GameEvent mEvent;
-        public int mGameTime;
+        public int mQuarter;
+        public float mMinDelay;
     }
 
     private static List<ScheduledEvent> eventQueue = new List<ScheduledEvent>();
-    public static void PushEvent(GameEvent e, int gameTime)
+    public static void PushEvent(GameEvent e, int quarter, float minDelay = 1f)
     {
-        // TODO: give more control over scheduling events? e.g. we should be able to schedule an event for "next year" or whatever, and it inserts it sorted or something
-        ScheduledEvent se = new ScheduledEvent(e, gameTime);
+        ScheduledEvent se = new ScheduledEvent(e, quarter, minDelay);
         int insertIdx = 0;
-        while(insertIdx < eventQueue.Count && eventQueue[insertIdx].mGameTime <= se.mGameTime)
+        while(insertIdx < eventQueue.Count && eventQueue[insertIdx].mQuarter < se.mQuarter)
+        {
+            ++insertIdx;
+        }
+        while(insertIdx < eventQueue.Count && eventQueue[insertIdx].mQuarter == se.mQuarter && eventQueue[insertIdx].mMinDelay <= se.mMinDelay) // this does mean events could starve out ones with higher min delay...
         {
             ++insertIdx;
         }
@@ -43,7 +48,9 @@ public class EventState
 
         ScheduledEvent e = eventQueue[0];
 
-        if(e.mGameTime <= GameState.quarter)
+        if(e.mMinDelay > GameState.quarterTime) return null;
+        
+        if(e.mQuarter <= GameState.quarter)
         {
             eventQueue.RemoveAt(0);
             return e.mEvent;

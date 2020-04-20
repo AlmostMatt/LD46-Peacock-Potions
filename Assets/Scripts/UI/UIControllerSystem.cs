@@ -225,6 +225,7 @@ public class UIControllerSystem : MonoBehaviour
                     // TODO: if a potion stopped being visible it was just sold. Show the +money animation there
                 }
             }
+            SimulationDefaultContent.transform.Find("Shop/Season").GetComponent<Image>().sprite = null; // clear the sprite in case of weird sprite change bug
             SimulationDefaultContent.transform.Find("Shop/Season").GetComponent<Image>().sprite = SpriteManager.GetSprite(GameState.season.GetImage());
         }
         /**
@@ -263,6 +264,7 @@ public class UIControllerSystem : MonoBehaviour
             SimulationEventContent.transform.Find("Face").GetComponent<Image>().sprite = null; // clear sprite to reset size information
             SimulationEventContent.transform.Find("Face").GetComponent<Image>().sprite = SpriteManager.GetSprite(EventState.currentEventImage);
             SimulationEventContent.transform.Find("Face").gameObject.SetActive(isFace);
+            SimulationEventContent.transform.Find("NonFace/Image").GetComponent<Image>().sprite = null; // clear the sprite in case of weird sprite change bug
             SimulationEventContent.transform.Find("NonFace/Image").GetComponent<Image>().sprite = SpriteManager.GetSprite(EventState.currentEventImage);
             SimulationEventContent.transform.Find("NonFace").gameObject.SetActive(isOtherImage);
             // Set the text and options

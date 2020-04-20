@@ -74,10 +74,10 @@ public class BusinessSystem : MonoBehaviour
                     Debug.Log("A customer wanted " + (ProductType)product + " but we were out of stock");
 
                     // get enough of this, and we queue up an event where a customer asks for this type specifically
-                    if(BusinessState.quarterlyReport.unfulfilledDemand[product] > 4)
+                    if(BusinessState.quarterlyReport.unfulfilledDemand[product] > 3 && !OutOfStockEvent.onCooldown)
                     {
-                        Debug.Log("adding out of stock event");
                         EventState.PushEvent(new OutOfStockEvent((ProductType)product), GameState.quarter);
+                        OutOfStockEvent.onCooldown = true;
                     }
                 }
 
@@ -87,7 +87,7 @@ public class BusinessSystem : MonoBehaviour
         }
     }
 
-    private void SellProduct(int product)
+    public static void SellProduct(int product)
     {
         BusinessState.money += BusinessState.prices[product];
         BusinessState.inventory[product] -= 1;

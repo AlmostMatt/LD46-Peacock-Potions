@@ -56,7 +56,7 @@ public class FancyUIAnimations
         {
             mHurryUp += 1;
             
-            if(mHurryUp >= 2)
+            if(mHurryUp >= 1.5)
             {
                 finishAllAnimationsNow = true;
             }

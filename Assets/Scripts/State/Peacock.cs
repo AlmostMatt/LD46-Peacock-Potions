@@ -11,10 +11,10 @@ public class Peacock
         set { mHealth = Mathf.Clamp(value, 0, 100); }
     }
     public float happiness = 25;
-    public float comfort = 50;
+    public float comfort = 35;
 
     public FoodType quarterlyFoodType = FoodType.FT_BASIC;
-    public PeacockActivityType quarterlyActivity = PeacockActivityType.PA_STORY;
+    public PeacockActivityType quarterlyActivity = PeacockActivityType.PA_SING;
 
     private int mQuarterlyTotalCost = FoodType.FT_BASIC.GetPrice();
     public int quarterlyTotalCost
@@ -80,6 +80,19 @@ public class Peacock
     {
     }
 
+    private void Normalize(float[] dist)
+    {
+        float totalDist = 0;
+        for(int i = 0; i < dist.Length; ++i)
+        {
+            totalDist += dist[i];
+        }        
+        for(int i = 0; i < dist.Length; ++i)
+        {
+            dist[i] /= totalDist;
+        }
+    }
+
     public void QuarterOver()
     {
         quarterlyReport = new QuarterlyReport();
@@ -103,13 +116,13 @@ public class Peacock
         switch(quarterlyActivity)
         {
             case PeacockActivityType.PA_STORY:
-                quarterlyReport.activityDesc = "Read it a story every night.";
-                comfort += 10;
+                quarterlyReport.activityDesc = "Read it tales of other lands.";
+                comfort += 2;
                 break;
             case PeacockActivityType.PA_SING:
-                quarterlyReport.activityDesc = "Sang it a song every week.";
-                comfort += 5;
-                happiness += 5;
+                quarterlyReport.activityDesc = "Sang it to sleep with seasonal songs.";
+                comfort += 10;
+                happiness += 1;
                 break;
             case PeacockActivityType.PA_HUG:
                 quarterlyReport.activityDesc = "Hugged it every day.";
@@ -127,57 +140,82 @@ public class Peacock
             health -= 20;
         }
 
-        bool hasBlanket = mQuarterlyExtras[(int)PeacockExtraType.ET_PILLOW];
-
         switch(GameState.season)
         {
             case GameState.Season.SPRING:
-                if(hasBlanket)
-                {
-                    mProductionDistribution = new float[] {55,40,0,5};
-                }
-                else
-                {
-                    mProductionDistribution = new float[] {70,15,0,15};
-                }
+                mProductionDistribution = new float[] { 60, 20, 0, 20 };
                 break;
             case GameState.Season.SUMMER:
-                if(hasBlanket)
-                {
-                    mProductionDistribution = new float[] {5,90,5,0};
-                    comfort -= 20;
-                    health -= 5;
-                }
-                else
-                {
-                    mProductionDistribution = new float[] {15,70,15,0};
-                }
+                mProductionDistribution = new float[] { 20, 60, 20, 0 };
                 break;
             case GameState.Season.FALL:
-                if(hasBlanket)
-                {
-                    mProductionDistribution = new float[] {0,40,55,5};
-                }
-                else
-                {
-                    mProductionDistribution = new float[] {0,15,70,15};
-                }
+                mProductionDistribution = new float[] { 0, 20, 60, 20 };
                 break;
-            case GameState.Season.WINTER:
-                if(hasBlanket)
-                {
-                    mProductionDistribution = new float[] { 30, 0, 30, 40 };
-                }
-                else
-                {
-                    mProductionDistribution = new float[] { 15, 0, 15, 70 };
-                }
+            case GameState.Season.WINTER:                
+                mProductionDistribution = new float[] { 20, 0, 20, 60 };
                 break;
         }
-        float totalDist = 0;
+
+        Normalize(mProductionDistribution);
+
+        bool readStory = quarterlyActivity == PeacockActivityType.PA_STORY;
+        if(readStory)
+        {
+            for(int i = 0; i < mProductionDistribution.Length; ++i)
+            {
+                mProductionDistribution[i] = Mathf.Lerp(mProductionDistribution[i], 0.5f, 0.3f);
+            }
+
+            Normalize(mProductionDistribution);
+        }
+        else if(quarterlyActivity == PeacockActivityType.PA_SING)
+        {
+            for(int i = 0; i < mProductionDistribution.Length; ++i)
+            {
+                if(i == (int)GameState.season)
+                {
+                    mProductionDistribution[i] *= 1.5f;
+                }
+                else
+                {
+                    mProductionDistribution[i] *= 0.5f;
+                }
+            }
+            Normalize(mProductionDistribution);
+        }
+
+        bool hasBlanket = mQuarterlyExtras[(int)PeacockExtraType.ET_PILLOW];
+        float[] mBlanketModifier = new float[] { 1, 1.5f, 1, 0.5f };
+        if(hasBlanket)
+        {
+            for(int i = 0; i < mProductionDistribution.Length; ++i)
+            {
+                mProductionDistribution[i] *= mBlanketModifier[i];
+            }
+            Normalize(mProductionDistribution);
+
+            switch(GameState.season)               
+            {
+                case GameState.Season.SUMMER:
+                    comfort -= 20;
+                    health -= 10;
+                    break;
+            }
+        }
+        else
+        {
+            switch(GameState.season)
+            {
+                case GameState.Season.WINTER:
+                    comfort -= 10;
+                    break;
+            }
+        }
+        
+        /*
         for(int i = 0; i < producableResources.Length; ++i)
         {
-            /*
+
             ResourceType resource = producableResources[i];
             switch(resource)
             {
@@ -199,16 +237,10 @@ public class Peacock
                     break;
                 
             }
-            */
-            totalDist += mProductionDistribution[i];
         }
-        // normalize distribution
-        for(int i = 0; i < producableResources.Length; ++i)
-        {
-            mProductionDistribution[i] /= totalDist;
-        }
+        */
 
-        float baseNumFeathers = Mathf.Lerp(8, 16, (happiness / 100));
+        float baseNumFeathers = Mathf.Lerp(0, 20, 0.5f * ((happiness / 100) + (comfort / 100)));
         if(mQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
         {
             baseNumFeathers *= 1.5f;
@@ -284,13 +316,21 @@ public class Peacock
             goodStrings.Add("healthy");
         }
 
-        if(comfort < 50)
+        if(comfort <= 25)
         {
-            badStrings.Add("stressed");
+            badStrings.Add("very uncomfortable");
+        }
+        else if(comfort <= 40)
+        {
+            badStrings.Add("a bit distressed");
+        }
+        else if(comfort <= 60)
+        {
+            goodStrings.Add("comfortable");
         }
         else
         {
-            goodStrings.Add("relaxed");
+            goodStrings.Add("very relaxed");
         }
 
         if(happiness <= 25)

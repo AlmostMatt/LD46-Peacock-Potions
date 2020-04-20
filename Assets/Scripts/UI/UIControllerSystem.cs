@@ -17,6 +17,7 @@ public class UIControllerSystem : MonoBehaviour
     public GameObject OverlayViewFeathers;
     public GameObject OverlayViewPotions;
     public GameObject OverlayViewFinancial;
+    public GameObject EpilogueView;
 
     // Convenient references to find smaller pieces of the above
     public GameObject SimulationDefaultContent;
@@ -77,7 +78,7 @@ public class UIControllerSystem : MonoBehaviour
         UpdateUiVisibility();
         UpdateUiContent();
 
-        if (GameState.currentStage == GameState.GameStage.GS_SIMULATION)
+        if (GameState.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)
         {
             UpdateCustomers();
         }
@@ -166,6 +167,8 @@ public class UIControllerSystem : MonoBehaviour
         OverlayViewFeathers.SetActive(stage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION);
         OverlayViewPotions.SetActive(stage == GameState.GameStage.GS_OVERLAY_POTION_SALES);
         OverlayViewFinancial.SetActive(stage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY);
+
+        InventoryView.SetActive(stage != GameState.GameStage.GS_GAME_OVER);
         // Simulation
         // Fade the background?
         //SimulationDefaultContent.GetComponent<CanvasGroup>().alpha = (stage == GameState.GameStage.GS_SIMULATION ? 1.0f : 0.5f);
@@ -173,6 +176,9 @@ public class UIControllerSystem : MonoBehaviour
         bool hasEvent = EventState.currentEvent != null;        
         SimulationEventContent.SetActive(hasEvent || mPrevHasEvent); // hack a one-frame delay on hiding the event display, in case we want to show 2 in a row. Does mean there's a 1-frame window for the player to click the button when there's no event...
         mPrevHasEvent = hasEvent;
+
+        // ending
+        EpilogueView.SetActive(stage == GameState.GameStage.GS_GAME_OVER);
     }
 
     // Change text and other fields in UI content
@@ -299,6 +305,11 @@ public class UIControllerSystem : MonoBehaviour
             SimulationEventContent.transform.Find("DecisionPanel/Text").GetComponent<Text>().text = EventState.currentEventText;
             mEventOptionRenderGroup.UpdateRenderables(EventState.currentEventOptions != null ? new List<string>(EventState.currentEventOptions) : null);
         }
+
+        if(EpilogueView.activeInHierarchy)
+        {
+            UpdateEpilogueText();
+        }
     }
 
     public void SummaryScreenOK()
@@ -339,9 +350,11 @@ public class UIControllerSystem : MonoBehaviour
         for(int i = 0; i < PeacockView.transform.childCount; ++i)
         {
             GameObject go = PeacockView.transform.GetChild(i).gameObject;
-            go.GetComponent<CanvasGroup>().alpha = 0;
-            //FancyUIAnimations.PushAnimation(FancyUIAnimations.AnimationType.FADE_IN, go);
-            FancyUIAnimations.PushFadeIn(go);
+            if(go.GetComponent<CanvasGroup>() != null)
+            {
+                go.GetComponent<CanvasGroup>().alpha = 0;
+                FancyUIAnimations.PushFadeIn(go);
+            }
         }
 
         // I assume there's a more proper way to do this, but I'm too lazy to figure it out
@@ -492,7 +505,20 @@ public class UIControllerSystem : MonoBehaviour
     public void RestoreNormalEventOverlayPosition()
     {
         SimulationEventContent.GetComponent<RectTransform>().anchoredPosition = mPreviousEventOverlayPos;
-        SimulationEventContent.transform.Find("Face").GetComponent<RectTransform>().anchoredPosition = mPreviousEventOverlayFacePos
-            ;
+        SimulationEventContent.transform.Find("Face").GetComponent<RectTransform>().anchoredPosition = mPreviousEventOverlayFacePos;
+    }
+
+    public void UpdateEpilogueText()
+    {
+        if(GameState.epilogueDirty)
+        {
+            string text = "";
+            for(int i = 0; i < GameState.epilogueLines.Count; ++i)
+            {
+                text += GameState.epilogueLines[i] + "\n";
+            }
+            EpilogueView.transform.Find("Text").GetComponent<Text>().text = text;
+            GameState.epilogueDirty = false;
+        }
     }
 }

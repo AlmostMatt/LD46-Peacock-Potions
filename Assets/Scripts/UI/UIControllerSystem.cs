@@ -146,6 +146,7 @@ public class UIControllerSystem : MonoBehaviour
     }
 
     // Update the visibility of UI elements
+    private bool mPrevHasEvent = false;
     private void UpdateUiVisibility()
     {
         GameState.GameStage stage = GameState.currentStage;
@@ -169,7 +170,9 @@ public class UIControllerSystem : MonoBehaviour
         // Fade the background?
         //SimulationDefaultContent.GetComponent<CanvasGroup>().alpha = (stage == GameState.GameStage.GS_SIMULATION ? 1.0f : 0.5f);
         // Event
-        SimulationEventContent.SetActive(EventState.currentEvent != null);
+        bool hasEvent = EventState.currentEvent != null;        
+        SimulationEventContent.SetActive(hasEvent || mPrevHasEvent); // hack a one-frame delay on hiding the event display, in case we want to show 2 in a row. Does mean there's a 1-frame window for the player to click the button when there's no event...
+        mPrevHasEvent = hasEvent;
     }
 
     // Change text and other fields in UI content
@@ -312,7 +315,10 @@ public class UIControllerSystem : MonoBehaviour
     public void MakeDecision(Button button)
     {
         // Made a choice
-        EventState.currentEvent.PlayerDecision(button.transform.GetSiblingIndex());
+        if(EventState.currentEvent != null) // ahhh see comment about 1-frame hack in UpdateUiVisibility
+        {
+            EventState.currentEvent.PlayerDecision(button.transform.GetSiblingIndex());
+        }
     }
 
     // --------- PEACOCK SCREEN ------------ //

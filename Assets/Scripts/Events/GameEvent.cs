@@ -8,7 +8,12 @@ public abstract class GameEvent
     {
         CONTINUE,
         DONE,
+        PERSISTENT,
         SKIP
+    }
+    public bool persistent
+    {
+        get { return mEventStatus == EventResult.PERSISTENT; }
     }
 
     private GameState.GameStage mPreviousStage;
@@ -25,7 +30,7 @@ public abstract class GameEvent
         if(mEventStatus == EventResult.SKIP)
         {
             // the event decided not to fire at all for whatever reason
-            GameState.currentStage = GameState.GameStage.GS_SIMULATION;
+            // GameState.currentStage = mPreviousStage;
             EventState.currentEvent = null;
         }
     }
@@ -47,7 +52,20 @@ public abstract class GameEvent
         mEventStatus = OnPlayerDecision(choice); // derived classes implement whatever they need here. return true to indicate the event is over.
     }
 
+    public void UpdatePersistence()
+    {
+        if(mEventStatus == EventResult.PERSISTENT)
+        {
+            if(!ShouldPersistStill())
+            {
+                EventEnd(-1);
+                EventState.currentEvent = null;
+            }
+        }
+    }
+
     protected abstract EventResult EventStart();
     protected virtual EventResult OnPlayerDecision(int choice) { return EventResult.DONE; }
     protected virtual void EventEnd(int choice) {}
+    protected virtual bool ShouldPersistStill() { return false; }
 }

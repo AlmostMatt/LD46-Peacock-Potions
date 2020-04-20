@@ -16,7 +16,8 @@ public class BusinessState
     
     public class QuarterlyReport
     {
-        public int[] production = new int[(int)ProductType.PT_MAX];
+        // Inventory as of end-of-quarter
+        public int[] unsoldPotions = new int[(int)ProductType.PT_MAX];
         public float[] salePrices = new float[(int)ProductType.PT_MAX];
         public int[] sales = new int[(int)ProductType.PT_MAX];
         public int[] unfulfilledDemand = new int[(int)ProductType.PT_MAX];
@@ -29,9 +30,7 @@ public class BusinessState
     public struct PerItemReport
     {
         public ProductType productType;
-        public int previousStock;
-        public int currentStock;
-        public int numProduced;
+        public int endOfQStock;
         public int numSold;
         public int numLost;
         public int salePrice; // the price at time of sale (not necessarily the price for the next quarter)
@@ -43,17 +42,16 @@ public class BusinessState
         for (int product = 0; product < (int)ProductType.PT_MAX; product++) {
             PerItemReport report = new PerItemReport();
             report.productType = (ProductType) product;
-            report.currentStock = inventory[product];
             if (quarterlyReport != null)
             {
-                report.numProduced = quarterlyReport.production[product];
+                report.endOfQStock = quarterlyReport.unsoldPotions[product];
                 report.numSold = quarterlyReport.sales[product];
                 report.numLost = quarterlyReport.miscLosses[product];
-                report.previousStock = report.currentStock - report.numProduced + report.numSold + report.numLost;
                 report.salePrice = (int)quarterlyReport.salePrices[product];
             }
             else
             {
+                // do I need to handle the no-report case?
                 report.salePrice = (int)prices[product];
             }
             reports.Add(report);

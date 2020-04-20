@@ -63,8 +63,7 @@ public class RenderFunctions
         obj.transform.Find("H/Sales").GetComponent<CanvasGroup>().alpha = (report.numSold == 0 ? 0f : 1f);
         obj.transform.Find("H/Profit").GetComponent<CanvasGroup>().alpha = (report.numSold == 0 ? 0f : 1f);
         // Inventory
-        // TODO: show the previous stock
-        obj.transform.Find("H/Inventory").GetComponent<Text>().text = string.Format("{0}", report.currentStock);
+        obj.transform.Find("H/Inventory").GetComponent<Text>().text = string.Format("{0}", report.endOfQStock);
 
         // Show the ingredients necessary to make a product
         ResourceAndCount[] price = report.productType.GetIngredients();
@@ -94,8 +93,8 @@ public class RenderFunctions
         setPriceGroup.SetCanDecrement(setPriceGroup.GetValue() > setPriceGroup.increments);
         setPriceGroup.SetCanIncrement(setPriceGroup.GetValue() + setPriceGroup.increments <= 100); // TODO: generalize this max price
         setPriceGroup.SetOnChangeCallback(NewSetPriceCallback(report.productType));
-        // Only show price if inventory is non-zero
-        setPriceGroup.transform.GetComponent<CanvasGroup>().alpha = (report.currentStock == 0 ? 0f : 1f);
+        // Only show price if current inventory is non-zero
+        setPriceGroup.transform.GetComponent<CanvasGroup>().alpha = (BusinessState.inventory[(int)report.productType] == 0 ? 0f : 1f);
     }
 
     /** 

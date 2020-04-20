@@ -20,7 +20,7 @@ public class BusinessSystem : MonoBehaviour
         // If in any other state (including random event), simulation will be paused
         if (GameState.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)
         {
-            if (CustomerState.totalQuarterlyCustomers == 0) // won't make any more money from customers...
+            if (CustomerState.totalQuarterlyCustomers <= 0) // won't make any more money from customers...
             {
                 if(!EventState.hasMoreEventsRightNow) // won't make any more money from events...
                 {
@@ -52,43 +52,46 @@ public class BusinessSystem : MonoBehaviour
                     }
                 }
             }
-
-            // yeah like it's slightly gross to do this here in this way...
-            // running code on state changes really does want an event-driven style thing, I guess
-            if (mPaymentTime == 0)
+            else
             {
-                mPaymentTime = QUARTER_TIME / CustomerState.totalQuarterlyCustomers;
-                mPaymentTimer = mPaymentTime;
-            }
-
-            mPaymentTimer -= Time.deltaTime;
-            if (mPaymentTimer <= 0)
-            {
-                int product = Random.Range(0, (int)ProductType.PT_MAX);
-                while (CustomerState.customers[product] == 0)
+                 // yeah like it's slightly gross to do this here in this way...
+                // running code on state changes really does want an event-driven style thing, I guess
+                if (mPaymentTime == 0)
                 {
-                    product = (product + 1) % (int)ProductType.PT_MAX;
+                    mPaymentTime = QUARTER_TIME / CustomerState.totalQuarterlyCustomers;
+                    mPaymentTimer = mPaymentTime;
                 }
 
-                if(BusinessState.inventory[product] > 0)
+                mPaymentTimer -= Time.deltaTime;
+                if (mPaymentTimer <= 0)
                 {
-                    SellProduct(product);
-                }
-                else
-                {
-                    BusinessState.quarterlyReport.unfulfilledDemand[product] += 1;
-                    Debug.Log("A customer wanted " + (ProductType)product + " but we were out of stock");
-
-                    // get enough of this, and we queue up an event where a customer asks for this type specifically
-                    if(BusinessState.quarterlyReport.unfulfilledDemand[product] > 3 && OutOfStockEvent.nextAllowedQuarter <= GameState.quarter)
+                    int product = Random.Range(0, (int)ProductType.PT_MAX);
+                    while (CustomerState.customers[product] == 0)
                     {
-                        EventState.PushEvent(new OutOfStockEvent((ProductType)product), GameState.quarter);
-                        OutOfStockEvent.nextAllowedQuarter = GameState.quarter + 2;
+                        product = (product + 1) % (int)ProductType.PT_MAX;
                     }
-                }
 
-                mPaymentTimer = Random.Range(mPaymentTime * 0.9f, mPaymentTime * 1.1f);
-                --CustomerState.totalQuarterlyCustomers;
+                    if(BusinessState.inventory[product] > 0)
+                    {
+                        SellProduct(product);
+                    }
+                    else
+                    {
+                        BusinessState.quarterlyReport.unfulfilledDemand[product] += 1;
+                        Debug.Log("A customer wanted " + (ProductType)product + " but we were out of stock");
+
+                        // get enough of this, and we queue up an event where a customer asks for this type specifically
+                        if(BusinessState.quarterlyReport.unfulfilledDemand[product] > 3 && OutOfStockEvent.nextAllowedQuarter <= GameState.quarter)
+                        {
+                            EventState.PushEvent(new OutOfStockEvent((ProductType)product), GameState.quarter);
+                            OutOfStockEvent.nextAllowedQuarter = GameState.quarter + 2;
+                        }
+                    }
+
+                    mPaymentTimer = Random.Range(mPaymentTime * 0.9f, mPaymentTime * 1.1f);
+                    CustomerState.customers[product] -= 1;
+                    --CustomerState.totalQuarterlyCustomers;
+                }
             }
         }
     }

@@ -25,7 +25,6 @@ public class UIControllerSystem : MonoBehaviour
 
     public GameObject AnimatedTextPrefab;
 
-    private RenderableGroup<string> mEventOptionRenderGroup;
     private RenderableGroup<BusinessState.PerItemReport> mItemQuarterlySummaryRenderGroup;
     private RenderableGroup<ResourceAndCount> mInventoryResourceRenderGroup;
     private RenderableGroup<ProductAndCount> mInventoryProductRenderGroup;
@@ -39,9 +38,6 @@ public class UIControllerSystem : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        mEventOptionRenderGroup = new RenderableGroup<string>(
-            SimulationEventContent.transform.Find("DecisionPanel/Options"),
-            RenderFunctions.RenderToText);
         mItemQuarterlySummaryRenderGroup = new RenderableGroup<BusinessState.PerItemReport>(
             SummaryView.transform.Find("ItemSummaries"),
             RenderFunctions.RenderItemQuarterlySummary);
@@ -303,7 +299,28 @@ public class UIControllerSystem : MonoBehaviour
             SimulationEventContent.transform.Find("NonFace").gameObject.SetActive(isOtherImage && focusSprite != null);
             // Set the text and options
             SimulationEventContent.transform.Find("DecisionPanel/Text").GetComponent<Text>().text = EventState.currentEventText;
-            mEventOptionRenderGroup.UpdateRenderables(EventState.currentEventOptions != null ? new List<string>(EventState.currentEventOptions) : null);
+            // Set option text on the event buttons
+            GameObject b1 = SimulationEventContent.transform.Find("DecisionPanel/Options/ButtonLeft").gameObject;
+            GameObject b2 = SimulationEventContent.transform.Find("DecisionPanel/Options/ButtonRight").gameObject;
+            GameObject b3 = SimulationEventContent.transform.Find("DecisionPanel/Options/ButtonWide").gameObject;
+            if (EventState.currentEventOptions != null) {
+                b1.SetActive(EventState.currentEventOptions.Length > 1);
+                b2.SetActive(EventState.currentEventOptions.Length > 1);
+                b3.SetActive(EventState.currentEventOptions.Length == 1);
+                if (EventState.currentEventOptions.Length == 1)
+                {
+                    b3.GetComponentInChildren<Text>().text = EventState.currentEventOptions[0];
+                } else
+                {
+                    b1.GetComponentInChildren<Text>().text = EventState.currentEventOptions[0];
+                    b2.GetComponentInChildren<Text>().text = EventState.currentEventOptions[1];
+                }
+            } else
+            {
+                b1.SetActive(false);
+                b2.SetActive(false);
+                b3.SetActive(false);
+            }
         }
 
         if(EpilogueView.activeInHierarchy)
@@ -331,7 +348,9 @@ public class UIControllerSystem : MonoBehaviour
         // Made a choice
         if(EventState.currentEvent != null) // ahhh see comment about 1-frame hack in UpdateUiVisibility
         {
-            EventState.currentEvent.PlayerDecision(button.transform.GetSiblingIndex());
+            // Buttons are ordered [left right wide] so [left and right] are choice 0
+            int index = button.transform.GetSiblingIndex() % 2;
+            EventState.currentEvent.PlayerDecision(index);
         }
     }
 

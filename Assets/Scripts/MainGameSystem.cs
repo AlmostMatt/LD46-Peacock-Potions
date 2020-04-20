@@ -87,7 +87,7 @@ public class MainGameSystem : MonoBehaviour
             Debug.Log(CustomerState.customers[i] + " customers are willing to buy " + (ProductType)i + " for " + prices[i]);
         }
     }
-   
+
     /**
      * Starts a new quarter (beginning of simulation)
      * reset anything that needs to be reset
@@ -109,12 +109,26 @@ public class MainGameSystem : MonoBehaviour
      */
     public static void EndCurrentQuarter()
     {
-        // expenses. We could do this as an event at the end of the quarter, if we wanted. Though that could get a bit repetitive.                    
-        int expenses = BusinessState.rent;
-        BusinessState.quarterlyReport.livingExpenses = expenses;
-        BusinessState.money -= expenses;
+        // expenses. We could do this as an event at the end of the quarter, if we wanted. Though that could get a bit repetitive.
+        BusinessState.quarterlyReport.livingExpenses = BusinessState.rent;
         // Take a snapshot of the current inventory for end-of-q report
         System.Array.Copy(BusinessState.inventory, BusinessState.quarterlyReport.unsoldPotions, BusinessState.inventory.Length);
         BusinessState.peacock.QuarterOver();
+    }
+
+    /**
+     * Causess peacock-related payments to happen
+     */
+    public static void PayPeacockExpenses()
+    {
+        BusinessState.money -= BusinessState.peacock.quarterlyTotalCost;
+    }
+
+    /**
+     * Causess rent payment to actually happen
+     */
+    public static void PayEndOfQuarterExpenses()
+    {
+        BusinessState.money -= BusinessState.rent;
     }
 }

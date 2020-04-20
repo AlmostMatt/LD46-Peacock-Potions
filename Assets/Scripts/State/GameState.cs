@@ -46,6 +46,8 @@ public class GameState
                 currentStage = GameStage.GS_OVERLAY_FINANCIAL_SUMMARY;
                 break;
             case GameStage.GS_OVERLAY_FINANCIAL_SUMMARY:
+                /* Pay rent when the OK button is clicked */
+                MainGameSystem.PayEndOfQuarterExpenses();
                 currentStage = GameStage.GS_OVERLAY_FEATHER_COLLECTION;
                 break;
             case GameStage.GS_OVERLAY_FEATHER_COLLECTION:
@@ -56,6 +58,8 @@ public class GameState
                 GameObject.FindObjectsOfType<UIControllerSystem>()[0].PreparePeacockSummary();
                 break;
             case GameStage.GS_PEACOCK:
+                /* Pay peacock-related expenses*/
+                MainGameSystem.PayPeacockExpenses();
                 /* Start the next quarter */
                 MainGameSystem.StartNextQuarter();
                 currentStage = GameStage.GS_SIMULATION;

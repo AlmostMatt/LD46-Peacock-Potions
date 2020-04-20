@@ -69,10 +69,10 @@ public class Peacock
 
     private static ResourceType[] producableResources = new ResourceType[]
     {
-        ResourceType.RT_BLUE_FEATHER,        
         ResourceType.RT_GREEN_FEATHER,
         ResourceType.RT_RED_FEATHER,
-        ResourceType.RT_GOLD_FEATHER
+        ResourceType.RT_GOLD_FEATHER,
+        ResourceType.RT_BLUE_FEATHER
     };
     private float[] mProductionDistribution = new float[producableResources.Length];
 
@@ -129,25 +129,47 @@ public class Peacock
             health -= 20;
         }
 
+        switch(GameState.season)
+        {
+            case GameState.Season.SPRING:
+                mProductionDistribution = new float[] {70,15,0,15};
+                break;
+            case GameState.Season.SUMMER:
+                mProductionDistribution = new float[] {15,70,15,0};
+                break;
+            case GameState.Season.FALL:
+                mProductionDistribution = new float[] {0,15,70,15};
+                break;
+            case GameState.Season.WINTER:
+                mProductionDistribution = new float[] { 15, 0, 15, 70 };
+                break;
+        }
         float totalDist = 0;
         for(int i = 0; i < producableResources.Length; ++i)
         {
+            /*
             ResourceType resource = producableResources[i];
             switch(resource)
             {
                 case ResourceType.RT_BLUE_FEATHER:
-                    mProductionDistribution[i] = ((1 - (happiness / 100)) + (comfort / 100)) * 0.5f;
+                    mProductionDistribution[i] = GameState.season == GameState.Season.WINTER ? 70 : (GameState.season == GameState.Season.SUMMER ? 0 : 15};
+                    // mProductionDistribution[i] = ((1 - (happiness / 100)) + (comfort / 100)) * 0.5f;
                     break;
                 case ResourceType.RT_GREEN_FEATHER:
-                    mProductionDistribution[i] = (1 - (health / 100));
+                    mProductionDistribution[i] = GameState.season == GameState.Season.SPRING ? 70 : 0;
+                    //mProductionDistribution[i] = (1 - (health / 100));
                     break;
                 case ResourceType.RT_GOLD_FEATHER:
-                    mProductionDistribution[i] = (happiness / 100);
+                    mProductionDistribution[i] = GameState.season == GameState.Season.FALL ? 1 : 0;
+                    // mProductionDistribution[i] = (happiness / 100);
                     break;
                 case ResourceType.RT_RED_FEATHER:
-                    mProductionDistribution[i] = ((health / 100) + (1 - (comfort / 100))) * 0.5f;
+                    mProductionDistribution[i] = GameState.season == GameState.Season.SUMMER ? 1 : 0;
+                    // mProductionDistribution[i] = ((health / 100) + (1 - (comfort / 100))) * 0.5f;
                     break;
+                
             }
+            */
             totalDist += mProductionDistribution[i];
         }
         // normalize distribution

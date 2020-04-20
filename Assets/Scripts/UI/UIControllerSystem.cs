@@ -225,6 +225,7 @@ public class UIControllerSystem : MonoBehaviour
                     // TODO: if a potion stopped being visible it was just sold. Show the +money animation there
                 }
             }
+            SimulationDefaultContent.transform.Find("Shop/Season").GetComponent<Image>().sprite = SpriteManager.GetSprite(GameState.season.GetImage());
         }
         /**
          * Overlay views

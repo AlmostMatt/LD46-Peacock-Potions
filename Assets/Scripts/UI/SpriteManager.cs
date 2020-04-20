@@ -15,6 +15,7 @@ public class SpriteManager : MonoBehaviour
     public NamedSprite[] customers;
     public NamedSprite[] wifeImages;
     public NamedSprite[] sonImages;
+    public NamedSprite[] seasonImages;
 
     private Dictionary<string, Sprite> stringToSpriteMap = new Dictionary<string, Sprite>();
     private static SpriteManager mSpriteManagerSingleton;
@@ -54,6 +55,14 @@ public class SpriteManager : MonoBehaviour
             stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
         }
         foreach (NamedSprite namedSprite in sonImages)
+        {
+            if (stringToSpriteMap.ContainsKey(namedSprite.name))
+            {
+                Debug.LogWarning("Multiple sprites with name: " + namedSprite.name);
+            }
+            stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
+        }
+        foreach (NamedSprite namedSprite in seasonImages)
         {
             if (stringToSpriteMap.ContainsKey(namedSprite.name))
             {

@@ -82,3 +82,23 @@ public class GameState
     }
 
 }
+
+public static class SeasonExtensions
+{
+    public static string GetImage(this GameState.Season season)
+    {
+        switch (GameState.season)
+        {
+            case GameState.Season.SPRING:
+                return "spring";
+            case GameState.Season.SUMMER:
+                return "summer";
+            case GameState.Season.FALL:
+                return "fall";
+            case GameState.Season.WINTER:
+                return "winter";
+            default:
+                return "summer";
+        }
+    }
+}

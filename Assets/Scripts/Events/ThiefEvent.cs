@@ -11,7 +11,7 @@ public class ThiefEvent : GameEvent
     }
     private Stage mStage = Stage.OPENING;
 
-    protected override void EventStart()
+    protected override EventResult EventStart()
     {
         // populate data for the UI to pull from
         EventState.currentEventImage = "faceOther";
@@ -21,9 +21,10 @@ public class ThiefEvent : GameEvent
                 "Let the thief go with a warning",
                 "Make an example of the thief"
             };
+        return EventResult.CONTINUE;
     }
 
-    protected override bool OnPlayerDecision(int choice)
+    protected override EventResult OnPlayerDecision(int choice)
     {
         switch(mStage)
         {
@@ -35,7 +36,7 @@ public class ThiefEvent : GameEvent
                             EventState.currentEventImage = "faceOther";
                             EventState.currentEventText = "The thief thanks you and promises never to steal again.";
                             EventState.currentEventOptions = EventState.OK_OPTION;
-                            return true;
+                            return EventResult.DONE;
                         case 1:
                             EventState.currentEventImage = "faceOther";
                             EventState.currentEventText = "Everyone stares as you punch the thief in the nose.";
@@ -59,10 +60,10 @@ public class ThiefEvent : GameEvent
                             break;
                     }
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    return true;
+                    return EventResult.DONE;
                 }
         }
 
-        return false;
+        return EventResult.CONTINUE;
     }
 }

@@ -9,11 +9,14 @@ using System.Collections.Generic;
  */
 public class UIControllerSystem : MonoBehaviour
 {
+    // The main views whose visibility will be toggled
     public GameObject SummaryView;
     public GameObject PeacockView;
     public GameObject SimulationView;
+    public GameObject OverlayView;
     public GameObject InventoryView;
 
+    // Convenient references to find smaller pieces of the above
     public GameObject SimulationDefaultContent;
     public GameObject SimulationEventContent;
 
@@ -108,8 +111,20 @@ public class UIControllerSystem : MonoBehaviour
         SummaryView.SetActive(stage == GameState.GameStage.GS_RESOURCE_ALLOCATION);
         // Peacock UI
         PeacockView.SetActive(stage == GameState.GameStage.GS_PEACOCK);
-        // UI shared by Simulation / Event
-        SimulationView.SetActive(stage == GameState.GameStage.GS_EVENT || stage == GameState.GameStage.GS_SIMULATION);
+        // UI shared by Simulation / Event and visible behind some overlays
+        SimulationView.SetActive(
+            stage == GameState.GameStage.GS_EVENT
+            || stage == GameState.GameStage.GS_SIMULATION
+            || stage == GameState.GameStage.GS_OVERLAY_POTION_SALES
+            || stage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY
+            || stage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION
+        );
+        // Overlay UI
+        OverlayView.SetActive(
+            stage == GameState.GameStage.GS_OVERLAY_POTION_SALES
+            || stage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY
+            || stage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION
+        );
         // Simulation
         //SimulationDefaultContent.GetComponent<CanvasGroup>().alpha = (stage == GameState.GameStage.GS_SIMULATION ? 1.0f : 0.5f);
         // Event
@@ -160,7 +175,7 @@ public class UIControllerSystem : MonoBehaviour
         /**
          * Simulation / Event
          */
-        if (SimulationDefaultContent.activeInHierarchy)
+        if (SimulationView.activeInHierarchy)
         {
             // Color and show/hide potions in the shop
             for (int i = 0; i < (int)ProductType.PT_MAX; i++)
@@ -172,6 +187,24 @@ public class UIControllerSystem : MonoBehaviour
                     PotionGroup.GetChild(j).GetComponent<Image>().color = ((ProductType)i).GetColor();
                     // TODO: if a potion stopped being visible it was just sold. Show the +money animation there
                 }
+            }
+        }
+        /**
+         * Overlay views
+         */
+        if (OverlayView.activeInHierarchy)
+        {
+            Text overlayText = OverlayView.transform.Find("Content/Text").GetComponent<Text>();
+            if (stage == GameState.GameStage.GS_OVERLAY_POTION_SALES)
+            {
+                overlayText.text = string.Format("You sold potions!");
+            } else if (stage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY)
+            {
+                overlayText.text = string.Format("You lost a lot of money this quarter!");
+            }
+            else if (stage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION)
+            {
+                overlayText.text = string.Format("You collected feathers!");
             }
         }
         /**
@@ -201,13 +234,12 @@ public class UIControllerSystem : MonoBehaviour
         {
             inputGroup.ClearValue();
         }
-
-        MainGameSystem.StartNextQuarter();
-
         // TODO: populate production based on the inputGroup values
         // Take a snapshot of the current prices for reference at the end of the quarter
+        // TODO: make this copy instead of reference
         BusinessState.quarterlyReport.salePrices = BusinessState.prices;
 
+        GameState.GameLoopGotoNextStage();
         Debug.Log("game stage is now " + GameState.currentStage);
     }
 
@@ -221,10 +253,13 @@ public class UIControllerSystem : MonoBehaviour
 
     public void PeacockScreenOK()
     {
-        GameState.currentStage = GameState.GameStage.GS_RESOURCE_ALLOCATION;
+        GameState.GameLoopGotoNextStage();
     }
 
-    private void PreparePeacockSummary()
+    /**
+     * Call this at the end of the quarter to setup the peacock view
+     */
+    public void PreparePeacockSummary()
     {
         for (int i = 0; i < PeacockView.transform.childCount; ++i)
         {
@@ -334,6 +369,11 @@ public class UIControllerSystem : MonoBehaviour
 
     // --------- END PEACOCK SCREEN ------------ //
 
+    public void OverlayScreenOK()
+    {
+        GameState.GameLoopGotoNextStage();
+    }
+
     private Transform GetPotionGroup(ProductType productType)
     {
         return SimulationDefaultContent.transform.Find("Potions").GetChild((int)productType);
@@ -351,11 +391,5 @@ public class UIControllerSystem : MonoBehaviour
         StartCoroutine(SimpleAnimations.MoveOverTime(animatedText, new Vector3(0f, 60f, 0f), 1f));
         // Destroy it 2s later (1s after animation ends)
         Destroy(animatedText, 2f);
-    }
-
-    public void EndOfQuarter()
-    {
-        PreparePeacockSummary();
-        GameState.currentStage = GameState.GameStage.GS_PEACOCK;
     }
 }

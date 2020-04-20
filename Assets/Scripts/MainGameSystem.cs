@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class MainGameSystem : MonoBehaviour
 {
-    // Updated to the current quarter once demand has been generated for that quarter
-    private int mQuarterlyDemandGenerated = -1;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -20,20 +17,18 @@ public class MainGameSystem : MonoBehaviour
         if (GameState.currentStage == GameState.GameStage.GS_MAIN_MENU)
         {
             InitNewGame();
-            GameState.currentStage = GameState.GameStage.GS_SIMULATION;
+            StartNextQuarter();
         }
-
-        if (mQuarterlyDemandGenerated < GameState.quarter)
+        else if(GameState.currentStage == GameState.GameStage.GS_SIMULATION)
         {
-            CalculateDemand();
-            mQuarterlyDemandGenerated = GameState.quarter;
-        }
+            GameState.quarterTime += Time.deltaTime;
+        }        
     }
 
     private void InitNewGame()
     {
         // initialize events here for the moment..
-        EventState.PushEvent(new IntroductionEvent(), 0);
+        EventState.PushEvent(new IntroductionEvent(), 0, 0);
         SonEventChain.Init();
         InvestmentEventChain.Init();
         
@@ -70,7 +65,7 @@ public class MainGameSystem : MonoBehaviour
         }
     }
 
-    private void CalculateDemand()
+    private static void CalculateDemand()
     {
         // model demand for each product for the quarter, based on some hidden factors
         // each of these factors could be modified by events, the current time of year, the total time passed, etc.
@@ -88,6 +83,16 @@ public class MainGameSystem : MonoBehaviour
             CustomerState.totalQuarterlyCustomers += CustomerState.customers[i];
             Debug.Log(CustomerState.customers[i] + " customers are willing to buy " + (ProductType)i + " for " + prices[i]);
         }
+    }
+   
+    public static void StartNextQuarter()
+    {
+        GameState.quarter += 1;
+        GameState.quarterTime = 0;
+        BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
+        BusinessState.peacock.StartQuarter();
+        CalculateDemand();
+        GameState.currentStage = GameState.GameStage.GS_SIMULATION;
     }
 
 }

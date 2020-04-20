@@ -20,7 +20,7 @@ public class BusinessSystem : MonoBehaviour
         // If in any other state (including random event), simulation will be paused
         if (GameState.currentStage == GameState.GameStage.GS_SIMULATION)
         {
-            if (CustomerState.totalQuarterlyCustomers == 0)
+            if (CustomerState.totalQuarterlyCustomers == 0 && GameState.quarterTime >= QUARTER_TIME)
             {
                 mPaymentTime = 0;
 

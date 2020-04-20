@@ -202,7 +202,7 @@ public class UIControllerSystem : MonoBehaviour
             inputGroup.ClearValue();
         }
 
-        StartNextQuarter();
+        MainGameSystem.StartNextQuarter();
 
         // TODO: populate production based on the inputGroup values
         // Take a snapshot of the current prices for reference at the end of the quarter
@@ -215,14 +215,6 @@ public class UIControllerSystem : MonoBehaviour
     {
         // Made a choice
         EventState.currentEvent.PlayerDecision(button.transform.GetSiblingIndex());
-    }
-
-    private void StartNextQuarter()
-    {
-        GameState.quarter += 1;
-        BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
-        BusinessState.peacock.StartQuarter();
-        GameState.currentStage = GameState.GameStage.GS_SIMULATION;
     }
 
     // --------- PEACOCK SCREEN ------------ //
@@ -238,8 +230,7 @@ public class UIControllerSystem : MonoBehaviour
         {
             GameObject go = PeacockView.transform.GetChild(i).gameObject;
             go.GetComponent<CanvasGroup>().alpha = 0;
-            FancyUIAnimations.PushAnimation(FancyUIAnimations.AnimationType.FADE_IN, go);
-            GameState.currentStage = GameState.GameStage.GS_PEACOCK;
+            FancyUIAnimations.PushAnimation(FancyUIAnimations.AnimationType.FADE_IN, go);            
         }
 
         // I assume there's a more proper way to do this, but I'm too lazy to figure it out

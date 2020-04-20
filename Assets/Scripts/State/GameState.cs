@@ -23,6 +23,7 @@ public class GameState
 
     public static GameStage currentStage = GameStage.GS_MAIN_MENU;
     public static int quarter = 0;
+    public static float quarterTime = 0; // seconds elapsed in the current quarter
 
     public enum Season
     {
@@ -35,4 +36,5 @@ public class GameState
     {
         get { return (Season)(quarter % 4); }
     }
+
 }

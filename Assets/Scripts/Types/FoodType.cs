@@ -20,9 +20,9 @@ public static class FoodTypeExtensions
             case FoodType.FT_CRAP:
                 return 0;
             case FoodType.FT_BASIC:
-                return 1000;
+                return 100;
             case FoodType.FT_DELUXE:
-                return 5000;
+                return 400;
         }
         return 0;
     }

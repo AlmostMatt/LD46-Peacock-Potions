@@ -26,17 +26,16 @@ public class BusinessSystem : MonoBehaviour
 
                 Debug.Log("All customers served this quarter.");
                 // Advance to the next quarter and update any other affected state
-                GameState.quarter += 1;
                 // Go tho the end-of-quarter summary state (or game over state)
-                if (GameState.quarter > 5)
+                if (GameState.quarter > 20)
                 {
                     // TODO: something somewhere will check for proper game over (player death or business going under)
                     GameState.currentStage = GameState.GameStage.GS_GAME_OVER;
                 }
                 else
                 {
-                    // expenses. We could do this as an event at the end of the quarter, if we wanted. Though that could get a bit repetitive.
-                    int expenses = 2500;
+                    // expenses. We could do this as an event at the end of the quarter, if we wanted. Though that could get a bit repetitive.                    
+                    int expenses = BusinessState.rent;
                     BusinessState.quarterlyReport.livingExpenses = expenses;
                     BusinessState.money -= expenses;
 

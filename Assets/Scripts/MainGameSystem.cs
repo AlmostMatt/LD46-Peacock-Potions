@@ -106,7 +106,5 @@ public class MainGameSystem : MonoBehaviour
         BusinessState.quarterlyReport.livingExpenses = expenses;
         BusinessState.money -= expenses;
         BusinessState.peacock.QuarterOver();
-
-        GameObject.FindObjectsOfType<UIControllerSystem>()[0].PreparePeacockSummary();
     }
 }

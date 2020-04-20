@@ -65,7 +65,7 @@ public class MainGameSystem : MonoBehaviour
 
         for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
         {
-            CustomerState.productDemand[i] = Random.Range(0.1f, 0.9f); // TODO: ensure they sum to 1? maybe... not necessarily needed, but it would be good to ensure some minimum sum so that players at least get SOME customers
+            CustomerState.productDemand[i] = Random.Range(0.3f, 0.7f); // TODO: ensure they sum to 1? maybe... not necessarily needed, but it would be good to ensure some minimum sum so that players at least get SOME customers
             CustomerState.optimalPrices[i] = Random.Range(30,70); // TODO: non-uniform distribution
         }
     }

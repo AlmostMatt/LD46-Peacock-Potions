@@ -32,7 +32,7 @@ public class MainGameSystem : MonoBehaviour
     {
         // initialize events here for the moment..
         EventState.PushEvent(new TutorialEventChain.IntroductionEvent(), 0, 0);
-        //SonEventChain.Init();
+        // SonEventChain.Init();
         InvestmentEventChain.Init();
         
         BusinessState.money = 1000;

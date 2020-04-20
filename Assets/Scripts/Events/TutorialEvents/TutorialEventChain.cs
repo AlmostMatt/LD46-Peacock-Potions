@@ -6,20 +6,23 @@ public class TutorialEventChain
 {
     public class IntroductionEvent : GameEvent
     {
-        protected override EventResult EventStart()
-        {            
-            EventState.currentEventImage = "facePlayer";
-            EventState.currentEventText = "You inherited the family potion business from your father, who passed away last fall.";
-            EventState.currentEventOptions = EventState.CONTINUE_OPTION;
-            return EventResult.CONTINUE;
-        }
-
-        protected override EventResult OnPlayerDecision(int choice)
+        protected override EventResult OnStage(EventStage currentStage)
         {
-            EventState.currentEventImage = "peacock";
-            EventState.currentEventText = "Gather feathers from your magical peacock, use them to brew potions, and keep the business alive!";
-            EventState.currentEventOptions = EventState.OK_OPTION;
-            EventState.PushEvent(new ExplainSalesEvent(), 0, 0, GameState.GameStage.GS_OVERLAY_POTION_SALES);
+            switch (currentStage)
+            {
+                case EventStage.START:
+                    EventState.currentEventImage = "facePlayer";
+                    EventState.currentEventText = "You inherited the family potion business from your father, who passed away last fall.";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S2 };
+                    return EventResult.CONTINUE;
+                case EventStage.S2:
+                    EventState.currentEventImage = "peacock";
+                    EventState.currentEventText = "Gather feathers from your magical peacock, use them to brew potions, and keep the business alive!";
+                    EventState.currentEventOptions = EventState.OK_OPTION;
+                    EventState.PushEvent(new ExplainSalesEvent(), 0, 0, GameState.GameStage.GS_OVERLAY_POTION_SALES);
+                    return EventResult.DONE;
+            }
             return EventResult.DONE;
         }
     }

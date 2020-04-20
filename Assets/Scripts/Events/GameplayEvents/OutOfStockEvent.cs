@@ -13,33 +13,30 @@ public class OutOfStockEvent : GameEvent
         mProductType = productType;
     }
 
-    protected override EventResult EventStart()
+    protected override EventResult OnStage(EventStage currentStage)
     {
-        EventState.currentEventText = string.Format("A woman approaches the counter. \"Do you have any {0} potions?\"", mProductType.GetName().ToLower());
-        EventState.currentEventOptions = new string[]
+        switch (currentStage)
         {
-            "Tell her you don't have any now, but you should have some next season.",
-            "Tell her you don't have any now, and you're not sure when you'll have more."
-        };
-        return EventResult.CONTINUE;
-    }
-
-    protected override EventResult OnPlayerDecision(int choice)
-    {
-        switch(choice)
-        {
-            case 0:
+            case EventStage.START:
+                EventState.currentEventText = string.Format("A woman approaches the counter. \"Do you have any {0} potions?\"", mProductType.GetName().ToLower());
+                EventState.currentEventOptions = new string[]
+                {
+                    "Tell her you don't have any now, but you should have some next season.",
+                    "Tell her you don't have any now, and you're not sure when you'll have more."
+                };
+                mCurrentOptionOutcomes = new EventStage[] { EventStage.ACCEPT, EventStage.REFUSE };
+                break;
+            case EventStage.ACCEPT:
                 EventState.currentEventText = "\"Oh okay, I'll try again next season. Thanks!\" the woman says as she leaves.";
                 EventState.currentEventOptions = EventState.OK_OPTION;
                 EventState.PushEvent(new OutOfStockReturnEvent(mProductType), GameState.quarter + 1, 0.6f);
-                break;
-            case 1:
+                return EventResult.DONE;
+            case EventStage.REFUSE:
                 EventState.currentEventText = "\"Oh okay. I'll have to look elsewhere,\" she says. She takes her leave.";
                 EventState.currentEventOptions = EventState.OK_OPTION;
                 CustomerState.storePopularity *= 0.95f;
                 onCooldown = false;
-                break;
-
+                return EventResult.DONE;
         }
         return EventResult.DONE;
     }
@@ -47,13 +44,6 @@ public class OutOfStockEvent : GameEvent
     private class OutOfStockReturnEvent : GameEvent
     {
         private ProductType mProductType;
-        private enum Stage
-        {
-            OPENING,
-            HAS_POTION,
-            NO_POTION
-        };
-        private Stage mStage = Stage.OPENING;
         private bool mHasPotion = false;
 
         public OutOfStockReturnEvent(ProductType productType)
@@ -61,21 +51,19 @@ public class OutOfStockEvent : GameEvent
             mProductType = productType;
         }
 
-        protected override EventResult EventStart()
+        protected override EventResult OnStage(EventStage currentStage)
         {
-            EventState.currentEventText = "A familiar woman approaches the counter.";
-            EventState.currentEventOptions = EventState.CONTINUE_OPTION;
-            mHasPotion = BusinessState.inventory[(int)mProductType] > 0;
-            return EventResult.CONTINUE;
-        }
-
-        protected override EventResult OnPlayerDecision(int choice)
-        {
-            switch(mStage)
+            string potionNameLower = mProductType.GetName().ToLower();
+            switch (currentStage)
             {
-                case Stage.OPENING:
-                    string potionNameLower = mProductType.GetName().ToLower();
-                    if(mHasPotion)
+                case EventStage.START:
+                    EventState.currentEventText = "A familiar woman approaches the counter.";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.DECIDE };
+                    break;
+                case EventStage.DECIDE:
+                    EventState.currentEventText = "A familiar woman approaches the counter.";
+                    if (mHasPotion)
                     {
                         EventState.currentEventText = string.Format("\"Hi! I was in here last season looking for a {0} potion. Do you have any now?\"", potionNameLower);
                         EventState.currentEventOptions = new string[]
@@ -83,7 +71,7 @@ public class OutOfStockEvent : GameEvent
                             string.Format("Sell her a {0} potion", potionNameLower),
                             "Say no"
                         };
-                        mStage = Stage.HAS_POTION;
+                        mCurrentOptionOutcomes = new EventStage[] { EventStage.ACCEPT, EventStage.REFUSE };
                     }
                     else
                     {
@@ -92,33 +80,33 @@ public class OutOfStockEvent : GameEvent
                         {
                             "Apologize"
                         };
-                        mStage = Stage.NO_POTION;
-                    }
-                    return EventResult.CONTINUE;
-                case Stage.HAS_POTION:
-                    switch(choice)
-                    {
-                        case 0:
-                            EventState.currentEventText = "She thanks you and pays for her potion.";
-                            EventState.currentEventOptions = EventState.OK_OPTION;
-                            CustomerState.storePopularity *= 1.1f;
-                            BusinessSystem.SellProduct((int)mProductType);
-                            break;
-                        case 1:
-                            EventState.currentEventText = "The woman is visibly annoyed. She leaves briskly.";
-                            EventState.currentEventOptions = EventState.OK_OPTION;
-                            CustomerState.storePopularity *= 0.85f;                            
-                            break;
+                        mCurrentOptionOutcomes = new EventStage[] { EventStage.UNABLE };
                     }
                     break;
-                case Stage.NO_POTION:
+                case EventStage.ACCEPT:
+                    EventState.currentEventText = "She thanks you and pays for her potion.";
+                    EventState.currentEventOptions = EventState.OK_OPTION;
+                    CustomerState.storePopularity *= 1.1f;
+                    BusinessSystem.SellProduct((int)mProductType);
+                    break;
+                case EventStage.REFUSE:
+                    EventState.currentEventText = "The woman is visibly annoyed. She leaves briskly.";
+                    EventState.currentEventOptions = EventState.OK_OPTION;
+                    CustomerState.storePopularity *= 0.85f; EventState.currentEventText = "\"Oh okay, I'll try again next season. Thanks!\" the woman says as she leaves.";
+                    break;
+                case EventStage.UNABLE:
                     EventState.currentEventText = "She looks disappointed as she leaves the store empty-handed.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
                     CustomerState.storePopularity *= 0.9f;
                     break;
             }
-            onCooldown = false;
             return EventResult.DONE;
+        }
+
+        protected override EventResult EventStart()
+        {
+            mHasPotion = BusinessState.inventory[(int)mProductType] > 0;
+            return EventResult.CONTINUE;
         }
     }
 }

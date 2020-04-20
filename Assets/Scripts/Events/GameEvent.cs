@@ -1,8 +1,37 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public abstract class GameEvent
+public enum EventStage
+{
+    // These names are shared across all events.
+    // Feel free to add (or reuse) anything
+
+    START,
+    S1,
+    S2,
+    S3,
+    S4,
+
+    HAS_POTION,
+    NO_POTION,
+
+    DECIDE,
+    ACCEPT,
+    REFUSE,
+    UNABLE,
+
+    LET_GO,
+    MAKE_EXAMPLE,
+    BACK_OFF,
+    STICK_TO,
+
+    GO_CLEAN,
+    GO_OUTSIDE,
+}
+public abstract class GameEvent // <StageEnum> where StageEnum : System.Enum
 {
     protected enum EventResult
     {
@@ -18,6 +47,8 @@ public abstract class GameEvent
 
     private GameState.GameStage mPreviousStage;
     private EventResult mEventStatus = EventResult.CONTINUE;
+    protected EventStage[] mCurrentOptionOutcomes;
+    private EventStage mCurrentStage = EventStage.START;
 
     public void DoEvent()
     {
@@ -26,11 +57,21 @@ public abstract class GameEvent
         EventState.currentEvent = this; // set self as the callback for the UI. This also signals to other systems that they may need to pause.
 
         mEventStatus = EventStart(); // derived classes override this to do whatever, including populating the UI
+        Debug.Log("EVENT START " + EventState.currentEventText + " - " + mEventStatus.ToString());
 
-        if(mEventStatus == EventResult.SKIP)
+        if (mEventStatus == EventResult.SKIP)
         {
             // the event decided not to fire at all for whatever reason
             SetEventToNull();
+        }
+        if (mEventStatus != EventResult.PERSISTENT)
+        {
+            mEventStatus = OnStage(mCurrentStage);
+            if (mEventStatus == EventResult.SKIP)
+            {
+                // the event decided not to fire at all for whatever reason
+                SetEventToNull();
+            }
         }
     }
 
@@ -48,7 +89,9 @@ public abstract class GameEvent
             return;
         }
 
-        mEventStatus = OnPlayerDecision(choice); // derived classes implement whatever they need here. return true to indicate the event is over.
+        // If not DONE, the state should change.
+        mCurrentStage = mCurrentOptionOutcomes[choice];
+        mEventStatus = OnStage(mCurrentStage);
     }
 
     public void UpdatePersistence()
@@ -63,8 +106,8 @@ public abstract class GameEvent
         }
     }
 
-    protected abstract EventResult EventStart();
-    protected virtual EventResult OnPlayerDecision(int choice) { return EventResult.DONE; }
+    protected virtual EventResult EventStart() { return EventResult.CONTINUE; }
+    protected virtual EventResult OnStage(EventStage currentStage) { return EventResult.DONE;}
     protected virtual void EventEnd(int choice) {}
     protected virtual bool ShouldPersistStill() { return false; }
 

@@ -13,6 +13,8 @@ public class BusinessState
     public static int[] inventory = new int[(int)ProductType.PT_MAX];
     // Set a default price (if not a multiple of 10, modify increments in RenderFunctions)
     public static float[] prices = Enumerable.Repeat(20f, (int)ProductType.PT_MAX).ToArray();
+
+    public static bool missedRent = false;
     
     public class QuarterlyReport
     {

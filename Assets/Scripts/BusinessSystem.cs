@@ -20,25 +20,37 @@ public class BusinessSystem : MonoBehaviour
         // If in any other state (including random event), simulation will be paused
         if (GameState.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)
         {
-            if (CustomerState.totalQuarterlyCustomers == 0 && GameState.quarterTime >= QUARTER_TIME)
+            if (CustomerState.totalQuarterlyCustomers == 0) // won't make any more money from customers...
             {
-                mPaymentTime = 0;
+                if(!EventState.hasMoreEventsRightNow) // won't make any more money from events...
+                {
+                    if(BusinessState.money < BusinessState.rent && !BusinessState.missedRent)
+                    {
+                        EventState.PushEvent(new MissedRentEvent(), GameState.quarter, 0); // going to miss rent? add event
+                        BusinessState.missedRent = true;
+                    }
 
-                Debug.Log("All customers served this quarter.");
-                // Advance to the next quarter and update any other affected state
-                // Go tho the end-of-quarter summary state (or game over state)
-                if (GameState.quarter > 20)
-                {
-                    // TODO: something somewhere will check for proper game over (player death or business going under)
-                    MainGameSystem.GameOver();
+                    if(!EventState.hasMoreEventsRightNow && GameState.quarterTime >= QUARTER_TIME) // ensure we play through all events before advancing to next quarter
+                    {
+                        mPaymentTime = 0;
+
+                        Debug.Log("All customers served this quarter.");
+                        // Advance to the next quarter and update any other affected state
+                        // Go tho the end-of-quarter summary state (or game over state)
+                        if (GameState.reachedEndOfLife)
+                        {
+                            // TODO: something somewhere will check for proper game over (player death or business going under)
+                            MainGameSystem.GameOver();
+                        }
+                        else
+                        {
+                            // This will call MainGameSystem.EndCurrentQuarter
+                            GameState.GameLoopGotoNextStage();
+                        }
+                        Debug.Log("game stage is now " + GameState.currentStage);
+                        return;
+                    }
                 }
-                else
-                {
-                    // This will call MainGameSystem.EndCurrentQuarter
-                    GameState.GameLoopGotoNextStage();
-                }
-                Debug.Log("game stage is now " + GameState.currentStage);
-                return;
             }
 
             // yeah like it's slightly gross to do this here in this way...
@@ -68,10 +80,10 @@ public class BusinessSystem : MonoBehaviour
                     Debug.Log("A customer wanted " + (ProductType)product + " but we were out of stock");
 
                     // get enough of this, and we queue up an event where a customer asks for this type specifically
-                    if(BusinessState.quarterlyReport.unfulfilledDemand[product] > 3 && !OutOfStockEvent.onCooldown)
+                    if(BusinessState.quarterlyReport.unfulfilledDemand[product] > 3 && OutOfStockEvent.nextAllowedQuarter <= GameState.quarter)
                     {
                         EventState.PushEvent(new OutOfStockEvent((ProductType)product), GameState.quarter);
-                        OutOfStockEvent.onCooldown = true;
+                        OutOfStockEvent.nextAllowedQuarter = GameState.quarter + 2;
                     }
                 }
 

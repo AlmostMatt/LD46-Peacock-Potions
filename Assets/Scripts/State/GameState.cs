@@ -96,6 +96,7 @@ public class GameState
         get { return (Season)(quarter % 4); }
     }
 
+    public static bool reachedEndOfLife = false;
     public static bool epilogueDirty = false;
     public static List<string> epilogueLines = new List<string>();
 }

@@ -33,6 +33,7 @@ public class UIControllerSystem : MonoBehaviour
 
     private RenderableGroup<ResourceAndCount> mOverlayFeatherCollectionFeatherRenderGroup;
     private RenderableGroup<BusinessState.PerItemReport> mOverlayPotionSalesRenderGroup;
+    private RenderableGroup<string[]> mOverlayFinancialRenderGroup;
 
     // Use this for initialization
     void Start()
@@ -61,6 +62,9 @@ public class UIControllerSystem : MonoBehaviour
         mOverlayPotionSalesRenderGroup = new RenderableGroup<BusinessState.PerItemReport>(
             OverlayViewPotions.transform.Find("PotionSaleRows"),
             RenderFunctions.RenderPotionSale);
+        mOverlayFinancialRenderGroup = new RenderableGroup<string[]>(
+            OverlayViewFinancial.transform.Find("Content"),
+            RenderFunctions.RenderStringArrayToTextChildren);
 
 
         // don't start with all customers visible
@@ -231,6 +235,11 @@ public class UIControllerSystem : MonoBehaviour
         /**
          * Overlay views
          */
+        int totalPotionRevenue = 0;
+        foreach (BusinessState.PerItemReport report in BusinessState.GetPerItemReports())
+        {
+            totalPotionRevenue += (report.numSold * report.salePrice);
+        }
         if (OverlayViewFeathers.activeInHierarchy)
         {
             //OverlayViewPotions.transform.Find("Content/Content").GetComponent<Text>().text = "";
@@ -239,18 +248,31 @@ public class UIControllerSystem : MonoBehaviour
         } else if (OverlayViewPotions.activeInHierarchy)
         {
             mOverlayPotionSalesRenderGroup.UpdateRenderables(BusinessState.GetPerItemReports());
-            int totalPotionRevenue = 0;
-            foreach (BusinessState.PerItemReport report in BusinessState.GetPerItemReports())
-            {
-                totalPotionRevenue += (report.numSold * report.salePrice);
-            }
             OverlayViewPotions.transform.Find("PotionSaleTotal/Row/H/Total").GetComponent<Text>().text
                 = string.Format("${0}",totalPotionRevenue);
         } else if (OverlayViewFinancial.activeInHierarchy)
         {
+            int peacockExpenses = BusinessState.peacock.quarterlyTotalCost;
+            int profit = (totalPotionRevenue) - (peacockExpenses);
+            int rent = BusinessState.quarterlyReport.livingExpenses;
+            int newBalance = (int)BusinessState.money - rent;
             // totalRevenue = sum of perItemReport sales
             // include some event revenue and expenses
             // revenue rent etc
+            List<string[]> financialReportRows = new List<string[]>();
+            financialReportRows.Add(new string[] { "Beginning Balance", string.Format("{0}",2000) });
+            financialReportRows.Add(new string[] { "Income", "" });
+            financialReportRows.Add(new string[] { "\tPotion Sales", string.Format("{0}", totalPotionRevenue) });
+            // TODO: event related income
+            financialReportRows.Add(new string[] { "\tOther", string.Format("{0}", 0) });
+            financialReportRows.Add(new string[] { "\tPeacock", string.Format("-{0}\t", peacockExpenses) });
+            // TODO: event related losses
+            financialReportRows.Add(new string[] { "\tOther", string.Format("-{0}\t", 0) });
+            financialReportRows.Add(new string[] { "\tProfit", string.Format("{0:+#;-#;+0}", profit) });
+            // TODO: make expenses that happen right now stand out
+            financialReportRows.Add(new string[] { "\tPay Rent", string.Format("<b>-{0}</b>", rent) });
+            financialReportRows.Add(new string[] { "New Balance", string.Format("{0}", newBalance) });
+            mOverlayFinancialRenderGroup.UpdateRenderables(financialReportRows);
         }
         /**
          * Event

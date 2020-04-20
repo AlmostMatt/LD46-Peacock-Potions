@@ -276,7 +276,7 @@ public class UIControllerSystem : MonoBehaviour
             financialReportRows.Add(new string[] { "Potion Sales", string.Format("+{0}", totalPotionRevenue), "" });
             financialReportRows.Add(new string[] { "Peacock Care", string.Format("-{0}", peacockExpenses), "" });
             // Only show event-related if non-zero
-            financialReportRows.Add(new string[] { "Events", string.Format("{0:+#;-#;+0}", eventIncome + eventExpense), "" });
+            financialReportRows.Add(new string[] { "Events", string.Format("{0:+#;-#;+0}", eventIncome - eventExpense), "" });
             // <LINE> at index 4
             financialReportRows.Add(new string[] { "Profit", "", string.Format("{0:+#;-#;+0}", profit) });
             // TODO: make expenses that happen right now stand out

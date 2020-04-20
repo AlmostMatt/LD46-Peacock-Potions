@@ -14,7 +14,7 @@ public class SonEventChain
 
     private class SonEventOne : GameEvent
     {
-        protected override void EventStart()
+        protected override EventResult EventStart()
         {
             EventState.currentEventImage = "faceChild";
             EventState.currentEventText = "Your son comes up to you and asks if he can help around the shop.";
@@ -23,9 +23,10 @@ public class SonEventChain
                     "Let him help bottle potions",
                     "Tell him to go outside play instead"
                 };
+            return EventResult.CONTINUE;
         }
 
-        protected override bool OnPlayerDecision(int choice)
+        protected override EventResult OnPlayerDecision(int choice)
         {
             switch(choice)
             {
@@ -43,13 +44,13 @@ public class SonEventChain
                     letSonHelpBottle = false;
                     break;
             }
-            return true;
+            return EventResult.DONE;
         }
     }
 
     private class SonDropBottlesEvent : GameEvent
     {
-        protected override void EventStart()
+        protected override EventResult EventStart()
         {
             EventState.currentEventImage = "faceChild";
             EventState.currentEventText = "You hear a crash from across the store. Your son dropped some potions.";
@@ -63,9 +64,11 @@ public class SonEventChain
             int numPotions = Mathf.Min(BusinessState.inventory[product], 3);
             BusinessState.quarterlyReport.miscLosses[product] += numPotions;
             BusinessState.inventory[product] -= numPotions;
+
+            return EventResult.CONTINUE;
         }
 
-        protected override bool OnPlayerDecision(int choice)
+        protected override EventResult OnPlayerDecision(int choice)
         {
             switch(choice)
             {
@@ -81,7 +84,7 @@ public class SonEventChain
                     break;
             }
             EventState.PushEvent(new SonEventOne(), GameState.quarter + 1); // schedule another event for next quarter
-            return true;
+            return EventResult.DONE;
         }
     }
     

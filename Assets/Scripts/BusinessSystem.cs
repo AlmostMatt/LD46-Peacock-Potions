@@ -64,7 +64,7 @@ public class BusinessSystem : MonoBehaviour
                     product = (product + 1) % (int)ProductType.PT_MAX;
                 }
 
-                if (BusinessState.inventory[product] > 0)
+                if(BusinessState.inventory[product] > 0)
                 {
                     SellProduct(product);
                 }
@@ -72,6 +72,13 @@ public class BusinessSystem : MonoBehaviour
                 {
                     BusinessState.quarterlyReport.unfulfilledDemand[product] += 1;
                     Debug.Log("A customer wanted " + (ProductType)product + " but we were out of stock");
+
+                    // get enough of this, and we queue up an event where a customer asks for this type specifically
+                    if(BusinessState.quarterlyReport.unfulfilledDemand[product] > 4)
+                    {
+                        Debug.Log("adding out of stock event");
+                        EventState.PushEvent(new OutOfStockEvent((ProductType)product), GameState.quarter);
+                    }
                 }
 
                 mPaymentTimer = Random.Range(mPaymentTime * 0.9f, mPaymentTime * 1.1f);

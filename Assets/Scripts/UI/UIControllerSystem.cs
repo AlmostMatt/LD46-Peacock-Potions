@@ -298,12 +298,13 @@ public class UIControllerSystem : MonoBehaviour
             SimulationEventContent.transform.Find("NonFace/Image").GetComponent<Image>().sprite = focusSprite;
             SimulationEventContent.transform.Find("NonFace").gameObject.SetActive(isOtherImage && focusSprite != null);
             // Set the text and options
-            SimulationEventContent.transform.Find("DecisionPanel/Text").GetComponent<Text>().text = EventState.currentEventText;
             // Set option text on the event buttons
             GameObject b1 = SimulationEventContent.transform.Find("DecisionPanel/Options/ButtonLeft").gameObject;
             GameObject b2 = SimulationEventContent.transform.Find("DecisionPanel/Options/ButtonRight").gameObject;
             GameObject b3 = SimulationEventContent.transform.Find("DecisionPanel/Options/ButtonWide").gameObject;
             if (EventState.currentEventOptions != null) {
+                SimulationEventContent.transform.Find("DecisionPanel/TextTop").GetComponent<Text>().text = EventState.currentEventText;
+                SimulationEventContent.transform.Find("DecisionPanel/TextFull").GetComponent<Text>().text = "";
                 b1.SetActive(EventState.currentEventOptions.Length > 1);
                 b2.SetActive(EventState.currentEventOptions.Length > 1);
                 b3.SetActive(EventState.currentEventOptions.Length == 1);
@@ -317,6 +318,8 @@ public class UIControllerSystem : MonoBehaviour
                 }
             } else
             {
+                SimulationEventContent.transform.Find("DecisionPanel/TextTop").GetComponent<Text>().text = "";
+                SimulationEventContent.transform.Find("DecisionPanel/TextFull").GetComponent<Text>().text = EventState.currentEventText;
                 b1.SetActive(false);
                 b2.SetActive(false);
                 b3.SetActive(false);

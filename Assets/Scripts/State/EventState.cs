@@ -10,7 +10,7 @@ public class EventState
     public static string currentEventText = "DEFAULT TEXT!";
     public static string[] currentEventOptions = new string[]{ "uninitialized option 1", "uninitialized option 2" };
     public static string[] OK_OPTION = new string[] { "Ok" }; // many events might want this, so this is here for common use
-    public static string[] CONTINUE_OPTION = new string[] { "Continue..." };
+    public static string[] CONTINUE_OPTION = new string[] { "Continue" };
 
     private class ScheduledEvent
     {

@@ -288,12 +288,13 @@ public class UIControllerSystem : MonoBehaviour
             string focusImage = EventState.currentEventImage;
             bool isFace = focusImage.Contains("face");
             bool isOtherImage = (focusImage != "" && !isFace);
+            Sprite focusSprite = SpriteManager.GetSprite(EventState.currentEventImage);
             SimulationEventContent.transform.Find("Face").GetComponent<Image>().sprite = null; // clear sprite to reset size information
-            SimulationEventContent.transform.Find("Face").GetComponent<Image>().sprite = SpriteManager.GetSprite(EventState.currentEventImage);
-            SimulationEventContent.transform.Find("Face").gameObject.SetActive(isFace);
+            SimulationEventContent.transform.Find("Face").GetComponent<Image>().sprite = focusSprite;
+            SimulationEventContent.transform.Find("Face").gameObject.SetActive(isFace && focusSprite != null);
             SimulationEventContent.transform.Find("NonFace/Image").GetComponent<Image>().sprite = null; // clear the sprite in case of weird sprite change bug
-            SimulationEventContent.transform.Find("NonFace/Image").GetComponent<Image>().sprite = SpriteManager.GetSprite(EventState.currentEventImage);
-            SimulationEventContent.transform.Find("NonFace").gameObject.SetActive(isOtherImage);
+            SimulationEventContent.transform.Find("NonFace/Image").GetComponent<Image>().sprite = focusSprite;
+            SimulationEventContent.transform.Find("NonFace").gameObject.SetActive(isOtherImage && focusSprite != null);
             // Set the text and options
             SimulationEventContent.transform.Find("DecisionPanel/Text").GetComponent<Text>().text = EventState.currentEventText;
             mEventOptionRenderGroup.UpdateRenderables(EventState.currentEventOptions != null ? new List<string>(EventState.currentEventOptions) : null);

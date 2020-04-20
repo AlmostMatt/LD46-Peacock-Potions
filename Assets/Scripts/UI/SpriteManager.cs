@@ -11,10 +11,11 @@ public class SpriteManager : MonoBehaviour
         public Sprite sprite;
     }
     // These fields are functionally equivalent, but they logically group icons
-    public NamedSprite[] namedImages1;
-    public NamedSprite[] customers;
+    public NamedSprite[] namedImages1; // icons and misc
+    public NamedSprite[] playerImages;
     public NamedSprite[] wifeImages;
     public NamedSprite[] sonImages;
+    public NamedSprite[] otherFaces;
     public NamedSprite[] seasonImages;
 
     private Dictionary<string, Sprite> stringToSpriteMap = new Dictionary<string, Sprite>();
@@ -30,45 +31,23 @@ public class SpriteManager : MonoBehaviour
 
     private void Setup()
     {
-        foreach (NamedSprite namedSprite in namedImages1)
+        foreach (NamedSprite[] namedSpriteArray in new NamedSprite[][] {
+            namedImages1,
+            playerImages,
+            wifeImages,
+            sonImages,
+            otherFaces,
+            seasonImages
+        })
         {
-            if (stringToSpriteMap.ContainsKey(namedSprite.name))
+            foreach (NamedSprite namedSprite in namedSpriteArray)
             {
-                Debug.LogWarning("Multiple sprites with name: " + namedSprite.name);
+                if (stringToSpriteMap.ContainsKey(namedSprite.name))
+                {
+                    Debug.LogWarning("Multiple sprites with name: " + namedSprite.name);
+                }
+                stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
             }
-            stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
-        }
-        foreach (NamedSprite namedSprite in customers)
-        {
-            if (stringToSpriteMap.ContainsKey(namedSprite.name))
-            {
-                Debug.LogWarning("Multiple sprites with name: " + namedSprite.name);
-            }
-            stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
-        }
-        foreach (NamedSprite namedSprite in wifeImages)
-        {
-            if (stringToSpriteMap.ContainsKey(namedSprite.name))
-            {
-                Debug.LogWarning("Multiple sprites with name: " + namedSprite.name);
-            }
-            stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
-        }
-        foreach (NamedSprite namedSprite in sonImages)
-        {
-            if (stringToSpriteMap.ContainsKey(namedSprite.name))
-            {
-                Debug.LogWarning("Multiple sprites with name: " + namedSprite.name);
-            }
-            stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
-        }
-        foreach (NamedSprite namedSprite in seasonImages)
-        {
-            if (stringToSpriteMap.ContainsKey(namedSprite.name))
-            {
-                Debug.LogWarning("Multiple sprites with name: " + namedSprite.name);
-            }
-            stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
         }
     }
 

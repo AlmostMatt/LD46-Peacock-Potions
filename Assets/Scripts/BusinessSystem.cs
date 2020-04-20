@@ -6,7 +6,7 @@ public class BusinessSystem : MonoBehaviour
 {
     private float mPaymentTimer = 0;
     private float mPaymentTime = 0;
-    private float QUARTER_TIME = 2; //10;
+    private float QUARTER_TIME = 10; // 2f;
 
     // Start is called before the first frame update
     void Start()

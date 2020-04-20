@@ -30,8 +30,7 @@ public abstract class GameEvent
         if(mEventStatus == EventResult.SKIP)
         {
             // the event decided not to fire at all for whatever reason
-            // GameState.currentStage = mPreviousStage;
-            EventState.currentEvent = null;
+            SetEventToNull();
         }
     }
 
@@ -45,7 +44,7 @@ public abstract class GameEvent
             // return to the game (this happens *before* setting it so that events that end have a chance to display their final message
             //GameState.currentStage = mPreviousStage;
             EventEnd(choice);
-            EventState.currentEvent = null;
+            SetEventToNull();
             return;
         }
 
@@ -59,7 +58,7 @@ public abstract class GameEvent
             if(!ShouldPersistStill())
             {
                 EventEnd(-1);
-                EventState.currentEvent = null;
+                SetEventToNull();
             }
         }
     }
@@ -68,4 +67,14 @@ public abstract class GameEvent
     protected virtual EventResult OnPlayerDecision(int choice) { return EventResult.DONE; }
     protected virtual void EventEnd(int choice) {}
     protected virtual bool ShouldPersistStill() { return false; }
+
+    private void SetEventToNull()
+    {
+        // GameState.currentStage = mPreviousStage;
+        // Set all of the current-event related fields back to defaults
+        // This way the next event that happens won't accidentally get any values from the previous event
+        EventState.currentEvent = null;
+        EventState.currentEventImage = "";
+        EventState.currentEventOptions = new string[] { };
+    }
 }

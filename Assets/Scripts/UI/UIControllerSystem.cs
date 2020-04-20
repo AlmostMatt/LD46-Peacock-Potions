@@ -339,9 +339,11 @@ public class UIControllerSystem : MonoBehaviour
         for(int i = 0; i < PeacockView.transform.childCount; ++i)
         {
             GameObject go = PeacockView.transform.GetChild(i).gameObject;
-            go.GetComponent<CanvasGroup>().alpha = 0;
-            //FancyUIAnimations.PushAnimation(FancyUIAnimations.AnimationType.FADE_IN, go);
-            FancyUIAnimations.PushFadeIn(go);
+            if(go.GetComponent<CanvasGroup>() != null)
+            {
+                go.GetComponent<CanvasGroup>().alpha = 0;
+                FancyUIAnimations.PushFadeIn(go);
+            }
         }
 
         // I assume there's a more proper way to do this, but I'm too lazy to figure it out

@@ -129,4 +129,21 @@ public static class SeasonExtensions
                 return "Smarch";
         }
     }
+
+     public static string GetNextSeasonName(this GameState.Season season)
+    {
+        switch(season)
+        {
+            case GameState.Season.SPRING:
+                return "Summer";
+            case GameState.Season.SUMMER:
+                return "Fall";
+            case GameState.Season.FALL:
+                return "Winter";
+            case GameState.Season.WINTER:
+                return "Spring";
+            default:
+                return "Smarch";
+        }
+    }
 }

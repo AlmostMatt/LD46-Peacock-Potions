@@ -348,6 +348,7 @@ public class UIControllerSystem : MonoBehaviour
         PeacockView.transform.Find("ActivityReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.activityDesc;
         PeacockView.transform.Find("ExtraReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.extraDesc;
         PeacockView.transform.Find("StatusReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.generalDesc;
+        PeacockView.transform.Find("NextQuarterTitle").GetComponent<Text>().text = string.Format("Plan for the {0}: ", GameState.season.GetNextSeasonName());
 
         Transform foodPlan = PeacockView.transform.Find("FoodPlan");
         for(int i = 0; i < (int)FoodType.FT_MAX; ++i)

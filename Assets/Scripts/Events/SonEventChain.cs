@@ -16,7 +16,7 @@ public class SonEventChain
     {
         protected override EventResult EventStart()
         {
-            EventState.currentEventImage = "faceChild";
+            EventState.currentEventImage = "faceSonHappy";
             EventState.currentEventText = "Your son comes up to you and asks if he can help around the shop.";
             EventState.currentEventOptions = new string[]
                 {

@@ -42,8 +42,16 @@ public class RenderableGroup<RenderableType>
     }
 
     // Should be called once per frame
-    public void UpdateRenderables(List<RenderableType> renderables)
+    public void UpdateRenderables(List<RenderableType> renderables) {
+        // No dividers
+        UpdateRenderables(renderables, new int[] { });
+    }
+
+    // Should be called once per frame
+    public void UpdateRenderables(List<RenderableType> renderables, int[] dividerIndexes)
     {
+        // First, remove all the old dividers
+        // Then update the renderables
         int index = 0;
         if (renderables != null)
         {
@@ -85,5 +93,6 @@ public class RenderableGroup<RenderableType>
             excessObject.SetActive(false);
             excessObject.transform.SetParent(null, false);
         }
+        // Then add new dividers
     }
 }

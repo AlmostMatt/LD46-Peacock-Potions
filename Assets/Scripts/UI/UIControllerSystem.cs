@@ -49,6 +49,9 @@ public class UIControllerSystem : MonoBehaviour
         mPeacockFeatherRenderGroup = new RenderableGroup<ResourceAndCount>(
             PeacockView.transform.Find("InventoryFeathers"),
             RenderFunctions.RenderResourceAndCount);
+
+        // don't start with all customers visible
+        RandomizeInitialCustomers();
     }
 
     // Update is called once per frame
@@ -69,13 +72,34 @@ public class UIControllerSystem : MonoBehaviour
     private int[] customerFade;
     private bool[] customerFadeTransitioning;
     private float[] customerFadeTimers;
-    private void UpdateCustomers()
+    private void RandomizeInitialCustomers()
     {
-        // naively fade customers in and out. TODO: make it linked to number/frequency of customers
         Transform customers = SimulationDefaultContent.transform.Find("Customers");
         if (customerFade == null) { customerFade = new int[customers.childCount]; }
         if (customerFadeTransitioning == null) { customerFadeTransitioning = new bool[customers.childCount]; }
         if (customerFadeTimers == null) { customerFadeTimers = new float[customers.childCount]; }
+        for (int customerIdx = 0; customerIdx < customers.childCount; ++customerIdx)
+        {            
+            Transform customer = customers.GetChild(customerIdx);
+            Image img = customer.GetComponent<Image>();
+            if(Random.Range(0f, 1f) < 0.3f)
+            {
+                img.color = new Color(img.color.r, img.color.g, img.color.b, 1f);
+                customerFade[customerIdx] = 1;
+            }
+            else
+            {
+                img.color = new Color(img.color.r, img.color.g, img.color.b, 0f);
+                customerFade[customerIdx] = 0;
+            }
+                
+            customerFadeTimers[customerIdx] = Random.Range(2f, 9f);
+        }
+    }
+    private void UpdateCustomers()
+    {
+        // naively fade customers in and out. TODO: make it linked to number/frequency of customers
+        Transform customers = SimulationDefaultContent.transform.Find("Customers");
         for (int customerIdx = 0; customerIdx < customers.childCount; ++customerIdx)
         {
             if (!customerFadeTransitioning[customerIdx])

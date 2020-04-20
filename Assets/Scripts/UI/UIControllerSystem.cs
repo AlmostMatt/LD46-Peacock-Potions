@@ -282,9 +282,6 @@ public class UIControllerSystem : MonoBehaviour
             inputGroup.ClearValue();
         }
         // TODO: populate production based on the inputGroup values
-        // Take a snapshot of the current prices for reference at the end of the quarter
-        // TODO: make this copy instead of reference
-        BusinessState.quarterlyReport.salePrices = BusinessState.prices;
 
         GameState.GameLoopGotoNextStage();
         Debug.Log("game stage is now " + GameState.currentStage);

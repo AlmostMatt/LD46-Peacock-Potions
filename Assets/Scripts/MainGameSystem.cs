@@ -89,17 +89,24 @@ public class MainGameSystem : MonoBehaviour
     }
    
     /**
-     * Starts a new quarter (not to be confused with UIController's EndQuarter)
+     * Starts a new quarter (beginning of simulation)
+     * reset anything that needs to be reset
      */
     public static void StartNextQuarter()
     {
         GameState.quarter += 1;
         GameState.quarterTime = 0;
         BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
+        // Take a snapshot of the current prices for reports
+        System.Array.Copy(BusinessState.prices, BusinessState.quarterlyReport.salePrices,BusinessState.prices.Length);
+
         BusinessState.peacock.StartQuarter();
         CalculateDemand();
     }
 
+    /**
+     * End of simulation (prepare end-of-Q reports)
+     */
     public static void EndCurrentQuarter()
     {
         // expenses. We could do this as an event at the end of the quarter, if we wanted. Though that could get a bit repetitive.                    

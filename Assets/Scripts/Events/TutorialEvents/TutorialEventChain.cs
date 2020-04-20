@@ -28,11 +28,16 @@ public class TutorialEventChain
     {
         protected override EventResult EventStart()
         {
-            EventState.currentEventImage = "";
             GameObject.FindObjectsOfType<UIControllerSystem>()[0].MoveEventOverlayForTutorial();
+            EventState.currentEventImage = "";
             EventState.currentEventText = "You look over the end-of-season report. Not bad for your first spring!";
-            EventState.currentEventOptions = EventState.OK_OPTION;
-            return EventResult.DONE;
+            EventState.currentEventOptions = null;
+            return EventResult.PERSISTENT;
+        }
+
+        protected override bool ShouldPersistStill()
+        {
+            return (GameState.currentStage == GameState.GameStage.GS_OVERLAY_POTION_SALES);
         }
 
         protected override void EventEnd(int choice)                    
@@ -46,8 +51,13 @@ public class TutorialEventChain
         protected override EventResult EventStart()
         {
             EventState.currentEventText = "You made enough money to cover your seasonal expenses, thankfully.";
-            EventState.currentEventOptions = EventState.OK_OPTION;
-            return EventResult.DONE;
+            EventState.currentEventOptions = null;
+            return EventResult.PERSISTENT;
+        }
+
+        protected override bool ShouldPersistStill()
+        {
+            return (GameState.currentStage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY);
         }
 
         protected override void EventEnd(int choice)
@@ -61,9 +71,15 @@ public class TutorialEventChain
         protected override EventResult EventStart()
         {
             EventState.currentEventText = "You gather up feathers shed by your family peacock. It's time to turn them into potions for next season!";
-            EventState.currentEventOptions = EventState.OK_OPTION;
-            return EventResult.DONE;
+            EventState.currentEventOptions = null;
+            return EventResult.PERSISTENT;
         }
+
+        protected override bool ShouldPersistStill()
+        {
+            return (GameState.currentStage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION);
+        }
+
 
         protected override void EventEnd(int choice)
         {

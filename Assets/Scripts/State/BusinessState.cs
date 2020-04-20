@@ -23,6 +23,8 @@ public class BusinessState
         public int[] unfulfilledDemand = new int[(int)ProductType.PT_MAX];
         public int[] miscLosses = new int[(int)ProductType.PT_MAX];
 
+        public int initialBalance = 0;
+        public int finalBalance = 0;
         public int livingExpenses = 0;
     }
     public static QuarterlyReport quarterlyReport = new QuarterlyReport();

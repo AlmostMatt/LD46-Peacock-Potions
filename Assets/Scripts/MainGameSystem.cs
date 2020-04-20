@@ -36,6 +36,9 @@ public class MainGameSystem : MonoBehaviour
         InvestmentEventChain.Init();
         
         BusinessState.money = 1000;
+        BusinessState.quarterlyReport.initialBalance = (int)BusinessState.money;
+        // Set final balance for the previous quarter so that next Q can use it as initial balance
+        BusinessState.quarterlyReport.finalBalance = (int)BusinessState.money;
         BusinessState.rent = 250;
 
         // starting resources
@@ -94,9 +97,13 @@ public class MainGameSystem : MonoBehaviour
      */
     public static void StartNextQuarter()
     {
+        // Set the report's initial balance to the previous report's final balance
+        int newInitialBalance = BusinessState.quarterlyReport.finalBalance;
+        BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
+        BusinessState.quarterlyReport.initialBalance = newInitialBalance;
+
         GameState.quarter += 1;
         GameState.quarterTime = 0;
-        BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
         // Take a snapshot of the current prices for reports
         System.Array.Copy(BusinessState.prices, BusinessState.quarterlyReport.salePrices,BusinessState.prices.Length);
 
@@ -130,5 +137,7 @@ public class MainGameSystem : MonoBehaviour
     public static void PayEndOfQuarterExpenses()
     {
         BusinessState.money -= BusinessState.rent;
+        // just after rent payment is the timing that is used for end-of-q and start-of-q balance
+        BusinessState.quarterlyReport.finalBalance = (int)BusinessState.money;
     }
 }

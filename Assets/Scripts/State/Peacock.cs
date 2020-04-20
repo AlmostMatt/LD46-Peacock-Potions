@@ -78,8 +78,6 @@ public class Peacock
 
     public void StartQuarter()
     {
-        BusinessState.money -= quarterlyTotalCost;
-        // TODO: include in expenses?
     }
 
     public void QuarterOver()

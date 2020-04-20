@@ -255,6 +255,7 @@ public class UIControllerSystem : MonoBehaviour
                 = string.Format("${0}",totalPotionRevenue);
         } else if (OverlayViewFinancial.activeInHierarchy)
         {
+            int startOfQuarterBalance = BusinessState.quarterlyReport.initialBalance;
             int peacockExpenses = BusinessState.peacock.quarterlyTotalCost;
             int profit = (totalPotionRevenue) - (peacockExpenses);
             int rent = BusinessState.quarterlyReport.livingExpenses;
@@ -263,7 +264,7 @@ public class UIControllerSystem : MonoBehaviour
             // include some event revenue and expenses
             // revenue rent etc
             List<string[]> financialReportRows = new List<string[]>();
-            financialReportRows.Add(new string[] { "Beginning Balance", string.Format("{0}",2000) });
+            financialReportRows.Add(new string[] { "Beginning Balance", string.Format("{0}", startOfQuarterBalance) });
             financialReportRows.Add(new string[] { "Income", "" });
             financialReportRows.Add(new string[] { "\tPotion Sales", string.Format("{0}", totalPotionRevenue) });
             // TODO: event related income

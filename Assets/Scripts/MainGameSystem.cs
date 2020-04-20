@@ -50,8 +50,8 @@ public class MainGameSystem : MonoBehaviour
         for(int i = 0; i < BusinessState.inventory.Length; ++i)
         {
             BusinessState.inventory[i] = 5;
-            BusinessState.prices[i] = 10;
-            BusinessState.quarterlyReport.salePrices[i] = 10;
+            BusinessState.prices[i] = 50;
+            BusinessState.quarterlyReport.salePrices[i] = 50;
         }
 
         InitWorldParams();

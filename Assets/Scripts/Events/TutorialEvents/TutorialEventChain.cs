@@ -7,7 +7,7 @@ public class TutorialEventChain
     public class IntroductionEvent : GameEvent
     {
         protected override EventResult EventStart()
-        {
+        {            
             EventState.currentEventImage = "facePlayer";
             EventState.currentEventText = "You inherited the family potion business from your father, who passed away last fall.";
             EventState.currentEventOptions = EventState.CONTINUE_OPTION;
@@ -28,13 +28,15 @@ public class TutorialEventChain
     {
         protected override EventResult EventStart()
         {
+            EventState.currentEventImage = "";
+            GameObject.FindObjectsOfType<UIControllerSystem>()[0].MoveEventOverlayForTutorial();
             EventState.currentEventText = "You look over the end-of-season report. Not bad for your first spring!";
             EventState.currentEventOptions = EventState.OK_OPTION;
             return EventResult.DONE;
         }
 
         protected override void EventEnd(int choice)                    
-        {            
+        {
             EventState.PushEvent(new ExplainExpensesEvent(), 0, 0, GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY);
         }
     }
@@ -66,7 +68,7 @@ public class TutorialEventChain
         protected override void EventEnd(int choice)
         {
             EventState.PushEvent(new ExplainBrewingEvent(), 0, 0, GameState.GameStage.GS_RESOURCE_ALLOCATION);
-            GameObject.FindObjectsOfType<UIControllerSystem>()[0].RestoreNormalSummaryPosition();
+            GameObject.FindObjectsOfType<UIControllerSystem>()[0].RestoreNormalEventOverlayPosition();
         }
     }
 

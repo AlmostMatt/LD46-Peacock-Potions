@@ -308,7 +308,7 @@ public class UIControllerSystem : MonoBehaviour
      */
     public void PreparePeacockSummary()
     {
-        for (int i = 0; i < PeacockView.transform.childCount; ++i)
+        for(int i = 0; i < PeacockView.transform.childCount; ++i)
         {
             GameObject go = PeacockView.transform.GetChild(i).gameObject;
             go.GetComponent<CanvasGroup>().alpha = 0;
@@ -317,6 +317,7 @@ public class UIControllerSystem : MonoBehaviour
         }
 
         // I assume there's a more proper way to do this, but I'm too lazy to figure it out
+        PeacockView.transform.Find("Date").GetComponent<Text>().text = string.Format("{0}, Year {1}", GameState.season.GetName(), GameState.year);
         PeacockView.transform.Find("FoodReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.foodDesc;
         PeacockView.transform.Find("ActivityReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.activityDesc;
         PeacockView.transform.Find("ExtraReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.extraDesc;
@@ -441,10 +442,28 @@ public class UIControllerSystem : MonoBehaviour
         Destroy(animatedText, 2f);
     }
 
-    // called after the tutorial next
+
     public void RestoreNormalSummaryPosition()
     {
         GameObject overlays = transform.Find("Overlays").gameObject;
         FancyUIAnimations.PushTranslation(overlays, new Vector2(485, overlays.GetComponent<RectTransform>().anchoredPosition.y), 0.5f);
+    }
+
+    private Vector2 mPreviousEventOverlayPos;
+    private Vector2 mPreviousEventOverlayFacePos;
+    public void MoveEventOverlayForTutorial()
+    {
+        mPreviousEventOverlayPos = SimulationEventContent.GetComponent<RectTransform>().anchoredPosition;
+        RectTransform faceRect = SimulationEventContent.transform.Find("Face").GetComponent<RectTransform>();
+        mPreviousEventOverlayFacePos = faceRect.anchoredPosition;
+        SimulationEventContent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-145, 0);
+        faceRect.anchoredPosition = new Vector2(-450, 0);
+    }
+
+    public void RestoreNormalEventOverlayPosition()
+    {
+        SimulationEventContent.GetComponent<RectTransform>().anchoredPosition = mPreviousEventOverlayPos;
+        SimulationEventContent.transform.Find("Face").GetComponent<RectTransform>().anchoredPosition = mPreviousEventOverlayFacePos
+            ;
     }
 }

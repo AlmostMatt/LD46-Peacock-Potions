@@ -18,6 +18,8 @@ public class MainGameSystem : MonoBehaviour
         {
             InitNewGame();
             StartNextQuarter();
+            // Start with simulation
+            GameState.currentStage = GameState.GameStage.GS_SIMULATION;
         }
         else if(GameState.currentStage == GameState.GameStage.GS_SIMULATION)
         {
@@ -85,6 +87,9 @@ public class MainGameSystem : MonoBehaviour
         }
     }
    
+    /**
+     * Starts a new quarter (not to be confused with UIController's EndQuarter)
+     */
     public static void StartNextQuarter()
     {
         GameState.quarter += 1;
@@ -92,7 +97,16 @@ public class MainGameSystem : MonoBehaviour
         BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
         BusinessState.peacock.StartQuarter();
         CalculateDemand();
-        GameState.currentStage = GameState.GameStage.GS_SIMULATION;
     }
 
+    public static void EndCurrentQuarter()
+    {
+        // expenses. We could do this as an event at the end of the quarter, if we wanted. Though that could get a bit repetitive.                    
+        int expenses = BusinessState.rent;
+        BusinessState.quarterlyReport.livingExpenses = expenses;
+        BusinessState.money -= expenses;
+        BusinessState.peacock.QuarterOver();
+
+        GameObject.FindObjectsOfType<UIControllerSystem>()[0].PreparePeacockSummary();
+    }
 }

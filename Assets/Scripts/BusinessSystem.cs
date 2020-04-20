@@ -6,7 +6,7 @@ public class BusinessSystem : MonoBehaviour
 {
     private float mPaymentTimer = 0;
     private float mPaymentTime = 0;
-    private float QUARTER_TIME = 10;
+    private float QUARTER_TIME = 3;//10;
 
     // Start is called before the first frame update
     void Start()
@@ -34,14 +34,8 @@ public class BusinessSystem : MonoBehaviour
                 }
                 else
                 {
-                    // expenses. We could do this as an event at the end of the quarter, if we wanted. Though that could get a bit repetitive.                    
-                    int expenses = BusinessState.rent;
-                    BusinessState.quarterlyReport.livingExpenses = expenses;
-                    BusinessState.money -= expenses;
-
-                    BusinessState.peacock.QuarterOver();
-
-                    GameObject.FindObjectsOfType<UIControllerSystem>()[0].EndOfQuarter();
+                    // This will call MainGameSystem.EndCurrentQuarter
+                    GameState.GameLoopGotoNextStage();
                 }
                 Debug.Log("game stage is now " + GameState.currentStage);
                 return;

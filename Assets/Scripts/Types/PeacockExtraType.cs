@@ -20,9 +20,9 @@ public static class PeacockExtraTypeExtensions
             case PeacockExtraType.ET_MEDICINE:
                 return 1500;
             case PeacockExtraType.ET_PILLOW:
-                return 500;
+                return 100;
             case PeacockExtraType.ET_HORMONES:
-                return 1000;
+                return 300;
         }
         return 0;
     }
@@ -34,7 +34,7 @@ public static class PeacockExtraTypeExtensions
             case PeacockExtraType.ET_MEDICINE:
                 return "medicine";
             case PeacockExtraType.ET_PILLOW:
-                return "a pillow";
+                return "a blanket";
             case PeacockExtraType.ET_HORMONES:
                 return "growth hormones"; // TODO: probably change this to something more fantasy-sounding
         }
@@ -49,7 +49,7 @@ public static class PeacockExtraTypeExtensions
             case PeacockExtraType.ET_MEDICINE:
                 return "Medicine";
             case PeacockExtraType.ET_PILLOW:
-                return "Pillow";
+                return "Blanket";
             case PeacockExtraType.ET_HORMONES:
                 return "Growth Hormones"; // TODO: probably change this to something more fantasy-sounding
         }

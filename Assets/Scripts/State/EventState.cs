@@ -71,6 +71,16 @@ public class EventState
         return null;
     }
 
-    // could track history here too, maybe. or somewhere else, idk
+    public static bool hasMoreEventsRightNow
+    {
+        get
+        {
+            List<ScheduledEvent> eventQueue = eventQueues[(int)GameState.currentStage];
+            if(eventQueue.Count == 0) return false;
 
+            if(eventQueue[0].mQuarter > GameState.quarter) return false;
+
+            return true;
+        }
+    }
 }

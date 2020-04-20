@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OutOfStockEvent : GameEvent
 {
-    public static bool onCooldown = false;
+    public static int nextAllowedQuarter = 0;
 
     private ProductType mProductType;
 
@@ -35,7 +35,7 @@ public class OutOfStockEvent : GameEvent
                 EventState.currentEventText = "\"Oh okay. I'll have to look elsewhere,\" she says. She takes her leave.";
                 EventState.currentEventOptions = EventState.OK_OPTION;
                 CustomerState.storePopularity *= 0.95f;
-                onCooldown = false;
+                nextAllowedQuarter = GameState.quarter + 2;
                 return EventResult.DONE;
         }
         return EventResult.CONTINUE;

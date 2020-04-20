@@ -100,7 +100,7 @@ public class RenderFunctions
         setPriceGroup.increments = 10;
         setPriceGroup.SetInitialValue(report.salePrice); // price from the previous quarter
         setPriceGroup.SetCanDecrement(setPriceGroup.GetValue() > setPriceGroup.increments);
-        setPriceGroup.SetCanIncrement(setPriceGroup.GetValue() + setPriceGroup.increments <= 100); // TODO: generalize this max price
+        setPriceGroup.SetCanIncrement(setPriceGroup.GetValue() + setPriceGroup.increments <= 300); // TODO: generalize this max price
         setPriceGroup.SetOnChangeCallback(NewSetPriceCallback(report.productType));
         // Only show price if current inventory is non-zero
         setPriceGroup.transform.GetComponent<CanvasGroup>().alpha = (BusinessState.inventory[(int)report.productType] == 0 ? 0f : 1f);

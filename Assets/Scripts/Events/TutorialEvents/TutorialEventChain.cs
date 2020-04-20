@@ -32,7 +32,7 @@ public class TutorialEventChain
                     EventState.currentEventImage = "";
                     EventState.currentEventText = "Spring starts, and customers come and go, buying the potions your father made before he passed.";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
-                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S3 };
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S4 };
                     EventState.PushEvent(new ExplainSalesEvent(), 0, 0, GameState.GameStage.GS_OVERLAY_POTION_SALES);
                     return EventResult.DONE;
             }

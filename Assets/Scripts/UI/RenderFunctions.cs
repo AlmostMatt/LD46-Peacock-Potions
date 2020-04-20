@@ -26,6 +26,23 @@ public class RenderFunctions
         obj.GetComponentInChildren<Text>().text = prodAndCount.count.ToString();
     }
 
+    /**
+     * Renders a row in the potion-sale screen
+     */
+     public static void RenderPotionSale(BusinessState.PerItemReport report, GameObject obj)
+    {
+        obj.transform.Find("H/Name").GetComponent<Text>().text = string.Format("{0}\nPotion", report.productType.GetName());
+        obj.transform.Find("H/Icon").GetComponent<Image>().color = report.productType.GetColor();
+
+        obj.transform.Find("H/Sales").GetComponent<Text>().text = string.Format("{0}x", report.numSold);
+        obj.transform.Find("H/Profit").GetComponent<Text>().text = string.Format("${0}", report.numSold * report.salePrice);
+        // TODO: Exclude reports that have 0 sales (so that they are not even rendered)
+        obj.transform.Find("H/Profit").GetComponent<CanvasGroup>().alpha = (report.numSold == 0 ? 0f : 1f);
+    }
+
+    /**
+     * Renders a row in the potion-crafting screen (shows sales and crafting options)
+     */
     public static void RenderItemQuarterlySummary(BusinessState.PerItemReport report, GameObject obj)
     {
         obj.transform.Find("H/Name").GetComponent<Text>().text = string.Format("{0}\nPotion",report.productType.GetName());

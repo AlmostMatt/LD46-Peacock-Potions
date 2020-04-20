@@ -13,8 +13,10 @@ public class UIControllerSystem : MonoBehaviour
     public GameObject SummaryView;
     public GameObject PeacockView;
     public GameObject SimulationView;
-    public GameObject OverlayView;
     public GameObject InventoryView;
+    public GameObject OverlayViewFeathers;
+    public GameObject OverlayViewPotions;
+    public GameObject OverlayViewFinancial;
 
     // Convenient references to find smaller pieces of the above
     public GameObject SimulationDefaultContent;
@@ -28,7 +30,10 @@ public class UIControllerSystem : MonoBehaviour
     private RenderableGroup<ProductAndCount> mInventoryProductRenderGroup;
 
     private RenderableGroup<ResourceAndCount> mPeacockFeatherRenderGroup;
-    
+
+    private RenderableGroup<ResourceAndCount> mOverlayFeatherCollectionFeatherRenderGroup;
+    private RenderableGroup<BusinessState.PerItemReport> mOverlayPotionSalesRenderGroup;
+
     // Use this for initialization
     void Start()
     {
@@ -45,10 +50,18 @@ public class UIControllerSystem : MonoBehaviour
         mInventoryProductRenderGroup = new RenderableGroup<ProductAndCount>(
             InventoryView.transform.Find("InvGroups/InventoryPotions"),
             RenderFunctions.RenderProductAndCount);
-   
+
         mPeacockFeatherRenderGroup = new RenderableGroup<ResourceAndCount>(
             PeacockView.transform.Find("InventoryFeathers"),
             RenderFunctions.RenderResourceAndCount);
+        // Overlays
+        mOverlayFeatherCollectionFeatherRenderGroup = new RenderableGroup<ResourceAndCount>(
+            OverlayViewFeathers.transform.Find("Content/InventoryFeathers"),
+            RenderFunctions.RenderResourceAndCount);
+        mOverlayPotionSalesRenderGroup = new RenderableGroup<BusinessState.PerItemReport>(
+            OverlayViewPotions.transform.Find("PotionSaleRows"),
+            RenderFunctions.RenderPotionSale);
+
 
         // don't start with all customers visible
         RandomizeInitialCustomers();
@@ -96,6 +109,7 @@ public class UIControllerSystem : MonoBehaviour
             customerFadeTimers[customerIdx] = Random.Range(2f, 9f);
         }
     }
+
     private void UpdateCustomers()
     {
         // naively fade customers in and out. TODO: make it linked to number/frequency of customers
@@ -143,13 +157,12 @@ public class UIControllerSystem : MonoBehaviour
             || stage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY
             || stage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION
         );
-        // Overlay UI
-        OverlayView.SetActive(
-            stage == GameState.GameStage.GS_OVERLAY_POTION_SALES
-            || stage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY
-            || stage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION
-        );
+        // Overlay UIs
+        OverlayViewFeathers.SetActive(stage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION);
+        OverlayViewPotions.SetActive(stage == GameState.GameStage.GS_OVERLAY_POTION_SALES);
+        OverlayViewFinancial.SetActive(stage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY);
         // Simulation
+        // Fade the background?
         //SimulationDefaultContent.GetComponent<CanvasGroup>().alpha = (stage == GameState.GameStage.GS_SIMULATION ? 1.0f : 0.5f);
         // Event
         SimulationEventContent.SetActive(stage == GameState.GameStage.GS_EVENT);
@@ -216,20 +229,26 @@ public class UIControllerSystem : MonoBehaviour
         /**
          * Overlay views
          */
-        if (OverlayView.activeInHierarchy)
+        if (OverlayViewFeathers.activeInHierarchy)
         {
-            Text overlayText = OverlayView.transform.Find("Content/Text").GetComponent<Text>();
-            if (stage == GameState.GameStage.GS_OVERLAY_POTION_SALES)
+            //OverlayViewPotions.transform.Find("Content/Content").GetComponent<Text>().text = "";
+            mOverlayFeatherCollectionFeatherRenderGroup.UpdateRenderables(
+                BusinessState.peacock.quarterlyReport.featherCounts);
+        } else if (OverlayViewPotions.activeInHierarchy)
+        {
+            mOverlayPotionSalesRenderGroup.UpdateRenderables(BusinessState.GetPerItemReports());
+            int totalPotionRevenue = 0;
+            foreach (BusinessState.PerItemReport report in BusinessState.GetPerItemReports())
             {
-                overlayText.text = string.Format("You sold potions!");
-            } else if (stage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY)
-            {
-                overlayText.text = string.Format("You lost a lot of money this quarter!");
+                totalPotionRevenue += (report.numSold * report.salePrice);
             }
-            else if (stage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION)
-            {
-                overlayText.text = string.Format("You collected feathers!");
-            }
+            OverlayViewPotions.transform.Find("PotionSaleTotal/Row/H/Total").GetComponent<Text>().text
+                = string.Format("${0}",totalPotionRevenue);
+        } else if (OverlayViewFinancial.activeInHierarchy)
+        {
+            // totalRevenue = sum of perItemReport sales
+            // include some event revenue and expenses
+            // revenue rent etc
         }
         /**
          * Event

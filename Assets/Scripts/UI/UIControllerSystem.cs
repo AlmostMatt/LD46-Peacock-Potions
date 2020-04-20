@@ -267,7 +267,7 @@ public class UIControllerSystem : MonoBehaviour
             SimulationEventContent.transform.Find("NonFace").gameObject.SetActive(isOtherImage);
             // Set the text and options
             SimulationEventContent.transform.Find("DecisionPanel/Text").GetComponent<Text>().text = EventState.currentEventText;
-            mEventOptionRenderGroup.UpdateRenderables(new List<string>(EventState.currentEventOptions));
+            mEventOptionRenderGroup.UpdateRenderables(EventState.currentEventOptions != null ? new List<string>(EventState.currentEventOptions) : null);
         }
     }
 

@@ -11,22 +11,25 @@ public class TutorialEventChain
             switch (currentStage)
             {
                 case EventStage.START:
-                    EventState.currentEventImage = "facePlayer";
+                    EventState.currentEventImage = "facePlayerSad";
                     EventState.currentEventText = "It’s been a month since your father died and passed the family potions shop on to you.";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.S1 };
                     return EventResult.CONTINUE;
-                case EventStage.S1:                    
+                case EventStage.S1:
+                    EventState.currentEventImage = "facePlayerNeutral";
                     EventState.currentEventText = "Passed on for generations, it offers potions made from peacock feathers.";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.S2 };
                     return EventResult.CONTINUE;   
                 case EventStage.S2:
+                    EventState.currentEventImage = "facePlayerHappy";
                     EventState.currentEventText = "Now it's your turn to keep the business alive.";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.S3 };
                     return EventResult.CONTINUE;
                 case EventStage.S3:
+                    EventState.currentEventImage = "";
                     EventState.currentEventText = "Spring starts, and customers come and go, buying the potions your father made before he passed.";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.S3 };
@@ -108,7 +111,7 @@ public class TutorialEventChain
             switch(currentStage)
             {
                 case EventStage.START:
-                    EventState.currentEventImage = "facePlayer";
+                    EventState.currentEventImage = "facePlayerNeutral";
                     EventState.currentEventText = "You take stock of your potions. What did Dad say about this..?";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.S1 };
@@ -141,7 +144,7 @@ public class TutorialEventChain
             switch(currentStage)
             {
                 case EventStage.START:  
-                    EventState.currentEventImage = "facePlayer";
+                    EventState.currentEventImage = "facePlayerNeutral";
                     EventState.currentEventText = "Finished with potion-brewing, you check on the family peacock.";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.S1 };

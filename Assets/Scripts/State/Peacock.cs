@@ -113,7 +113,7 @@ public class Peacock
                 break;
             case PeacockActivityType.PA_HUG:
                 quarterlyReport.activityDesc = "Hugged it every day.";
-                happiness += 10;
+                happiness += 15;
                 break;
         }
 
@@ -293,13 +293,21 @@ public class Peacock
             goodStrings.Add("relaxed");
         }
 
-        if(happiness < 50)
+        if(happiness <= 25)
         {
-            badStrings.Add("sad");
+            badStrings.Add("quite upset");
+        }
+        else if(happiness <= 40)
+        {
+            badStrings.Add("a little sad");
+        }
+        else if(happiness <= 60)
+        {
+            goodStrings.Add("content");
         }
         else
         {
-            goodStrings.Add("happy");
+            goodStrings.Add("very happy");
         }
 
         if(goodStrings.Count == 3)

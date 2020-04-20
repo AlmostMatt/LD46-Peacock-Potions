@@ -25,7 +25,7 @@ public class OutOfStockEvent : GameEvent
                     "Tell her you don't have any now, and you're not sure when you'll have more."
                 };
                 mCurrentOptionOutcomes = new EventStage[] { EventStage.ACCEPT, EventStage.REFUSE };
-                break;
+                return EventResult.CONTINUE;
             case EventStage.ACCEPT:
                 EventState.currentEventText = "\"Oh okay, I'll try again next season. Thanks!\" the woman says as she leaves.";
                 EventState.currentEventOptions = EventState.OK_OPTION;
@@ -38,7 +38,7 @@ public class OutOfStockEvent : GameEvent
                 onCooldown = false;
                 return EventResult.DONE;
         }
-        return EventResult.DONE;
+        return EventResult.CONTINUE;
     }
 
     private class OutOfStockReturnEvent : GameEvent
@@ -60,7 +60,7 @@ public class OutOfStockEvent : GameEvent
                     EventState.currentEventText = "A familiar woman approaches the counter.";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.DECIDE };
-                    break;
+                    return EventResult.CONTINUE;
                 case EventStage.DECIDE:
                     EventState.currentEventText = "A familiar woman approaches the counter.";
                     if (mHasPotion)
@@ -82,7 +82,7 @@ public class OutOfStockEvent : GameEvent
                         };
                         mCurrentOptionOutcomes = new EventStage[] { EventStage.UNABLE };
                     }
-                    break;
+                    return EventResult.CONTINUE;
                 case EventStage.ACCEPT:
                     EventState.currentEventText = "She thanks you and pays for her potion.";
                     EventState.currentEventOptions = EventState.OK_OPTION;

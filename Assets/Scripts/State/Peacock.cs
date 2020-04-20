@@ -113,7 +113,7 @@ public class Peacock
                 break;
             case PeacockActivityType.PA_HUG:
                 quarterlyReport.activityDesc = "Hugged it every day.";
-                happiness += 10;
+                happiness += 15;
                 break;
         }
 
@@ -127,19 +127,51 @@ public class Peacock
             health -= 20;
         }
 
+        bool hasBlanket = mQuarterlyExtras[(int)PeacockExtraType.ET_PILLOW];
+
         switch(GameState.season)
         {
             case GameState.Season.SPRING:
-                mProductionDistribution = new float[] {70,15,0,15};
+                if(hasBlanket)
+                {
+                    mProductionDistribution = new float[] {55,40,0,5};
+                }
+                else
+                {
+                    mProductionDistribution = new float[] {70,15,0,15};
+                }
                 break;
             case GameState.Season.SUMMER:
-                mProductionDistribution = new float[] {15,70,15,0};
+                if(hasBlanket)
+                {
+                    mProductionDistribution = new float[] {5,90,5,0};
+                    comfort -= 20;
+                    health -= 5;
+                }
+                else
+                {
+                    mProductionDistribution = new float[] {15,70,15,0};
+                }
                 break;
             case GameState.Season.FALL:
-                mProductionDistribution = new float[] {0,15,70,15};
+                if(hasBlanket)
+                {
+                    mProductionDistribution = new float[] {0,40,55,5};
+                }
+                else
+                {
+                    mProductionDistribution = new float[] {0,15,70,15};
+                }
                 break;
             case GameState.Season.WINTER:
-                mProductionDistribution = new float[] { 15, 0, 15, 70 };
+                if(hasBlanket)
+                {
+                    mProductionDistribution = new float[] { 30, 0, 30, 40 };
+                }
+                else
+                {
+                    mProductionDistribution = new float[] { 15, 0, 15, 70 };
+                }
                 break;
         }
         float totalDist = 0;
@@ -261,13 +293,21 @@ public class Peacock
             goodStrings.Add("relaxed");
         }
 
-        if(happiness < 50)
+        if(happiness <= 25)
         {
-            badStrings.Add("sad");
+            badStrings.Add("quite upset");
+        }
+        else if(happiness <= 40)
+        {
+            badStrings.Add("a little sad");
+        }
+        else if(happiness <= 60)
+        {
+            goodStrings.Add("content");
         }
         else
         {
-            goodStrings.Add("happy");
+            goodStrings.Add("very happy");
         }
 
         if(goodStrings.Count == 3)

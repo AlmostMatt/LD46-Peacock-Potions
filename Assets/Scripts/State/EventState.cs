@@ -26,9 +26,20 @@ public class EventState
         public float mMinDelay;
     }
 
-    private static List<ScheduledEvent> eventQueue = new List<ScheduledEvent>();
-    public static void PushEvent(GameEvent e, int quarter, float minDelay = 1f)
+    //private static List<ScheduledEvent> eventQueue = new List<ScheduledEvent>();
+    private static List<ScheduledEvent>[] eventQueues = new List<ScheduledEvent>[(int)GameState.GameStage.MAX_VALUE];
+
+    static EventState()
     {
+        for(int i = 0; i < eventQueues.Length; ++i)
+        {
+            eventQueues[i] = new List<ScheduledEvent>();
+        }
+    }
+
+    public static void PushEvent(GameEvent e, int quarter, float minDelay = 1f, GameState.GameStage gameStage = GameState.GameStage.GS_SIMULATION)
+    {
+        List<ScheduledEvent> eventQueue = eventQueues[(int)gameStage];
         ScheduledEvent se = new ScheduledEvent(e, quarter, minDelay);
         int insertIdx = 0;
         while(insertIdx < eventQueue.Count && eventQueue[insertIdx].mQuarter < se.mQuarter)
@@ -44,11 +55,12 @@ public class EventState
 
     public static GameEvent PopEvent()
     {
+        List<ScheduledEvent> eventQueue = eventQueues[(int)GameState.currentStage];
         if(eventQueue.Count == 0) return null;
 
         ScheduledEvent e = eventQueue[0];
 
-        if(e.mMinDelay > GameState.quarterTime) return null;
+        if(e.mMinDelay > GameState.quarterTime) return null; // TODO: generalize "quarterTime" to "stageTime" I guess
         
         if(e.mQuarter <= GameState.quarter)
         {

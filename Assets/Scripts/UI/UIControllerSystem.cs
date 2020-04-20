@@ -165,7 +165,7 @@ public class UIControllerSystem : MonoBehaviour
         // Fade the background?
         //SimulationDefaultContent.GetComponent<CanvasGroup>().alpha = (stage == GameState.GameStage.GS_SIMULATION ? 1.0f : 0.5f);
         // Event
-        SimulationEventContent.SetActive(stage == GameState.GameStage.GS_EVENT);
+        SimulationEventContent.SetActive(EventState.currentEvent != null);
     }
 
     // Change text and other fields in UI content
@@ -310,7 +310,8 @@ public class UIControllerSystem : MonoBehaviour
         {
             GameObject go = PeacockView.transform.GetChild(i).gameObject;
             go.GetComponent<CanvasGroup>().alpha = 0;
-            FancyUIAnimations.PushAnimation(FancyUIAnimations.AnimationType.FADE_IN, go);            
+            //FancyUIAnimations.PushAnimation(FancyUIAnimations.AnimationType.FADE_IN, go);
+            FancyUIAnimations.PushFadeIn(go);
         }
 
         // I assume there's a more proper way to do this, but I'm too lazy to figure it out
@@ -436,5 +437,12 @@ public class UIControllerSystem : MonoBehaviour
         StartCoroutine(SimpleAnimations.MoveOverTime(animatedText, new Vector3(0f, 60f, 0f), 1f));
         // Destroy it 2s later (1s after animation ends)
         Destroy(animatedText, 2f);
+    }
+
+    // called after the tutorial next
+    public void RestoreNormalSummaryPosition()
+    {
+        GameObject overlays = transform.Find("Overlays").gameObject;
+        FancyUIAnimations.PushTranslation(overlays, new Vector2(485, overlays.GetComponent<RectTransform>().anchoredPosition.y), 0.5f);
     }
 }

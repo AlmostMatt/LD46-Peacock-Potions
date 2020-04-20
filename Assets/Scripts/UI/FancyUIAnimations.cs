@@ -11,34 +11,105 @@ public class FancyUIAnimations
 
     public enum AnimationType
     {
-        FADE_IN
+        FADE_IN,
+        TRANSLATE
     }
 
-    private class UIAnimation
+    private abstract class UIAnimation
     {
-        public AnimationType mAnimType;
-        public GameObject mUIObject;
-        public float mDelay;        
+        private float mDelay = 0f;
+        protected GameObject mUIObject;
 
-        public UIAnimation(AnimationType animType, GameObject go, float delay)
+        public UIAnimation(GameObject go, float delay)
         {
-            mAnimType = animType;
             mUIObject = go;
             mDelay = delay;
+        }
+
+        public bool Update(bool forceComplete)
+        {
+            if(mDelay > 0 && !forceComplete)
+            {
+                mDelay -= Time.deltaTime;
+                return false;
+            }
+            else
+            {
+                return UpdateInternal(forceComplete);
+            }
+        }
+        protected abstract bool UpdateInternal(bool forceComplete);
+    }
+
+    private class FadeInAnimation : UIAnimation
+    {
+        public FadeInAnimation(GameObject go, float delay) :
+            base(go, delay)
+        { }
+
+        protected override bool UpdateInternal(bool forceComplete)
+        {
+            float newAlpha = forceComplete ? 1 : Mathf.Min(1, mUIObject.GetComponent<CanvasGroup>().alpha + (Time.deltaTime / FADE_IN_TIME));
+            mUIObject.GetComponent<CanvasGroup>().alpha = newAlpha;
+            if(newAlpha >= 1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+    private class TranslationAnimation : UIAnimation
+    {        
+        private Vector2 mVelocity;
+        private Vector2 mTargetPos;
+        private float mTimeLeft;
+
+        private RectTransform mTransform;
+
+        public TranslationAnimation(GameObject go, Vector2 targetPos, float time, float delay) :
+            base(go, delay)
+        {
+            mTargetPos = targetPos;
+            mTransform = go.GetComponent<RectTransform>();
+            mVelocity = (targetPos - mTransform.anchoredPosition) * (1 / time);
+            mTimeLeft = time;
+        }
+
+        protected override bool UpdateInternal(bool forceComplete)
+        {
+            mTimeLeft -= Time.deltaTime;
+
+            if(mTimeLeft <= 0 || forceComplete)
+            {
+                mTransform.anchoredPosition = mTargetPos;
+                mTimeLeft = 0;
+                return true;
+            }
+            
+            mTransform.anchoredPosition += mVelocity * Time.deltaTime;
+            return false;
         }
     }
 
     private List<UIAnimation> mAnimations = new List<UIAnimation>();
     private UIAnimation mActiveAnimation;
 
-    public static void PushAnimation(AnimationType animType, GameObject go, float delay = 0)
+    public static void PushFadeIn(GameObject go, float delay = 0)
     {
-        sSingleton._PushAnimation(animType, go, delay);
+        FadeInAnimation anim = new FadeInAnimation(go, delay);
+        sSingleton._PushAnimation(anim);
     }
 
-    private void _PushAnimation(AnimationType animType, GameObject go, float delay = 0)
+    public static void PushTranslation(GameObject go, Vector2 targetPos, float time, float delay = 0)
     {
-        UIAnimation anim = new UIAnimation(animType, go, delay);
+        TranslationAnimation anim = new TranslationAnimation(go, targetPos, time, delay);
+        sSingleton._PushAnimation(anim);
+    }
+
+    private void _PushAnimation(UIAnimation anim)
+    {
         mAnimations.Add(anim);
     }
 
@@ -74,23 +145,9 @@ public class FancyUIAnimations
             }
             else
             {
-                if(mActiveAnimation.mDelay > 0 && !hurryUp)
+                if(mActiveAnimation.Update(hurryUp))
                 {
-                    mActiveAnimation.mDelay -= Time.deltaTime;
-                }
-                else
-                {
-                    switch(mActiveAnimation.mAnimType)
-                    {
-                        case AnimationType.FADE_IN:
-                            float newAlpha = hurryUp ? 1 : Mathf.Min(1, mActiveAnimation.mUIObject.GetComponent<CanvasGroup>().alpha + (Time.deltaTime / FADE_IN_TIME));
-                            mActiveAnimation.mUIObject.GetComponent<CanvasGroup>().alpha = newAlpha;
-                            if(newAlpha >= 1)
-                            {
-                                mActiveAnimation = null;
-                            }
-                            break;
-                    }
+                    mActiveAnimation = null;
                 }
             }
         }

@@ -30,8 +30,8 @@ public class MainGameSystem : MonoBehaviour
     private void InitNewGame()
     {
         // initialize events here for the moment..
-        EventState.PushEvent(new IntroductionEvent(), 0, 0);
-        SonEventChain.Init();
+        EventState.PushEvent(new TutorialEventChain.IntroductionEvent(), 0, 0);
+        //SonEventChain.Init();
         InvestmentEventChain.Init();
         
         BusinessState.money = 1000;

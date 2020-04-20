@@ -11,12 +11,14 @@ public abstract class GameEvent
         SKIP
     }
 
+    private GameState.GameStage mPreviousStage;
     private EventResult mEventStatus = EventResult.CONTINUE;
 
     public void DoEvent()
     {
-        GameState.currentStage = GameState.GameStage.GS_EVENT; // pause the simulation
-        EventState.currentEvent = this; // set self as the callback for the UI
+        //mPreviousStage = GameState.currentStage;
+        //GameState.currentStage = GameState.GameStage.GS_EVENT; // pause the simulation
+        EventState.currentEvent = this; // set self as the callback for the UI. This also signals to other systems that they may need to pause.
 
         mEventStatus = EventStart(); // derived classes override this to do whatever, including populating the UI
 
@@ -35,8 +37,9 @@ public abstract class GameEvent
 
         if(mEventStatus == EventResult.DONE)
         {
-            // return to the simluation (this happens *before* setting it so that events that end have a chance to display their final message
-            GameState.currentStage = GameState.GameStage.GS_SIMULATION;
+            // return to the game (this happens *before* setting it so that events that end have a chance to display their final message
+            //GameState.currentStage = mPreviousStage;
+            EventEnd(choice);
             EventState.currentEvent = null;
             return;
         }
@@ -45,5 +48,6 @@ public abstract class GameEvent
     }
 
     protected abstract EventResult EventStart();
-    protected abstract EventResult OnPlayerDecision(int choice);
+    protected virtual EventResult OnPlayerDecision(int choice) { return EventResult.DONE; }
+    protected virtual void EventEnd(int choice) {}
 }

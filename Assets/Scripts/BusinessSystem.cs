@@ -6,7 +6,7 @@ public class BusinessSystem : MonoBehaviour
 {
     private float mPaymentTimer = 0;
     private float mPaymentTime = 0;
-    private float QUARTER_TIME = 10; // 2f;
+    private float QUARTER_TIME = 2;//10; // 2f;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +18,7 @@ public class BusinessSystem : MonoBehaviour
     void Update()
     {
         // If in any other state (including random event), simulation will be paused
-        if (GameState.currentStage == GameState.GameStage.GS_SIMULATION)
+        if (GameState.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)
         {
             if (CustomerState.totalQuarterlyCustomers == 0 && GameState.quarterTime >= QUARTER_TIME)
             {

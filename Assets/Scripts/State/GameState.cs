@@ -24,7 +24,10 @@ public class GameState
         // shop with overlay: Feather collection
         GS_OVERLAY_FEATHER_COLLECTION,
         // the game has ended
-        GS_GAME_OVER
+        GS_GAME_OVER,
+
+        // how many stages there are
+        MAX_VALUE
     };
 
     // This can be used to change stage for the main game loop.

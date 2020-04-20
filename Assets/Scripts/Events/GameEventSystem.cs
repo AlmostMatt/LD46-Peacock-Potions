@@ -9,7 +9,7 @@ public class GameEventSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GameState.currentStage == GameState.GameStage.GS_SIMULATION)
+        //if(GameState.currentStage == GameState.GameStage.GS_SIMULATION)
         {
             if(mEventTimer > 0)
             {
@@ -22,7 +22,7 @@ public class GameEventSystem : MonoBehaviour
                 if(e != null)
                 {
                     e.DoEvent();
-                    mEventTimer = Random.Range(1.5f,2.5f);
+                    mEventTimer = Random.Range(1.5f,2.5f); // want to reset this at the beginning of a new stage
                 }
             }
         }

@@ -48,9 +48,9 @@ public static class ProductTypeExtensions
             case ProductType.PT_FIRE_POTION:
                 return Color.red;
             case ProductType.PT_LUCK_POTION:
-                return Color.cyan;
+                return Color.yellow;
             case ProductType.PT_POISON_POTION:
-                return Color.black;
+                return Color.green;
             default: return Color.white;
         }
     }

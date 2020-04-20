@@ -79,19 +79,19 @@ public static class ProductTypeExtensions
         {
             case ProductType.PT_LOVE_POTION:
                 return new ResourceAndCount[] {
-                    new ResourceAndCount(ResourceType.RT_RED_FEATHER, 1)};
+                    new ResourceAndCount(ResourceType.RT_RED_FEATHER, 2)};
             case ProductType.PT_INVIS_POTION:
                 return new ResourceAndCount[] {
-                    new ResourceAndCount(ResourceType.RT_RED_FEATHER, 1),
+                    new ResourceAndCount(ResourceType.RT_GREEN_FEATHER, 1),
                     new ResourceAndCount(ResourceType.RT_BLUE_FEATHER, 1)};
             case ProductType.PT_FIRE_POTION:
                 return new ResourceAndCount[] {
-                    new ResourceAndCount(ResourceType.RT_BLUE_FEATHER, 1),
+                    new ResourceAndCount(ResourceType.RT_GOLD_FEATHER, 1),
                     new ResourceAndCount(ResourceType.RT_GREEN_FEATHER, 1)};
             case ProductType.PT_LUCK_POTION:
                 return new ResourceAndCount[] {
                     new ResourceAndCount(ResourceType.RT_RED_FEATHER, 1),
-                    new ResourceAndCount(ResourceType.RT_GREEN_FEATHER, 1)};
+                    new ResourceAndCount(ResourceType.RT_BLUE_FEATHER, 1)};
             case ProductType.PT_POISON_POTION:
                 return new ResourceAndCount[] {
                     new ResourceAndCount(ResourceType.RT_GOLD_FEATHER, 1)};

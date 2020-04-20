@@ -15,7 +15,6 @@ public class RenderFunctions
     {
         for (int i = 0; i < strings.Length; i++)
         {
-
             obj.transform.GetChild(i).GetComponent<Text>().text = strings[i];
         }
     }

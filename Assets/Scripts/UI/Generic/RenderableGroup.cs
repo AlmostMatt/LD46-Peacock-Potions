@@ -1,28 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 // Instantiates and updates game objects based on a list of renderables.
 public class RenderableGroup<RenderableType>
 {
+    private List<GameObject> mDividerPool = new List<GameObject>();
     private List<GameObject> mObjectPool = new List<GameObject>();
     private Transform mContainer;
     private GameObject mNewObjectInstance;
     private System.Action<RenderableType, GameObject> mRenderFunction;
     private System.Action<GameObject> mOnCreateCallback;
 
-    // Creates a renderable group based on a container, an object instance, and a render function.
-    public RenderableGroup(
-        Transform container,
-        GameObject newObjectInstance,
-        System.Action<RenderableType, GameObject> renderFunction,
-        System.Action<GameObject> onCreateCallback = null)
-    {
-        mContainer = container;
-        mNewObjectInstance = newObjectInstance;
-        mRenderFunction = renderFunction;
-        mOnCreateCallback = onCreateCallback;
-    }
+    private GameObject mDividerObject;
 
     // Creates a renderable group based on a container, assuming that the container has exactly one child that should be used as a new-object instance
     public RenderableGroup(
@@ -39,6 +30,7 @@ public class RenderableGroup<RenderableType>
         mNewObjectInstance = child;
         mRenderFunction = renderFunction;
         mOnCreateCallback = onCreateCallback;
+        InitializeDividerObject();
     }
 
     // Should be called once per frame
@@ -51,6 +43,16 @@ public class RenderableGroup<RenderableType>
     public void UpdateRenderables(List<RenderableType> renderables, int[] dividerIndexes)
     {
         // First, remove all the old dividers
+        for (int i=mContainer.childCount-1; i>=0; i--)
+        {
+            GameObject obj = mContainer.GetChild(i).gameObject;
+            if (IsDivider(obj))
+            {
+                mDividerPool.Add(obj);
+                obj.SetActive(false);
+                obj.transform.SetParent(null, false);
+            }
+        }
         // Then update the renderables
         int index = 0;
         if (renderables != null)
@@ -94,5 +96,37 @@ public class RenderableGroup<RenderableType>
             excessObject.transform.SetParent(null, false);
         }
         // Then add new dividers
+        for (int j =0; j< dividerIndexes.Length; j++)
+        {
+            GameObject divider;
+            if (mDividerPool.Count > 0)
+            {
+                divider = mDividerPool[mDividerPool.Count - 1];
+                mDividerPool.RemoveAt(mDividerPool.Count - 1);
+            }
+            else
+            {
+                divider = GameObject.Instantiate(mDividerObject);
+            }
+            divider.transform.SetParent(mContainer, false);
+            divider.SetActive(true);
+            divider.transform.SetSiblingIndex(dividerIndexes[j]);
+        }
+    }
+
+    private void InitializeDividerObject()
+    {
+        mDividerObject = new GameObject("Divider");
+        RectTransform rect = mDividerObject.AddComponent<RectTransform>();
+        // dividers should be right-aligned
+        // anchors should all be 0.5
+        rect.sizeDelta = new Vector2(600f, 2f);
+        Image img = mDividerObject.AddComponent<Image>();
+        img.color = Color.black;
+    }
+
+    private bool IsDivider(GameObject obj)
+    {
+        return obj.name.Contains("Divider");
     }
 }

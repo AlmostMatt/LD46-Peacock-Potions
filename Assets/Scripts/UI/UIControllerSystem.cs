@@ -255,7 +255,6 @@ public class UIControllerSystem : MonoBehaviour
                 = string.Format("${0}",totalPotionRevenue);
         } else if (OverlayViewFinancial.activeInHierarchy)
         {
-            string rightIndent = "         "; // "\t\t";
             int startOfQuarterBalance = BusinessState.quarterlyReport.initialBalance;
             int eventIncome = BusinessState.quarterlyReport.eventIncome;
             int peacockExpenses = BusinessState.peacock.quarterlyTotalCost;
@@ -267,17 +266,17 @@ public class UIControllerSystem : MonoBehaviour
             // include some event revenue and expenses
             // revenue rent etc
             List<string[]> financialReportRows = new List<string[]>();
-            financialReportRows.Add(new string[] { "Beginning Balance", string.Format("{0}", startOfQuarterBalance) });
-            financialReportRows.Add(new string[] { "\tPotion Sales", string.Format("+{0}" + rightIndent, totalPotionRevenue) });
-            financialReportRows.Add(new string[] { "\tPeacock Care", string.Format("-{0}" + rightIndent, peacockExpenses) });
+            financialReportRows.Add(new string[] { "Beginning Balance", "", string.Format("{0}", startOfQuarterBalance) });
+            financialReportRows.Add(new string[] { "Potion Sales", string.Format("+{0}", totalPotionRevenue), "" });
+            financialReportRows.Add(new string[] { "Peacock Care", string.Format("-{0}", peacockExpenses), "" });
             // Only show event-related if non-zero
-            financialReportRows.Add(new string[] { "\tEvents", string.Format("{0:+#;-#;+0}" + rightIndent, eventIncome + eventExpense) });
+            financialReportRows.Add(new string[] { "Events", string.Format("{0:+#;-#;+0}", eventIncome + eventExpense), "" });
             // <LINE> at index 4
-            financialReportRows.Add(new string[] { "Profit", string.Format("{0:+#;-#;+0}", profit) });
+            financialReportRows.Add(new string[] { "Profit", "", string.Format("{0:+#;-#;+0}", profit) });
             // TODO: make expenses that happen right now stand out
-            financialReportRows.Add(new string[] { "\tPay Rent", string.Format("<b>-{0}</b>", rent) });
+            financialReportRows.Add(new string[] { "Pay Rent", "", string.Format("<b>-{0}</b>", rent) });
             // <LINE> at index 7
-            financialReportRows.Add(new string[] { "New Balance", string.Format("{0}", newBalance) });
+            financialReportRows.Add(new string[] { "New Balance", "", string.Format("{0}", newBalance) });
             mOverlayFinancialRenderGroup.UpdateRenderables(financialReportRows, new int[] {4,7});
         }
         /**

@@ -302,6 +302,9 @@ public class UIControllerSystem : MonoBehaviour
             GameObject b1 = SimulationEventContent.transform.Find("DecisionPanel/Options/ButtonLeft").gameObject;
             GameObject b2 = SimulationEventContent.transform.Find("DecisionPanel/Options/ButtonRight").gameObject;
             GameObject b3 = SimulationEventContent.transform.Find("DecisionPanel/Options/ButtonWide").gameObject;
+            b1.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.2f;
+            b2.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.2f;
+            b3.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.2f;
             if (EventState.currentEventOptions != null) {
                 SimulationEventContent.transform.Find("DecisionPanel/TextTop").GetComponent<Text>().text = EventState.currentEventText;
                 SimulationEventContent.transform.Find("DecisionPanel/TextFull").GetComponent<Text>().text = "";

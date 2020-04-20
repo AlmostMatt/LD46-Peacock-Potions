@@ -118,7 +118,7 @@ public class TutorialEventChain
                     return EventResult.CONTINUE;
                 case EventStage.S1:
                     EventState.currentEventImage = "faceGrandfather";
-                    EventState.currentEventText = "\"Make new potions out of your feathers! Personally, I try to replace the potions I sold last season.\"";
+                    EventState.currentEventText = "\"Make new potions out of feathers! Personally, I try to replace the potions I sold last season.\"";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.S2 };
                     return EventResult.CONTINUE;

@@ -9,7 +9,7 @@ public class RelationshipState
     public static float wifeRelationship;
     public static bool wifeUsedLovePotion; // as an example
 
-    public static float sonRelationship;
+    public static float sonRelationship = 0;
 
     public static float cactusRelationship;
 

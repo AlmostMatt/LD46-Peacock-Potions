@@ -88,11 +88,11 @@ MonoBehaviour:
   - name: peacock
     sprite: {fileID: 21300000, guid: af1bd3ea7f6f11740be3946d4e0749c7, type: 3}
   - name: potion
-    sprite: {fileID: 21300000, guid: cc0dbd0d860a8fd44b84c580aade43d6, type: 3}
+    sprite: {fileID: 21300000, guid: a2c801c4f4450524ba59d1ce1f0172db, type: 3}
   - name: feather
-    sprite: {fileID: 21300000, guid: d7eee26beeb365d4cb194686859656a7, type: 3}
+    sprite: {fileID: 21300000, guid: be3324ac468905a4a9186f480f34a129, type: 3}
   - name: money
-    sprite: {fileID: 21300000, guid: aedc35fdfaa7fc54597ec2061b4c29f9, type: 3}
+    sprite: {fileID: 21300000, guid: ca4dd7995b11e3741a017cf7344398fa, type: 3}
   namedImages2:
   - name: facePlayer
     sprite: {fileID: 21300000, guid: 429dad345eb3da74fbad324e3ef1fb88, type: 3}

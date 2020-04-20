@@ -179,7 +179,15 @@ public class UIControllerSystem : MonoBehaviour
          */
         if (EventState.currentEvent != null)
         {
-            SimulationEventContent.transform.Find("Focus image").GetComponent<Image>().sprite = SpriteManager.GetSprite(EventState.currentEventImage);
+            // Set the image in one of two possible spots
+            string focusImage = EventState.currentEventImage;
+            bool isFace = focusImage.Contains("face");
+            bool isOtherImage = (focusImage != "" && !isFace);
+            SimulationEventContent.transform.Find("Face").GetComponent<Image>().sprite = SpriteManager.GetSprite(EventState.currentEventImage);
+            SimulationEventContent.transform.Find("Face").gameObject.SetActive(isFace);
+            SimulationEventContent.transform.Find("NonFace/Image").GetComponent<Image>().sprite = SpriteManager.GetSprite(EventState.currentEventImage);
+            SimulationEventContent.transform.Find("NonFace").gameObject.SetActive(isOtherImage);
+            // Set the text and options
             SimulationEventContent.transform.Find("DecisionPanel/Text").GetComponent<Text>().text = EventState.currentEventText;
             mEventOptionRenderGroup.UpdateRenderables(new List<string>(EventState.currentEventOptions));
         }

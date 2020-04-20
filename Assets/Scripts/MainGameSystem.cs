@@ -113,6 +113,8 @@ public class MainGameSystem : MonoBehaviour
         int expenses = BusinessState.rent;
         BusinessState.quarterlyReport.livingExpenses = expenses;
         BusinessState.money -= expenses;
+        // Take a snapshot of the current inventory for end-of-q report
+        System.Array.Copy(BusinessState.inventory, BusinessState.quarterlyReport.unsoldPotions, BusinessState.inventory.Length);
         BusinessState.peacock.QuarterOver();
     }
 }

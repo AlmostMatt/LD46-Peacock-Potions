@@ -14,6 +14,11 @@ public enum ResourceType
 
 public static class ResourceTypeExtensions
 {
+    public static string GetImage(this ResourceType resourceType)
+    {
+        return "feather";
+    }
+
     public static Color GetColor(this ResourceType resourceType)
     {
         switch (resourceType)

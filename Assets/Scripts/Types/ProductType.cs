@@ -15,6 +15,11 @@ public enum ProductType
 
 public static class ProductTypeExtensions
 {
+    public static string GetImage(this ProductType productType)
+    {
+        return "potion";
+    }
+
     public static string GetName(this ProductType productType)
     {
         switch (productType)

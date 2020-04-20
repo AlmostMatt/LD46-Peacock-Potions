@@ -311,7 +311,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -44, y: 476.00003}
+  m_AnchoredPosition: {x: -133, y: 476.00003}
   m_SizeDelta: {x: 1029.7, y: 97.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1585669599238679648
@@ -1341,7 +1341,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -587, y: 476.00003}
+  m_AnchoredPosition: {x: -613, y: 476.00003}
   m_SizeDelta: {x: 586.8, y: 97.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3530791747800933628
@@ -2064,6 +2064,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3097143621122386132, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
+        type: 3}
+      propertyPath: m_Text
+      value: Medicine ($9999)
+      objectReference: {fileID: 0}
     - target: {fileID: 7203872550421645745, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2083,11 +2088,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 105.79
-      objectReference: {fileID: 0}
-    - target: {fileID: 3097143621122386132, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
-        type: 3}
-      propertyPath: m_Text
-      value: Medicine ($9999)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25b35aca2d020e7449edbe58bf4aeb0f, type: 3}
@@ -2214,6 +2214,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3097143621122386132, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
+        type: 3}
+      propertyPath: m_Text
+      value: Cheap ($9999)
+      objectReference: {fileID: 0}
     - target: {fileID: 7203872550421645745, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2233,11 +2238,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 104.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 3097143621122386132, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
-        type: 3}
-      propertyPath: m_Text
-      value: Cheap ($9999)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25b35aca2d020e7449edbe58bf4aeb0f, type: 3}
@@ -2364,6 +2364,13 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3097143621122386132, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
+        type: 3}
+      propertyPath: m_Text
+      value: 'Deluxe ($9999)
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 7203872550421645745, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2383,13 +2390,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 147.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3097143621122386132, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
-        type: 3}
-      propertyPath: m_Text
-      value: 'Deluxe ($9999)
-
-'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25b35aca2d020e7449edbe58bf4aeb0f, type: 3}
@@ -2516,6 +2516,13 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3097143621122386132, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
+        type: 3}
+      propertyPath: m_Text
+      value: 'Pillow ($9999)
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 7203872550421645745, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2535,13 +2542,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 109.81
-      objectReference: {fileID: 0}
-    - target: {fileID: 3097143621122386132, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
-        type: 3}
-      propertyPath: m_Text
-      value: 'Pillow ($9999)
-
-'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25b35aca2d020e7449edbe58bf4aeb0f, type: 3}
@@ -2668,6 +2668,13 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3097143621122386132, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
+        type: 3}
+      propertyPath: m_Text
+      value: 'Basic ($9999)
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 7203872550421645745, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2688,13 +2695,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 105.9
       objectReference: {fileID: 0}
-    - target: {fileID: 3097143621122386132, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
-        type: 3}
-      propertyPath: m_Text
-      value: 'Basic ($9999)
-
-'
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25b35aca2d020e7449edbe58bf4aeb0f, type: 3}
 --- !u!224 &8849501875697781536 stripped
@@ -2710,11 +2710,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7936501363713889513}
     m_Modifications:
-    - target: {fileID: 8868609936756007867, guid: 63964ea157a9f02488374845f04069e5,
-        type: 3}
-      propertyPath: m_Name
-      value: IconAndCount
-      objectReference: {fileID: 0}
     - target: {fileID: 1132541920355584186, guid: 63964ea157a9f02488374845f04069e5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2819,6 +2814,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868609936756007867, guid: 63964ea157a9f02488374845f04069e5,
+        type: 3}
+      propertyPath: m_Name
+      value: IconAndCount
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63964ea157a9f02488374845f04069e5, type: 3}
@@ -2945,6 +2945,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3097143621122386132, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
+        type: 3}
+      propertyPath: m_Text
+      value: Growth Hormones ($9999)
+      objectReference: {fileID: 0}
     - target: {fileID: 7203872550421645745, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2964,11 +2969,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 130.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3097143621122386132, guid: 25b35aca2d020e7449edbe58bf4aeb0f,
-        type: 3}
-      propertyPath: m_Text
-      value: Growth Hormones ($9999)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25b35aca2d020e7449edbe58bf4aeb0f, type: 3}

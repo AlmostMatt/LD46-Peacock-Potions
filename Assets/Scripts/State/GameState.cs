@@ -71,6 +71,10 @@ public class GameState
     public static GameStage currentStage = GameStage.GS_MAIN_MENU;
     public static int quarter = 0;
     public static float quarterTime = 0; // seconds elapsed in the current quarter
+    public static int year
+    {
+        get { return 452 + (quarter / 4); }
+    }
 
     public enum Season
     {
@@ -90,7 +94,7 @@ public static class SeasonExtensions
 {
     public static string GetImage(this GameState.Season season)
     {
-        switch (GameState.season)
+        switch (GameState.season) // surely this should be the season passed in, right?
         {
             case GameState.Season.SPRING:
                 return "spring";
@@ -102,6 +106,23 @@ public static class SeasonExtensions
                 return "winter";
             default:
                 return "summer";
+        }
+    }
+
+    public static string GetName(this GameState.Season season)
+    {
+        switch(season)
+        {
+            case GameState.Season.SPRING:
+                return "Spring";
+            case GameState.Season.SUMMER:
+                return "Summer";
+            case GameState.Season.FALL:
+                return "Fall";
+            case GameState.Season.WINTER:
+                return "Winter";
+            default:
+                return "Smarch";
         }
     }
 }

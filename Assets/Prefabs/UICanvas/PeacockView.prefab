@@ -307,11 +307,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5072951764472765697}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -133, y: 476.00003}
+  m_AnchoredPosition: {x: -660, y: 476.00003}
   m_SizeDelta: {x: 1029.7, y: 97.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1585669599238679648
@@ -665,8 +665,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1855789547640040272}
   - {fileID: 4258235492475796004}
+  - {fileID: 1855789547640040272}
   - {fileID: 562333936662347536}
   - {fileID: 1649677654019923806}
   - {fileID: 8630536594901414841}
@@ -1223,11 +1223,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5072951764472765697}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -613, y: 476.00003}
+  m_AnchoredPosition: {x: -136, y: 476.00003}
   m_SizeDelta: {x: 586.8, y: 97.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3530791747800933628
@@ -1265,13 +1265,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 3
     m_MaxSize: 72
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'End of Fall, Year 1702
+  m_Text: 'Summer, Year 1702
 
 '
 --- !u!225 &15753891971892522

@@ -306,7 +306,7 @@ public class UIControllerSystem : MonoBehaviour
      */
     public void PreparePeacockSummary()
     {
-        for (int i = 0; i < PeacockView.transform.childCount; ++i)
+        for(int i = 0; i < PeacockView.transform.childCount; ++i)
         {
             GameObject go = PeacockView.transform.GetChild(i).gameObject;
             go.GetComponent<CanvasGroup>().alpha = 0;
@@ -315,6 +315,7 @@ public class UIControllerSystem : MonoBehaviour
         }
 
         // I assume there's a more proper way to do this, but I'm too lazy to figure it out
+        PeacockView.transform.Find("Date").GetComponent<Text>().text = string.Format("{0}, Year {1}", GameState.season.GetName(), GameState.year);
         PeacockView.transform.Find("FoodReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.foodDesc;
         PeacockView.transform.Find("ActivityReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.activityDesc;
         PeacockView.transform.Find("ExtraReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.extraDesc;

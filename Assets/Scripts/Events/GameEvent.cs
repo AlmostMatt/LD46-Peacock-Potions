@@ -14,6 +14,9 @@ public enum EventStage
     S2,
     S3,
     S4,
+    S5,
+    S6,
+    S7,
 
     HAS_POTION,
     NO_POTION,

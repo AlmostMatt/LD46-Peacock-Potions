@@ -12,14 +12,24 @@ public class TutorialEventChain
             {
                 case EventStage.START:
                     EventState.currentEventImage = "facePlayer";
-                    EventState.currentEventText = "You inherited the family potion business from your father, who passed away last fall.";
+                    EventState.currentEventText = "It’s been a month since your father died and passed the family potions shop on to you.";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S1 };
+                    return EventResult.CONTINUE;
+                case EventStage.S1:                    
+                    EventState.currentEventText = "Passed on for generations, it offers potions made from peacock feathers.";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.S2 };
-                    return EventResult.CONTINUE;
+                    return EventResult.CONTINUE;   
                 case EventStage.S2:
-                    EventState.currentEventImage = "peacock";
-                    EventState.currentEventText = "Gather feathers from your magical peacock, use them to brew potions, and keep the business alive!";
-                    EventState.currentEventOptions = EventState.OK_OPTION;
+                    EventState.currentEventText = "Now it's your turn to keep the business alive.";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S3 };
+                    return EventResult.CONTINUE;
+                case EventStage.S3:
+                    EventState.currentEventText = "Spring starts, and customers come and go, buying the potions your father made before he passed.";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S3 };
                     EventState.PushEvent(new ExplainSalesEvent(), 0, 0, GameState.GameStage.GS_OVERLAY_POTION_SALES);
                     return EventResult.DONE;
             }
@@ -33,7 +43,7 @@ public class TutorialEventChain
         {
             GameObject.FindObjectsOfType<UIControllerSystem>()[0].MoveEventOverlayForTutorial();
             EventState.currentEventImage = "";
-            EventState.currentEventText = "You look over the end-of-season report. Not bad for your first spring!";
+            EventState.currentEventText = "Spring comes to a close, and you look over the end-of-season report. Your father's potions sold well.";
             EventState.currentEventOptions = null;
             return EventResult.PERSISTENT;
         }
@@ -93,21 +103,70 @@ public class TutorialEventChain
 
     private class ExplainBrewingEvent : GameEvent
     {
-        protected override EventResult EventStart()
+        protected override EventResult OnStage(EventStage currentStage)
         {
-            EventState.currentEventText = "You take stock of your inventory. Maybe you should brew potions to replace the ones you sold. You could change their prices, too.";
-            EventState.currentEventOptions = EventState.OK_OPTION;
-            EventState.PushEvent(new ExplainPeacockEvent(), 0, 0, GameState.GameStage.GS_PEACOCK);
+            switch(currentStage)
+            {
+                case EventStage.START:
+                    EventState.currentEventImage = "facePlayer";
+                    EventState.currentEventText = "You take stock of your potions. What did Dad say about this..?";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S1 };
+                    return EventResult.CONTINUE;
+                case EventStage.S1:
+                    EventState.currentEventImage = "faceGrandfather";
+                    EventState.currentEventText = "\"Make new potions out of your feathers! Personally, I try to replace the potions I sold last season.\"";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S2 };
+                    return EventResult.CONTINUE;
+                case EventStage.S2:
+                    EventState.currentEventText = "\"You can change the prices too. If you didn't sell much of a potion, try making it cheaper.\"";
+                    EventState.currentEventOptions = EventState.OK_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S3 };
+                    return EventResult.CONTINUE;
+                case EventStage.S3:
+                    EventState.currentEventText = "\"Some potions just aren't as popular as others... and people's tastes can change, too. It's important to adapt!\"";
+                    EventState.currentEventOptions = EventState.OK_OPTION;
+                    EventState.PushEvent(new ExplainPeacockEvent(), 0, 0, GameState.GameStage.GS_PEACOCK);
+                    return EventResult.DONE;
+            }
             return EventResult.DONE;
         }
     }
 
     private class ExplainPeacockEvent : GameEvent
     {
-        protected override EventResult EventStart()
+        protected override EventResult OnStage(EventStage currentStage)
         {
-            EventState.currentEventText = "You go over to your peacock. How should you treat it this summer?";
-            EventState.currentEventOptions = EventState.OK_OPTION;
+            switch(currentStage)
+            {
+                case EventStage.START:  
+                    EventState.currentEventImage = "facePlayer";
+                    EventState.currentEventText = "Finished with potion-brewing, you check on the family peacock.";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S1 };
+                    return EventResult.CONTINUE;
+                case EventStage.S1:
+                    EventState.currentEventImage = "faceGrandfather";
+                    EventState.currentEventText = "\"The peacock is the key to our business! Pay attention to its needs to keep it producing feathers.\"";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S2 };
+                    return EventResult.CONTINUE;
+                case EventStage.S2:
+                    EventState.currentEventText = "\"Decide what to do for it next season. It's a bit sad right now; I think it misses me.\"";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S3 };
+                    return EventResult.CONTINUE;
+                case EventStage.S3:
+                    EventState.currentEventText = "\"The feathers you get will vary. I must admit, the peacock remains mysterious, even to me!\"";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S4 };
+                    return EventResult.CONTINUE;
+                case EventStage.S4:
+                    EventState.currentEventText = "\"But remember, without it, you have no business! Keep it happy! Keep it healthy! Keep it alive!\"";
+                    EventState.currentEventOptions = EventState.OK_OPTION;
+                    return EventResult.DONE;
+            }
             return EventResult.DONE;
         }
     }

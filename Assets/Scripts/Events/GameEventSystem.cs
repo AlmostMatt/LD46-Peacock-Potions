@@ -10,25 +10,28 @@ public class GameEventSystem : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {        
         if(mPrevStage != GameState.currentStage)
         {
             mEventTimer = 0;
             mPrevStage = GameState.currentStage;
         }
 
-        if(mEventTimer > 0)
+        if(EventState.currentEvent == null)
         {
-            mEventTimer -= Time.deltaTime;
-        }
-
-        if(mEventTimer <= 0)
-        {
-            GameEvent e = EventState.PopEvent();
-            if(e != null)
+            if(mEventTimer > 0)
             {
-                e.DoEvent();
-                mEventTimer = Random.Range(1.5f,2.5f);
+                mEventTimer -= Time.deltaTime;
+            }
+
+            if(mEventTimer <= 0)
+            {
+                GameEvent e = EventState.PopEvent();
+                if(e != null)
+                {
+                    e.DoEvent();
+                    mEventTimer = Random.Range(1.5f,2.5f);
+                }
             }
         }
     }

@@ -30,7 +30,7 @@ public class BusinessSystem : MonoBehaviour
                 if (GameState.quarter > 20)
                 {
                     // TODO: something somewhere will check for proper game over (player death or business going under)
-                    GameState.currentStage = GameState.GameStage.GS_GAME_OVER;
+                    MainGameSystem.GameOver();
                 }
                 else
                 {

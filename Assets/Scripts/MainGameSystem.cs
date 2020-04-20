@@ -140,4 +140,14 @@ public class MainGameSystem : MonoBehaviour
         // just after rent payment is the timing that is used for end-of-q and start-of-q balance
         BusinessState.quarterlyReport.finalBalance = (int)BusinessState.money;
     }
+
+    public static void GameOver()
+    {
+        GameState.epilogueDirty = true;
+        GameState.epilogueLines.Add("GAME OVER");
+        GameState.epilogueLines.Add("You died");
+        GameState.epilogueLines.Add("Your wife died");
+        GameState.epilogueLines.Add("You kept the business alive for " + GameState.elapsedYears + " years");
+        GameState.currentStage = GameState.GameStage.GS_GAME_OVER;
+    }
 }

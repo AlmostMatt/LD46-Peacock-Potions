@@ -79,6 +79,10 @@ public class GameState
     {
         get { return 452 + (quarter / 4); }
     }
+    public static int elapsedYears
+    {
+        get { return (quarter / 4); }
+    }
 
     public enum Season
     {
@@ -92,6 +96,8 @@ public class GameState
         get { return (Season)(quarter % 4); }
     }
 
+    public static bool epilogueDirty = false;
+    public static List<string> epilogueLines = new List<string>();
 }
 
 public static class SeasonExtensions

@@ -94,7 +94,7 @@ public class BusinessSystem : MonoBehaviour
 
         // Have a random chance to spawn an event
         // TODO: move event spawning into a new system
-        if (Random.Range(0f, 1f) <= 0.01f)
+        if (Random.Range(0f, 1f) <= 0.01f && GameState.quarter > 4)
         {
             EventState.PushEvent(new ThiefEvent(), GameState.quarter);
         }

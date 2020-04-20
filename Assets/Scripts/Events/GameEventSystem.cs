@@ -6,24 +6,29 @@ public class GameEventSystem : MonoBehaviour
 {
     private float mEventTimer = 0;
 
+    private GameState.GameStage mPrevStage = GameState.GameStage.GS_MAIN_MENU;
+
     // Update is called once per frame
     void Update()
     {
-        //if(GameState.currentStage == GameState.GameStage.GS_SIMULATION)
+        if(mPrevStage != GameState.currentStage)
         {
-            if(mEventTimer > 0)
-            {
-                mEventTimer -= Time.deltaTime;
-            }
+            mEventTimer = 0;
+            mPrevStage = GameState.currentStage;
+        }
 
-            if(mEventTimer <= 0)
+        if(mEventTimer > 0)
+        {
+            mEventTimer -= Time.deltaTime;
+        }
+
+        if(mEventTimer <= 0)
+        {
+            GameEvent e = EventState.PopEvent();
+            if(e != null)
             {
-                GameEvent e = EventState.PopEvent();
-                if(e != null)
-                {
-                    e.DoEvent();
-                    mEventTimer = Random.Range(1.5f,2.5f); // want to reset this at the beginning of a new stage
-                }
+                e.DoEvent();
+                mEventTimer = Random.Range(1.5f,2.5f);
             }
         }
     }

@@ -76,8 +76,20 @@ public class TutorialEventChain
         {
             EventState.currentEventText = "You take stock of your inventory. Maybe you should brew potions to replace the ones you sold. You could change their prices, too.";
             EventState.currentEventOptions = EventState.OK_OPTION;
+            EventState.PushEvent(new ExplainPeacockEvent(), 0, 0, GameState.GameStage.GS_PEACOCK);
             return EventResult.DONE;
         }
     }
+
+    private class ExplainPeacockEvent : GameEvent
+    {
+        protected override EventResult EventStart()
+        {
+            EventState.currentEventText = "You go over to your peacock. How should you treat it this summer?";
+            EventState.currentEventOptions = EventState.OK_OPTION;
+            return EventResult.DONE;
+        }
+    }
+
 
 }

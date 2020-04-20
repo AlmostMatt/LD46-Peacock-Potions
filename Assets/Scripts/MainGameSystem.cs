@@ -17,6 +17,7 @@ public class MainGameSystem : MonoBehaviour
         if (GameState.currentStage == GameState.GameStage.GS_MAIN_MENU)
         {
             InitNewGame();
+            GameState.quarter = -1; // hack it to start at 0
             StartNextQuarter();
             // Start with simulation
             GameState.currentStage = GameState.GameStage.GS_SIMULATION;

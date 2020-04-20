@@ -156,7 +156,7 @@ public class Peacock
             mProductionDistribution[i] /= totalDist;
         }
 
-        float baseNumFeathers = Mathf.Lerp(10, 100, (happiness / 100));
+        float baseNumFeathers = Mathf.Lerp(8, 16, (happiness / 100));
         if(mQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
         {
             baseNumFeathers *= 1.5f;

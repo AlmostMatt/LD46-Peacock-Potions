@@ -182,6 +182,7 @@ public class UIControllerSystem : MonoBehaviour
 
     private void StartNextQuarter()
     {
+        GameState.quarter += 1;
         BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
         BusinessState.peacock.StartQuarter();
         GameState.currentStage = GameState.GameStage.GS_SIMULATION;

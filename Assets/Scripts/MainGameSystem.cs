@@ -37,7 +37,8 @@ public class MainGameSystem : MonoBehaviour
         SonEventChain.Init();
         InvestmentEventChain.Init();
         
-        BusinessState.money = 500; // some starting money
+        BusinessState.money = 1000;
+        BusinessState.rent = 250;
 
         // starting resources
         for(int i = 0; i < BusinessState.resources.Length; ++i)
@@ -65,7 +66,7 @@ public class MainGameSystem : MonoBehaviour
         for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
         {
             CustomerState.productDemand[i] = Random.Range(0.1f, 0.9f); // TODO: ensure they sum to 1? maybe... not necessarily needed, but it would be good to ensure some minimum sum so that players at least get SOME customers
-            CustomerState.optimalPrices[i] = Random.Range(50, 100);
+            CustomerState.optimalPrices[i] = Random.Range(30,70); // TODO: non-uniform distribution
         }
     }
 

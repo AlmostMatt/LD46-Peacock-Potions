@@ -6,16 +6,14 @@ using UnityEngine;
 
 public class BusinessState
 {
-    public static float money = 0; // TODO: maybe we make a "currency" or "resources" array, if needed
-    public static Peacock peacock = new Peacock();
-    // public static bool[] animals = new bool[(int)AnimalType.AT_MAX]; // TODO: this could be ints for health, or maybe structs if need to track more per-animal
+    public static int rent = 0;
+    public static float money = 0;
+    public static Peacock peacock = new Peacock();    
     public static int[] resources = new int[(int)ResourceType.RT_MAX];
     public static int[] inventory = new int[(int)ProductType.PT_MAX];
     // Set a default price (if not a multiple of 10, modify increments in RenderFunctions)
     public static float[] prices = Enumerable.Repeat(20f, (int)ProductType.PT_MAX).ToArray();
-
-    public static int peacockFood = 0;
-
+    
     public class QuarterlyReport
     {
         public int[] production = new int[(int)ProductType.PT_MAX];

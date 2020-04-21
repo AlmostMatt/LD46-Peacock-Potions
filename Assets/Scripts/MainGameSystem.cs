@@ -39,7 +39,7 @@ public class MainGameSystem : MonoBehaviour
         BusinessState.quarterlyReport.initialBalance = (int)BusinessState.money;
         // Set final balance for the previous quarter so that next Q can use it as initial balance
         BusinessState.quarterlyReport.finalBalance = (int)BusinessState.money;
-        BusinessState.rent = 250;
+        BusinessState.rent = 300;
 
         // starting resources
         for(int i = 0; i < BusinessState.resources.Length; ++i)

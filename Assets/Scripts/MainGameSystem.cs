@@ -170,7 +170,6 @@ public class MainGameSystem : MonoBehaviour
 
         bool happyMarriage = RelationshipState.wifeMarried;
 
-
         // Did you die of old age?
         if (GameState.reachedEndOfLife)
         {
@@ -179,7 +178,7 @@ public class MainGameSystem : MonoBehaviour
             GameState.epilogueLines.Add("You kept the business alive for " + GameState.elapsedYears + " years before retiring.");
             // Did anyone inherit?
             // TODO: is there a more explicit relationship between son and plan to inherit
-            if (RelationshipState.sonWasBorn && RelationshipState.sonRelationship > 0f)
+            if (RelationshipState.sonWasBorn && RelationshipState.sonRelationship > 5f)
             {
                 GameState.epilogueLines.Add("Your son inherited the business, so the business will live on for generations to come.");
             } else if (RelationshipState.sonWasBorn)
@@ -192,11 +191,18 @@ public class MainGameSystem : MonoBehaviour
             }
         } else
         {
-            // If so, what was the last expense? (event vs rent)
-            // Did Peacock die?
-            // Otherwise the business failed for financial reasons
-            string causeOfFailure = "before going bankrupt.";
-            GameState.epilogueLines.Add("You kept the business alive for " + GameState.elapsedYears + " years "+ causeOfFailure);
+            // did the peacock die?
+            if(GameState.peacockDied)
+            {
+                string causeOfFailure = ", but its death ended the business.";
+                GameState.epilogueLines.Add("You kept the peacock alive for " + GameState.elapsedYears + " years "+ causeOfFailure);
+            }
+            else if(BusinessState.missedRent)
+            {
+                string causeOfFailure = "before going bankrupt.";
+                GameState.epilogueLines.Add("You kept the business alive for " + GameState.elapsedYears + " years "+ causeOfFailure);
+            }
+
         }
 
         GameState.currentStage = GameState.GameStage.GS_GAME_OVER;

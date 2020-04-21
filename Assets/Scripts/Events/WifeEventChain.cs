@@ -265,10 +265,11 @@ public class WifeEventChain
                     EventState.currentEventImage = "facePlayerNeutral";
                     EventState.currentEventText = "\"Ah, " + NAME + "'s birthday is coming up!\"";
                     EventState.currentEventOptions = new string[]
-                        {"Buy her a gift","I don't have any money to spare"};
+                        {"Buy her a gift (-$300)","I don't have any money to spare"};
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.ACCEPT, EventStage.REFUSE };
                     break;
                 case EventStage.ACCEPT:
+                    BusinessState.MoneyChangeFromEvent(-300);
                     RelationshipState.wifeRelationship += 11f;
                     EventState.currentEventImage = "facePlayerHappy";
                     EventState.currentEventText = "\"I know just the thing to get! I hope she likes it.\"";

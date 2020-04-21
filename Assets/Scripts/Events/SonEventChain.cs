@@ -204,6 +204,7 @@ public class SonEventChain
                 case EventStage.START:
                     EventState.currentEventImage = "faceSonHappy";
                     EventState.currentEventText = "\"Dad! Thank you for my birthday present!\" He gives you a big hug and then runs outside.";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     RelationshipState.sonRelationship += 10;
                     return EventResult.DONE;
             }

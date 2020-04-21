@@ -8,7 +8,7 @@ public class SonEventChain
 
     public static void Init()
     {
-        EventState.PushEvent(new SonEventOne(), 0);
+        EventState.PushEvent(new SonEventOne(), GameState.quarter + 1);
     }
 
     private class SonEventOne : GameEvent
@@ -56,6 +56,7 @@ public class SonEventChain
                     EventState.currentEventOptions = EventState.OK_OPTION;
                     RelationshipState.sonRelationship -= 10;
                     letSonHelpBottle = false;
+                    EventState.PushEvent(new SonEventTwo(), GameState.quarter + 2);
                     return EventResult.DONE;
             }
             return EventResult.CONTINUE;
@@ -120,18 +121,95 @@ public class SonEventChain
                     EventState.currentEventImage = "faceSonNeutral";
                     EventState.currentEventText = "He fetches a broom and helps you clean up. Then he decides to go outside.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    EventState.PushEvent(new SonEventOne(), GameState.quarter + 1); // schedule another event for next quarter
+                    EventState.PushEvent(new SonEventTwo(), GameState.quarter + 2); // schedule another event for next quarter
                     RelationshipState.sonRelationship += 5;
                     return EventResult.DONE;
                 case EventStage.GO_OUTSIDE:
                     EventState.currentEventImage = "faceSonSad";
-                    EventState.currentEventText = "He sniffles and goes outside.";
+                    EventState.currentEventText = "He sniffles and heads upstairs.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    EventState.PushEvent(new SonEventOne(), GameState.quarter + 1); // schedule another event for next quarter
+                    EventState.PushEvent(new SonEventTwo(), GameState.quarter + 2); // schedule another event for next quarter
                     RelationshipState.sonRelationship -= 5;
                     return EventResult.DONE;
             }
             return EventResult.CONTINUE;
         }
-    }    
+    }
+
+    private class SonEventTwo : GameEvent
+    {
+        private const int toyCost = 200;
+        protected override EventResult OnStage(EventStage currentStage)
+        {
+            switch(currentStage)
+            {
+                case EventStage.START:
+                    EventState.currentEventImage = "faceWifeNeutral";
+                    EventState.currentEventText = string.Format("{0} comes up to you. She suggests buying a special toy for your son's birthday.", WifeEventChain.NAME);
+                    if(BusinessState.money >= toyCost)
+                    {
+                        EventState.currentEventOptions = new string[]
+                        {
+                            "Give her " + Utilities.FormatMoney(toyCost),
+                            "Say you can't afford it"
+                        };
+                        mCurrentOptionOutcomes = new EventStage[] { EventStage.ACCEPT, EventStage.REFUSE };
+                    }
+                    else
+                    {
+                        EventState.currentEventOptions = new string[]
+                        {
+                            "Say you can't afford it"
+                        };
+                        mCurrentOptionOutcomes = new EventStage[] { EventStage.REFUSE };
+                    }
+                    break;
+                case EventStage.ACCEPT:
+                    EventState.currentEventImage = "faceWifeHappy";
+                    EventState.currentEventText = "\"I think this will make him very happy.\" She gives you a quick kiss and leaves the shop.";
+                    EventState.PushEvent(new SonEventBirthday(), GameState.quarter+1);
+                    RelationshipState.wifeRelationship += 5;
+                    BusinessState.MoneyChangeFromEvent(-toyCost);
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    return EventResult.DONE;                    
+                case EventStage.REFUSE:
+                    EventState.currentEventImage = "faceWifeSad";
+                    if(BusinessState.money <= toyCost * 5)
+                    {
+                        EventState.currentEventText = "\"That's too bad. I know things are tough right now. He'll understand.\"";
+                    }
+                    else if(BusinessState.money >= toyCost * 10)
+                    {
+                        EventState.currentEventText = "\"I think we could spare it. How can you neglect our son like that?\" She goes outside.";
+                        RelationshipState.wifeRelationship -= 10;
+                    }
+                    else
+                    {
+                        EventState.currentEventText = "\"Okay, I'll see if I can find something else myself...\" She leaves.";
+                    }
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    return EventResult.DONE;
+            }
+
+            return EventResult.CONTINUE;
+        }
+    }
+
+    private class SonEventBirthday : GameEvent
+    {
+        protected override EventResult OnStage(EventStage currentStage)
+        {
+            switch(currentStage)
+            {
+                case EventStage.START:
+                    EventState.currentEventImage = "faceSonHappy";
+                    EventState.currentEventText = "\"Dad! Thank you for my birthday present!\" He gives you a big hug and then runs outside.";
+                    RelationshipState.sonRelationship += 10;
+                    return EventResult.DONE;
+            }
+
+            return EventResult.DONE;
+        }
+    }
+
 }

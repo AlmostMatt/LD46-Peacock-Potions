@@ -105,7 +105,7 @@ public class Peacock
                 quarterlyReport.foodDesc = "Fed it cheap food.";
                 break;
             case FoodType.FT_BASIC:
-                quarterlyReport.foodDesc = "Fed it good food.";
+                quarterlyReport.foodDesc = "Fed it basic food.";
                 break;
             case FoodType.FT_DELUXE:
                 quarterlyReport.foodDesc = "Fed it deluxe food.";
@@ -132,12 +132,30 @@ public class Peacock
 
         if(mQuarterlyExtras[(int)PeacockExtraType.ET_MEDICINE])
         {
-            health += 30;
+            if(health > 60)
+            {
+                health -= 30; // don't give medicine to a healthly peacock!
+            }
+            else if(health < 40)
+            {
+                health += 20;
+            }
         }
 
         if(mQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
         {
             health -= 20;
+        }
+
+        if(Random.Range(0f, 1f) < 0.1f && health > 20)
+        {
+            health -= 15;
+            // sometimes it just gets sick
+        }
+
+        if(health < 50 && health > 25)
+        {
+            health += 1; // sometimes it gets better on its own
         }
 
         switch(GameState.season)
@@ -241,10 +259,16 @@ public class Peacock
         */
 
         float baseNumFeathers = Mathf.Lerp(0, 20, 0.5f * ((happiness / 100) + (comfort / 100)));
+        if(quarterlyFoodType == FoodType.FT_DELUXE)
+        {
+            baseNumFeathers += 10;
+        }
+
         if(mQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
         {
             baseNumFeathers *= 1.5f;
         }
+
         int totalFeathers = Mathf.RoundToInt(baseNumFeathers * Random.Range(0.9f, 1.1f));
         for(int i = 0; i < producableResources.Length; ++i)
         {

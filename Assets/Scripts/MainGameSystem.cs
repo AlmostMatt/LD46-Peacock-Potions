@@ -32,7 +32,6 @@ public class MainGameSystem : MonoBehaviour
     {
         // initialize events here for the moment..
         EventState.PushEvent(new TutorialEventChain.IntroductionEvent(), 0, 0);
-        // SonEventChain.Init();
         WifeEventChain.Init();
         InvestmentEventChain.Init();
         
@@ -102,6 +101,11 @@ public class MainGameSystem : MonoBehaviour
         int newInitialBalance = BusinessState.quarterlyReport.finalBalance;
         BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
         BusinessState.quarterlyReport.initialBalance = newInitialBalance;
+
+        if(GameState.quarter >= 4)
+        {
+            CustomerState.storePopularity += 0.02f;
+        }
 
         GameState.quarter += 1;
         GameState.quarterTime = 0;

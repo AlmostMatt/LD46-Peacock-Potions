@@ -9,7 +9,7 @@ public class WifeEventChain
         Debug.Log("pushing son event");
         EventState.PushEvent(new WifeEventOne(), 1);
     }
-    const string NAME = "Susie";
+    public const string NAME = "Susie";
 
     private static bool DrankLovePotion = false;
 

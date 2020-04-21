@@ -163,12 +163,14 @@ public class MainGameSystem : MonoBehaviour
         // Did you die of old age?
         if (GameState.reachedEndOfLife)
         {
+            // wealth > X
+
             GameState.epilogueLines.Add("You kept the business alive for " + GameState.elapsedYears + " years before retiring.");
             // Did anyone inherit?
             // TODO: is there a more explicit relationship between son and plan to inherit
             if (RelationshipState.sonWasBorn && RelationshipState.sonRelationship > 0f)
             {
-                GameState.epilogueLines.Add("Your son inherited the business, and the business will live on for generations to come.");
+                GameState.epilogueLines.Add("Your son inherited the business, so the business will live on for generations to come.");
             } else if (RelationshipState.sonWasBorn)
             {
                 GameState.epilogueLines.Add("Your son had no interest in the business, so it closed down after you retired.");

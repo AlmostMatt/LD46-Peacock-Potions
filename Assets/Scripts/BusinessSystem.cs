@@ -30,7 +30,13 @@ public class BusinessSystem : MonoBehaviour
                         BusinessState.missedRent = true;
                     }
 
-                    if(GameState.quarter >= 20 && !GameState.reachedEndOfLife && !BusinessState.missedRent)
+                    if(BusinessState.peacock.health <= 0 && !GameState.peacockDied)
+                    {
+                        EventState.PushEvent(new PeacockSickEvent(), GameState.quarter, 0);
+                        GameState.peacockDied = true;
+                    }
+
+                    if(GameState.quarter >= 20 && !GameState.reachedEndOfLife && !BusinessState.missedRent && !GameState.peacockDied)
                     {
                         EventState.PushEvent(new EndOfLifeEvent(), GameState.quarter, 0);
                         GameState.reachedEndOfLife = true;

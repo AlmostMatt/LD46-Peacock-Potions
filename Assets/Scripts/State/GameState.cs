@@ -75,13 +75,14 @@ public class GameState
     public static GameStage currentStage = GameStage.GS_MAIN_MENU;
     public static int quarter = 0;
     public static float quarterTime = 0; // seconds elapsed in the current quarter
+    public static int yearsSkipped = 0;
     public static int year
     {
         get { return 452 + (quarter / 4); }
     }
     public static int elapsedYears
     {
-        get { return (quarter / 4); }
+        get { return yearsSkipped + (quarter / 4); }
     }
 
     public enum Season

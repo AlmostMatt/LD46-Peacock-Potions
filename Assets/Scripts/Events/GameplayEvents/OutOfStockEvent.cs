@@ -21,8 +21,8 @@ public class OutOfStockEvent : GameEvent
                 EventState.currentEventText = string.Format("A woman approaches the counter. \"Do you have any {0} potions?\"", mProductType.GetName().ToLower());
                 EventState.currentEventOptions = new string[]
                 {
-                    "Tell her you don't have any now, but you should have some next season.",
-                    "Tell her you don't have any now, and you're not sure when you'll have more."
+                    "We've run out, but you should  try again next season.",
+                    "We've run out, and I don't know when we'll have more."
                 };
                 mCurrentOptionOutcomes = new EventStage[] { EventStage.ACCEPT, EventStage.REFUSE };
                 return EventResult.CONTINUE;

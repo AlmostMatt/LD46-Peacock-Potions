@@ -145,10 +145,43 @@ public class MainGameSystem : MonoBehaviour
     public static void GameOver()
     {
         GameState.epilogueDirty = true;
-        GameState.epilogueLines.Add("GAME OVER");
+        GameState.epilogueLines.Add("<b>Epilogue</b>");
         GameState.epilogueLines.Add("You died");
         GameState.epilogueLines.Add("Your wife died");
-        GameState.epilogueLines.Add("You kept the business alive for " + GameState.elapsedYears + " years");
+
+        // Summarize family relationships
+        // wife relationship tiers [<0 >0]
+        // son relationship tiers [<0 >0]
+
+        bool happyMarriage = RelationshipState.wifeMarried;
+
+
+        // Did you die of old age?
+        if (GameState.reachedEndOfLife)
+        {
+            GameState.epilogueLines.Add("You kept the business alive for " + GameState.elapsedYears + " years before retiring.");
+            // Did anyone inherit?
+            // TODO: is there a more explicit relationship between son and plan to inherit
+            if (RelationshipState.sonWasBorn && RelationshipState.sonRelationship > 0f)
+            {
+                GameState.epilogueLines.Add("Your son inherited the business, and the business will live on for generations to come.");
+            } else if (RelationshipState.sonWasBorn)
+            {
+                GameState.epilogueLines.Add("Your son had no interest in the business, so it closed down after you retired.");
+            }
+            else
+            {
+                GameState.epilogueLines.Add("You had no children, so there was nobody to inherit the business after you retired.");
+            }
+        } else
+        {
+            // If so, what was the last expense? (event vs rent)
+            // Did Peacock die?
+            // Otherwise the business failed for financial reasons
+            string causeOfFailure = "before going bankrupt.";
+            GameState.epilogueLines.Add("You kept the business alive for " + GameState.elapsedYears + " years "+ causeOfFailure);
+        }
+
         GameState.currentStage = GameState.GameStage.GS_GAME_OVER;
     }
 }

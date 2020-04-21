@@ -132,13 +132,13 @@ public class Peacock
 
         if(mQuarterlyExtras[(int)PeacockExtraType.ET_MEDICINE])
         {
-            if(health > 60)
+            if(health >= 50)
             {
                 health -= 30; // don't give medicine to a healthly peacock!
             }
-            else if(health < 40)
+            else if(health < 50)
             {
-                health += 20;
+                health = 50;
             }
         }
 
@@ -331,7 +331,11 @@ public class Peacock
         string generalDesc;
         List<string> goodStrings = new List<string>();
         List<string> badStrings = new List<string>();
-        if(health < 50)
+        if(health < 25)
+        {
+            badStrings.Add("very sick");
+        }
+        else if(health < 50)
         {
             badStrings.Add("a little sick");
         }

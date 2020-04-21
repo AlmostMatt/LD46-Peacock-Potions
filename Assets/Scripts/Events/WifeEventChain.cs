@@ -78,6 +78,7 @@ public class WifeEventChain
                     break;
                 case EventStage.ACCEPT:
                     EventState.currentEventImage = "faceWifeHappy";
+                    RelationshipState.wifeRelationship += 10f;
                     EventState.currentEventText = "\"Awesome, I know a great place!\"\n<i>She runs off in excitement</i>";
                     EventState.currentEventOptions = EventState.OK_OPTION;
                     EventState.PushEvent(new WifeEventGrowClose(), GameState.quarter + 2); // schedule another event for next quarter
@@ -98,6 +99,7 @@ public class WifeEventChain
                     break;
                 case EventStage.HAS_POTION:
                     EventState.currentEventImage = "faceWifeNeutral";
+                    RelationshipState.wifeRelationship += 1f;
                     EventState.currentEventText = "\"I'll buy one love potion then!\"\n<i>She pays the price and heads out.</i>";
                     BusinessSystem.SellProduct((int)ProductType.PT_LOVE_POTION);
                     EventState.currentEventOptions = EventState.OK_OPTION;
@@ -247,6 +249,38 @@ public class WifeEventChain
                     SonEventChain.Init();
                     // The son event will likely happen next, so delay the next wife event a bit longer
                     EventState.PushEvent(new WifeEventMarriage(), GameState.quarter + 2, 0f);
+                    return EventResult.DONE;
+            }
+            return EventResult.CONTINUE;
+        }
+    }
+
+    private class WifeEventFive : GameEvent
+    {
+        protected override EventResult OnStage(EventStage currentStage)
+        {
+            switch (currentStage)
+            {
+                case EventStage.START:
+                    EventState.currentEventImage = "facePlayerNeutral";
+                    EventState.currentEventText = "\"Ah, " + NAME + "'s birthday is coming up!\"";
+                    EventState.currentEventOptions = new string[]
+                        {"Buy her a gift","I don't have any money to spare"};
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.ACCEPT, EventStage.REFUSE };
+                    break;
+                case EventStage.ACCEPT:
+                    RelationshipState.wifeRelationship += 11f;
+                    EventState.currentEventImage = "facePlayerHappy";
+                    EventState.currentEventText = "\"I know just the thing to get! I hope she likes it.\"";
+                    EventState.currentEventOptions = new string[]
+                        {"Ok"};
+                    return EventResult.DONE;
+                case EventStage.REFUSE:
+                    RelationshipState.wifeRelationship -= 1f;
+                    EventState.currentEventImage = "facePlayerNeutral";
+                    EventState.currentEventText = "\"Hopefully she doesn't mind.\"";
+                    EventState.currentEventOptions = new string[]
+                        {"Ok"};
                     return EventResult.DONE;
             }
             return EventResult.CONTINUE;

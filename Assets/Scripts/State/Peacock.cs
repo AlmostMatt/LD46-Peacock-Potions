@@ -143,6 +143,14 @@ public class Peacock
         if(Random.Range(0f, 1f) < 0.1f && health > 20)
         {
             health -= 15;
+            // sometimes it just gets sick
+        }
+
+        if(health < 50 && health > 25)
+        {
+            health += 1; // sometimes it gets better on its own
+        }
+
         switch(GameState.season)
         {
             case GameState.Season.SPRING:

@@ -163,7 +163,7 @@ public class MainGameSystem : MonoBehaviour
             }
         } else
         {
-            GameState.epilogueLines.Add("Your wife died");
+            //GameState.epilogueLines.Add("Your wife died");
         }
         // wife relationship tiers [<0 >0]
         // son relationship tiers [<0 >0]

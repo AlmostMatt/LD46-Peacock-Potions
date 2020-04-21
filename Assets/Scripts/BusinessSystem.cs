@@ -30,8 +30,6 @@ public class BusinessSystem : MonoBehaviour
                         BusinessState.missedRent = true;
                     }
 
-                    if(GameState.quarter == )
-
                     if(!EventState.hasMoreEventsRightNow && GameState.quarterTime >= QUARTER_TIME) // ensure we play through all events before advancing to next quarter
                     {
                         mPaymentTime = 0;

@@ -105,7 +105,7 @@ public class Peacock
                 quarterlyReport.foodDesc = "Fed it cheap food.";
                 break;
             case FoodType.FT_BASIC:
-                quarterlyReport.foodDesc = "Fed it good food.";
+                quarterlyReport.foodDesc = "Fed it basic food.";
                 break;
             case FoodType.FT_DELUXE:
                 quarterlyReport.foodDesc = "Fed it deluxe food.";
@@ -140,6 +140,9 @@ public class Peacock
             health -= 20;
         }
 
+        if(Random.Range(0f, 1f) < 0.1f && health > 20)
+        {
+            health -= 15;
         switch(GameState.season)
         {
             case GameState.Season.SPRING:

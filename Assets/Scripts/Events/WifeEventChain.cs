@@ -201,20 +201,51 @@ public class WifeEventChain
                 case EventStage.S2:
                     EventState.currentEventImage = "faceWifeNeutral";
                     EventState.currentEventText = "It's a remarkable bird. There are other factors that affect the color of their feathers too, but I haven't figured it all out yet.";
-                    EventState.currentEventOptions = new string[] { "Continue" };
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.S3 };
                     break;
                 case EventStage.S3:
                     EventState.currentEventImage = "faceWifeHappy";
                     EventState.currentEventText = "Anyways, enough about the bird. I'm looking forward to seeing you tonight!";
                     EventState.currentEventOptions = new string[] { "Me too!" };
-                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S3 };
-                    // TODO: add next event
+                    // Queue an event for the start of the next quarter
+                    EventState.PushEvent(new WifeEventMarriage(), GameState.quarter + 1, 0f);
                     return EventResult.DONE;
             }
             return EventResult.CONTINUE;
         }
     }
 
-    // TODO: time skip and marriage
+    private class WifeEventMarriage : GameEvent
+    {
+        protected override EventResult OnStage(EventStage currentStage)
+        {
+            switch (currentStage)
+            {
+                case EventStage.START:
+                case EventStage.S1:
+                    EventState.currentEventImage = "faceWifeHappy";
+                    EventState.currentEventText = "10 years have passed.\nYou and " + NAME + " ended up getting married!";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S2 };
+                    break;
+                case EventStage.S2:
+                    EventState.currentEventImage = "faceSonHappy";
+                    EventState.currentEventText = "You also had a son together!\nHe's growing up quickly.";
+                    EventState.currentEventOptions = EventState.CONTINUE_OPTION;
+                    mCurrentOptionOutcomes = new EventStage[] { EventStage.S3 };
+                    break;
+                case EventStage.S3:
+                    EventState.currentEventImage = "";
+                    EventState.currentEventText = "You've been running the potion shop together with " + NAME + ", and it's still doing about as well as it was 10 years ago.";
+                    EventState.currentEventOptions = EventState.OK_OPTION;
+                    // Start queueing events for the son
+                    SonEventChain.Init();
+                    // The son event will likely happen next, so delay the next wife event a bit longer
+                    EventState.PushEvent(new WifeEventMarriage(), GameState.quarter + 2, 0f);
+                    return EventResult.DONE;
+            }
+            return EventResult.CONTINUE;
+        }
+    }
 }

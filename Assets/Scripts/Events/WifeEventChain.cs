@@ -7,7 +7,7 @@ public class WifeEventChain
     public static void Init()
     {
         Debug.Log("pushing son event");
-        EventState.PushEvent(new WifeEventOne(), 0);
+        EventState.PushEvent(new WifeEventOne(), 1);
     }
     public const string NAME = "Susie";
 
@@ -239,6 +239,10 @@ public class WifeEventChain
                     EventState.currentEventImage = "";
                     EventState.currentEventText = "You've been running the potion shop together with " + NAME + ", and it's still doing about as well as it was 10 years ago.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
+                    // Time skip
+                    GameState.yearsSkipped = 10;
+                    RelationshipState.wifeMarried = true;
+                    RelationshipState.sonWasBorn = true;
                     // Start queueing events for the son
                     SonEventChain.Init();
                     // The son event will likely happen next, so delay the next wife event a bit longer

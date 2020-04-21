@@ -30,6 +30,12 @@ public class BusinessSystem : MonoBehaviour
                         BusinessState.missedRent = true;
                     }
 
+                    if(GameState.quarter >= 20 && !GameState.reachedEndOfLife && !BusinessState.missedRent)
+                    {
+                        EventState.PushEvent(new EndOfLifeEvent(), GameState.quarter, 0);
+                        GameState.reachedEndOfLife = true;
+                    }
+
                     if(!EventState.hasMoreEventsRightNow && GameState.quarterTime >= QUARTER_TIME) // ensure we play through all events before advancing to next quarter
                     {
                         mPaymentTime = 0;

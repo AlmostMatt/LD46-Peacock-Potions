@@ -44,7 +44,7 @@ public class MainGameSystem : MonoBehaviour
         // starting resources
         for(int i = 0; i < BusinessState.resources.Length; ++i)
         {
-            BusinessState.resources[i] = Random.Range(1, 10);
+            BusinessState.resources[i] = 10;
         }
 
         // starting inventory
@@ -61,12 +61,12 @@ public class MainGameSystem : MonoBehaviour
     private void InitWorldParams()
     {
         // some initial values for demand calculation
-        CustomerState.totalPopulation = 70;
+        CustomerState.totalPopulation = 50;
         CustomerState.storePopularity = 0.25f;
 
         for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
         {
-            CustomerState.productDemand[i] = Random.Range(0.3f, 0.7f); // TODO: ensure they sum to 1? maybe... not necessarily needed, but it would be good to ensure some minimum sum so that players at least get SOME customers
+            CustomerState.productDemand[i] = Random.Range(0.3f, 0.6f); // TODO: ensure they sum to 1? maybe... not necessarily needed, but it would be good to ensure some minimum sum so that players at least get SOME customers
             CustomerState.optimalPrices[i] = Random.Range(5,150); // TODO: non-uniform distribution
         }
     }

@@ -150,10 +150,21 @@ public class MainGameSystem : MonoBehaviour
     {
         GameState.epilogueDirty = true;
         GameState.epilogueLines.Add("<b>Epilogue</b>");
-        GameState.epilogueLines.Add("You died");
-        GameState.epilogueLines.Add("Your wife died");
 
         // Summarize family relationships
+        if (RelationshipState.wifeMarried)
+        {
+            if (RelationshipState.wifeRelationship > 0f)
+            {
+                GameState.epilogueLines.Add("You married " + WifeEventChain.NAME + " and had a happy life together.");
+            } else
+            {
+                GameState.epilogueLines.Add("You married " + WifeEventChain.NAME + ", and had happy beginnings but some disagreements later in life.");
+            }
+        } else
+        {
+            GameState.epilogueLines.Add("Your wife died");
+        }
         // wife relationship tiers [<0 >0]
         // son relationship tiers [<0 >0]
 

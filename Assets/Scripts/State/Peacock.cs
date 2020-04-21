@@ -252,10 +252,16 @@ public class Peacock
         */
 
         float baseNumFeathers = Mathf.Lerp(0, 20, 0.5f * ((happiness / 100) + (comfort / 100)));
+        if(quarterlyFoodType == FoodType.FT_DELUXE)
+        {
+            baseNumFeathers += 10;
+        }
+
         if(mQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
         {
             baseNumFeathers *= 1.5f;
         }
+
         int totalFeathers = Mathf.RoundToInt(baseNumFeathers * Random.Range(0.9f, 1.1f));
         for(int i = 0; i < producableResources.Length; ++i)
         {

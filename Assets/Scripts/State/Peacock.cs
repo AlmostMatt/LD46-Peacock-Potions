@@ -132,7 +132,14 @@ public class Peacock
 
         if(mQuarterlyExtras[(int)PeacockExtraType.ET_MEDICINE])
         {
-            health += 30;
+            if(health > 60)
+            {
+                health -= 30; // don't give medicine to a healthly peacock!
+            }
+            else if(health < 40)
+            {
+                health += 20;
+            }
         }
 
         if(mQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])

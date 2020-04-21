@@ -248,7 +248,7 @@ public class WifeEventChain
                     // Start queueing events for the son
                     SonEventChain.Init();
                     // The son event will likely happen next, so delay the next wife event a bit longer
-                    EventState.PushEvent(new WifeEventMarriage(), GameState.quarter + 2, 0f);
+                    EventState.PushEvent(new WifeEventFive(), GameState.quarter + 2, 0f);
                     return EventResult.DONE;
             }
             return EventResult.CONTINUE;

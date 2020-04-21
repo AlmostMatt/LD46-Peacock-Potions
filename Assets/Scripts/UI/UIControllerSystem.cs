@@ -377,8 +377,10 @@ public class UIControllerSystem : MonoBehaviour
             GameObject go = PeacockView.transform.GetChild(i).gameObject;
             if(go.GetComponent<CanvasGroup>() != null)
             {
-                go.GetComponent<CanvasGroup>().alpha = 0;
-                FancyUIAnimations.PushFadeIn(go);
+                if (GameState.quarter < 2) {
+                    go.GetComponent<CanvasGroup>().alpha = 0;
+                    FancyUIAnimations.PushFadeIn(go);
+                }
             }
         }
 

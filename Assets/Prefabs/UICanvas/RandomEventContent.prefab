@@ -430,9 +430,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Your cactus hasn''t been watered in a while.
-
-    Poor cactus.'
+  m_Text: Despite being under the influence of a love potion for the first date, you
+    and " + NAME + " ended up going on many more dates and growing quite close.
 --- !u!1 &2893521845837810564
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,7 +36,7 @@ public class BusinessSystem : MonoBehaviour
                         GameState.peacockDied = true;
                     }
 
-                    if(GameState.quarter >= 20 && !GameState.reachedEndOfLife && !BusinessState.missedRent && !GameState.peacockDied)
+                    if(GameState.quarter >= 16 && !GameState.reachedEndOfLife && !BusinessState.missedRent && !GameState.peacockDied)
                     {
                         EventState.PushEvent(new EndOfLifeEvent(), GameState.quarter, 0);
                         GameState.reachedEndOfLife = true;

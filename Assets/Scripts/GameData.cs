@@ -89,7 +89,7 @@ public class GameData
         set
         {
             peacockQuarterlyTotalCost -= mPeacockQuarterlyFoodCost;
-            peacockQuarterlyFoodCost = value;
+            mPeacockQuarterlyFoodCost = value;
             peacockQuarterlyTotalCost += value;
         }
     }

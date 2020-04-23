@@ -74,7 +74,7 @@ public class UIControllerSystem : MonoBehaviour
         UpdateUiVisibility();
         UpdateUiContent();
 
-        if (GameState.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)
+        if (GameData.singleton.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)
         {
             UpdateCustomers();
         }
@@ -146,7 +146,7 @@ public class UIControllerSystem : MonoBehaviour
     private bool mPrevHasEvent = false;
     private void UpdateUiVisibility()
     {
-        GameState.GameStage stage = GameState.currentStage;
+        GameState.GameStage stage = GameData.singleton.currentStage;
         // Summary / resource allocation
         SummaryView.SetActive(stage == GameState.GameStage.GS_RESOURCE_ALLOCATION);
         // Peacock UI
@@ -180,26 +180,26 @@ public class UIControllerSystem : MonoBehaviour
     // Change text and other fields in UI content
     private void UpdateUiContent()
     {
-        GameState.GameStage stage = GameState.currentStage;
+        GameState.GameStage stage = GameData.singleton.currentStage;
         /**
          * Inventory
          */
         {
             // Inventory (cash)
             InventoryView.transform.Find("InvGroups/InventoryCash/IconAndCount/Count")
-                .GetComponent<Text>().text = string.Format("{0}", BusinessState.money);
+                .GetComponent<Text>().text = string.Format("{0}", GameData.singleton.money);
             // Inventory (feathers)
             List<ResourceAndCount> resourceCounts = new List<ResourceAndCount>();
             for (int i = 0; i < (int)ResourceType.RT_MAX; i++)
             {
-                resourceCounts.Add(new ResourceAndCount((ResourceType)i, BusinessState.resources[i]));
+                resourceCounts.Add(new ResourceAndCount((ResourceType)i, GameData.singleton.resources[i]));
             }
             mInventoryResourceRenderGroup.UpdateRenderables(resourceCounts);
             // Inventory (feathers)
             List<ProductAndCount> productCounts = new List<ProductAndCount>();
             for (int i = 0; i < (int)ProductType.PT_MAX; i++)
             {
-                productCounts.Add(new ProductAndCount((ProductType)i, BusinessState.inventory[i]));
+                productCounts.Add(new ProductAndCount((ProductType)i, GameData.singleton.inventory[i]));
             }
             mInventoryProductRenderGroup.UpdateRenderables(productCounts);
         }
@@ -215,8 +215,8 @@ public class UIControllerSystem : MonoBehaviour
          * Peacock view
          */
         if (PeacockView.activeInHierarchy)
-        {            
-            mPeacockFeatherRenderGroup.UpdateRenderables(BusinessState.peacock.quarterlyReport.featherCounts);
+        {
+            mPeacockFeatherRenderGroup.UpdateRenderables(GameData.singleton.peacockReportFeatherCounts);
         }
         /**
          * Simulation / Event
@@ -229,13 +229,13 @@ public class UIControllerSystem : MonoBehaviour
                 var PotionGroup = GetPotionGroup((ProductType)i);
                 for (int j = 0; j < PotionGroup.childCount; j++)
                 {
-                    PotionGroup.GetChild(j).gameObject.SetActive(j < BusinessState.inventory[i]);
+                    PotionGroup.GetChild(j).gameObject.SetActive(j < GameData.singleton.inventory[i]);
                     PotionGroup.GetChild(j).GetComponent<Image>().color = ((ProductType)i).GetColor();
                     // TODO: if a potion stopped being visible it was just sold. Show the +money animation there
                 }
             }
             SimulationDefaultContent.transform.Find("Shop/Season").GetComponent<Image>().sprite = null; // clear the sprite in case of weird sprite change bug
-            SimulationDefaultContent.transform.Find("Shop/Season").GetComponent<Image>().sprite = SpriteManager.GetSprite(GameState.season.GetImage());
+            SimulationDefaultContent.transform.Find("Shop/Season").GetComponent<Image>().sprite = SpriteManager.GetSprite(GameData.singleton.season.GetImage());
         }
         /**
          * Overlay views
@@ -249,7 +249,7 @@ public class UIControllerSystem : MonoBehaviour
         {
             //OverlayViewPotions.transform.Find("Content/Content").GetComponent<Text>().text = "";
             mOverlayFeatherCollectionFeatherRenderGroup.UpdateRenderables(
-                BusinessState.peacock.quarterlyReport.featherCounts);
+                GameData.singleton.peacockReportFeatherCounts);
         } else if (OverlayViewPotions.activeInHierarchy)
         {
             mOverlayPotionSalesRenderGroup.UpdateRenderables(BusinessState.GetPerItemReports());
@@ -257,13 +257,13 @@ public class UIControllerSystem : MonoBehaviour
                 = string.Format("${0}",totalPotionRevenue);
         } else if (OverlayViewFinancial.activeInHierarchy)
         {
-            int startOfQuarterBalance = BusinessState.quarterlyReport.initialBalance;
-            int eventIncome = BusinessState.quarterlyReport.eventIncome;
-            int peacockExpenses = BusinessState.peacock.quarterlyTotalCost;
-            int eventExpense = BusinessState.quarterlyReport.eventExpenses;
+            int startOfQuarterBalance = GameData.singleton.initialBalance;
+            int eventIncome = GameData.singleton.eventIncome;
+            int peacockExpenses = GameData.singleton.peacockQuarterlyTotalCost;
+            int eventExpense = GameData.singleton.eventExpenses;
             int profit = (totalPotionRevenue + eventIncome) - (peacockExpenses + eventExpense);
-            int rent = BusinessState.quarterlyReport.livingExpenses;
-            int newBalance = (int)BusinessState.money - rent;
+            int rent = GameData.singleton.livingExpenses;
+            int newBalance = (int)GameData.singleton.money - rent;
             // totalRevenue = sum of perItemReport sales
             // include some event revenue and expenses
             // revenue rent etc
@@ -346,7 +346,7 @@ public class UIControllerSystem : MonoBehaviour
         // TODO: populate production based on the inputGroup values
 
         GameState.GameLoopGotoNextStage();
-        Debug.Log("game stage is now " + GameState.currentStage);
+        Debug.Log("game stage is now " + GameData.singleton.currentStage);
     }
 
     public void MakeDecision(Button button)
@@ -377,7 +377,7 @@ public class UIControllerSystem : MonoBehaviour
             GameObject go = PeacockView.transform.GetChild(i).gameObject;
             if(go.GetComponent<CanvasGroup>() != null)
             {
-                if (GameState.quarter < 2) {
+                if (GameData.singleton.quarter < 2) {
                     go.GetComponent<CanvasGroup>().alpha = 0;
                     FancyUIAnimations.PushFadeIn(go);
                 }
@@ -385,12 +385,12 @@ public class UIControllerSystem : MonoBehaviour
         }
 
         // I assume there's a more proper way to do this, but I'm too lazy to figure it out
-        PeacockView.transform.Find("Date").GetComponent<Text>().text = string.Format("{0}, Year {1}", GameState.season.GetName(), GameState.year);
-        PeacockView.transform.Find("FoodReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.foodDesc;
-        PeacockView.transform.Find("ActivityReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.activityDesc;
-        PeacockView.transform.Find("ExtraReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.extraDesc;
-        PeacockView.transform.Find("StatusReport").GetComponent<Text>().text = BusinessState.peacock.quarterlyReport.generalDesc;
-        PeacockView.transform.Find("NextQuarterTitle").GetComponent<Text>().text = string.Format("Plan for the {0}: ", GameState.season.GetNextSeasonName());
+        PeacockView.transform.Find("Date").GetComponent<Text>().text = string.Format("{0}, Year {1}", GameData.singleton.season.GetName(), GameData.singleton.year);
+        PeacockView.transform.Find("FoodReport").GetComponent<Text>().text = GameData.singleton.peacockReportFoodDesc;
+        PeacockView.transform.Find("ActivityReport").GetComponent<Text>().text = GameData.singleton.peacockReportActivityDesc;
+        PeacockView.transform.Find("ExtraReport").GetComponent<Text>().text = GameData.singleton.peacockReportExtraDesc;
+        PeacockView.transform.Find("StatusReport").GetComponent<Text>().text = GameData.singleton.peacockReportGeneralDesc;
+        PeacockView.transform.Find("NextQuarterTitle").GetComponent<Text>().text = string.Format("Plan for the {0}: ", GameData.singleton.season.GetNextSeasonName());
 
         Transform foodPlan = PeacockView.transform.Find("FoodPlan");
         for(int i = 0; i < (int)FoodType.FT_MAX; ++i)
@@ -398,7 +398,7 @@ public class UIControllerSystem : MonoBehaviour
             FoodType food = ((FoodType)i);
             Transform button = foodPlan.GetChild(i);
             button.GetChild(0).GetComponent<Text>().text = food.GetLabel();
-            if((int)BusinessState.peacock.quarterlyFoodType == i)
+            if((int)GameData.singleton.peacockQuarterlyFoodType == i)
             {
                  button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
             }
@@ -410,7 +410,7 @@ public class UIControllerSystem : MonoBehaviour
             PeacockActivityType activity = ((PeacockActivityType)i);
             Transform button = activityPlan.GetChild(i);
             button.GetChild(0).GetComponent<Text>().text = activity.GetLabel();
-            if((int)BusinessState.peacock.quarterlyActivity == i)
+            if((int)GameData.singleton.peacockQuarterlyActivity == i)
             {
                  button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
             }
@@ -423,13 +423,13 @@ public class UIControllerSystem : MonoBehaviour
             PeacockExtraType extra = ((PeacockExtraType)i);
             Transform button = extraPlan.GetChild(i);
             button.GetChild(0).GetComponent<Text>().text = extra.GetLabel();
-            if(BusinessState.peacock.HasQuarterlyExtra(i))
+            if(Peacock.HasQuarterlyExtra(i))
             {
                  button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
             }
         }
 
-        PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(BusinessState.peacock.quarterlyTotalCost);
+        PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(GameData.singleton.peacockQuarterlyTotalCost);
     }
 
     public void PeacockScreenFood(int foodType)
@@ -447,10 +447,9 @@ public class UIControllerSystem : MonoBehaviour
         }
         FoodType food = ((FoodType)foodType);
         int price = food.GetPrice();
-        //selections.Find("FoodCost").GetComponent<Text>().text = Utilities.FormatMoney(price);
-        BusinessState.peacock.quarterlyFoodCost = price;
-        PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(BusinessState.peacock.quarterlyTotalCost);
-        BusinessState.peacock.quarterlyFoodType = (FoodType)foodType;
+        GameData.singleton.peacockQuarterlyFoodCost = price;
+        PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(GameData.singleton.peacockQuarterlyTotalCost);
+        GameData.singleton.peacockQuarterlyFoodType = (FoodType)foodType;
     }
 
     public void PeacockScreenActivity(int activityType)
@@ -467,7 +466,7 @@ public class UIControllerSystem : MonoBehaviour
             }
         }
 
-        BusinessState.peacock.quarterlyActivity = (PeacockActivityType)activityType;
+        GameData.singleton.peacockQuarterlyActivity = (PeacockActivityType)activityType;
     }
 
     public void PeacockScreenExtra(int extraType)
@@ -478,11 +477,9 @@ public class UIControllerSystem : MonoBehaviour
         Image img = button.GetComponent<Image>();
         bool prevSelected = img.color.a == 1f;
         img.color = new Color(1f, 1f, 1f, prevSelected ? 0.1f : 1f);
-        BusinessState.peacock.SetQuarterlyExtra(extraType, !prevSelected);
+        Peacock.SetQuarterlyExtra(extraType, !prevSelected);
 
-        // button.Find("Cost").GetComponent<Text>().text = Utilities.FormatMoney(selected ? ((PeacockExtraType)extraType).GetPrice() : 0);
-
-        PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(BusinessState.peacock.quarterlyTotalCost);
+        PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(GameData.singleton.peacockQuarterlyTotalCost);
     }
 
     // --------- END PEACOCK SCREEN ------------ //
@@ -504,7 +501,7 @@ public class UIControllerSystem : MonoBehaviour
         Transform potionGroup = GetPotionGroup(productType);
         // Same position as potion group but not a child of the potion group
         GameObject animatedText = Instantiate(AnimatedTextPrefab, potionGroup.position, Quaternion.identity, potionGroup.parent);
-        animatedText.GetComponent<Text>().text = string.Format("+{0}", BusinessState.prices[(int)productType]);
+        animatedText.GetComponent<Text>().text = string.Format("+{0}", GameData.singleton.potionPrices[(int)productType]);
         StartCoroutine(SimpleAnimations.FadeInOut(animatedText, 1f));
         StartCoroutine(SimpleAnimations.MoveOverTime(animatedText, new Vector3(0f, 60f, 0f), 1f));
         // Destroy it 2s later (1s after animation ends)

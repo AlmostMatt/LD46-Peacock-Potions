@@ -44,7 +44,7 @@ public class WifeEventChain
                     EventState.currentEventImage = "faceWifeNeutral";
                     EventState.currentEventText = "She is staring intently at the peacock and seems to have forgotten about you for now.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    EventState.PushEvent(new WifeEventTwo(), GameState.quarter + 1); // schedule another event for next quarter
+                    EventState.PushEvent(new WifeEventTwo(), GameData.singleton.quarter + 1); // schedule another event for next quarter
                     return EventResult.DONE;
             }
             return EventResult.CONTINUE;
@@ -78,15 +78,15 @@ public class WifeEventChain
                     break;
                 case EventStage.ACCEPT:
                     EventState.currentEventImage = "faceWifeHappy";
-                    RelationshipState.wifeRelationship += 10f;
+                    GameData.singleton.wifeRelationship += 10f;
                     EventState.currentEventText = "\"Awesome, I know a great place!\"\n<i>She runs off in excitement</i>";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    EventState.PushEvent(new WifeEventGrowClose(), GameState.quarter + 2); // schedule another event for next quarter
+                    EventState.PushEvent(new WifeEventGrowClose(), GameData.singleton.quarter + 2); // schedule another event for next quarter
                     return EventResult.DONE;
                 case EventStage.REFUSE:
                     EventState.currentEventImage = "faceWifeSad";
                     EventState.currentEventText = "\"Aw, okay.\nOn an unrelated note, do you sell love potions?\"";
-                    if (BusinessState.inventory[(int)ProductType.PT_LOVE_POTION] > 0)
+                    if (GameData.singleton.inventory[(int)ProductType.PT_LOVE_POTION] > 0)
                     {
                         EventState.currentEventOptions = new string[] { "Yes" };
                         mCurrentOptionOutcomes = new EventStage[] { EventStage.HAS_POTION };
@@ -99,18 +99,18 @@ public class WifeEventChain
                     break;
                 case EventStage.HAS_POTION:
                     EventState.currentEventImage = "faceWifeNeutral";
-                    RelationshipState.wifeRelationship += 1f;
+                    GameData.singleton.wifeRelationship += 1f;
                     EventState.currentEventText = "\"I'll buy one love potion then!\"\n<i>She pays the price and heads out.</i>";
                     BusinessSystem.SellProduct((int)ProductType.PT_LOVE_POTION);
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    EventState.PushEvent(new WifeEventLovePotion(), GameState.quarter + 1); // schedule another event for next quarter
+                    EventState.PushEvent(new WifeEventLovePotion(), GameData.singleton.quarter + 1); // schedule another event for next quarter
                     return EventResult.DONE;
                 case EventStage.NO_POTION:
                     EventState.currentEventImage = "faceWifeNeutral";
                     EventState.currentEventText = "\"Alright. Well, I'll be around.\"";
                     BusinessSystem.SellProduct((int)ProductType.PT_LOVE_POTION);
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    EventState.PushEvent(new WifeEventLovePotion(), GameState.quarter + 1); // schedule another event for next quarter
+                    EventState.PushEvent(new WifeEventLovePotion(), GameData.singleton.quarter + 1); // schedule another event for next quarter
                     return EventResult.DONE;
             }
             return EventResult.CONTINUE;
@@ -168,7 +168,7 @@ public class WifeEventChain
                     EventState.currentEventImage = "faceWifeHappy";
                     EventState.currentEventText = NAME + " winks at you, then heads out.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    EventState.PushEvent(new WifeEventGrowClose(), GameState.quarter + 1); // schedule another event for next quarter
+                    EventState.PushEvent(new WifeEventGrowClose(), GameData.singleton.quarter + 1); // schedule another event for next quarter
                     return EventResult.DONE;
             }
             return EventResult.CONTINUE;
@@ -211,7 +211,7 @@ public class WifeEventChain
                     EventState.currentEventText = "\"Anyways, enough about the bird. I'm looking forward to seeing you tonight!\"";
                     EventState.currentEventOptions = new string[] { "Me too!" };
                     // Queue an event for the start of the next quarter
-                    EventState.PushEvent(new WifeEventMarriage(), GameState.quarter + 1, 0f);
+                    EventState.PushEvent(new WifeEventMarriage(), GameData.singleton.quarter + 1, 0f);
                     return EventResult.DONE;
             }
             return EventResult.CONTINUE;
@@ -242,13 +242,13 @@ public class WifeEventChain
                     EventState.currentEventText = "You've been running the potion shop together with " + NAME + ", and it's still doing about as well as it was 10 years ago.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
                     // Time skip
-                    GameState.yearsSkipped = 10;
-                    RelationshipState.wifeMarried = true;
-                    RelationshipState.sonWasBorn = true;
+                    GameData.singleton.yearsSkipped = 10;
+                    GameData.singleton.wifeMarried = true;
+                    GameData.singleton.sonWasBorn = true;
                     // Start queueing events for the son
                     SonEventChain.Init();
                     // The son event will likely happen next, so delay the next wife event a bit longer
-                    EventState.PushEvent(new WifeEventFive(), GameState.quarter + 2, 0f);
+                    EventState.PushEvent(new WifeEventFive(), GameData.singleton.quarter + 2, 0f);
                     return EventResult.DONE;
             }
             return EventResult.CONTINUE;
@@ -270,14 +270,14 @@ public class WifeEventChain
                     break;
                 case EventStage.ACCEPT:
                     BusinessState.MoneyChangeFromEvent(-300);
-                    RelationshipState.wifeRelationship += 11f;
+                    GameData.singleton.wifeRelationship += 11f;
                     EventState.currentEventImage = "facePlayerHappy";
                     EventState.currentEventText = "\"I know just the thing to get! I hope she likes it.\"";
                     EventState.currentEventOptions = new string[]
                         {"Ok"};
                     return EventResult.DONE;
                 case EventStage.REFUSE:
-                    RelationshipState.wifeRelationship -= 1f;
+                    GameData.singleton.wifeRelationship -= 1f;
                     EventState.currentEventImage = "facePlayerNeutral";
                     EventState.currentEventText = "\"Hopefully she doesn't mind.\"";
                     EventState.currentEventOptions = new string[]

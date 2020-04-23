@@ -29,13 +29,13 @@ public class OutOfStockEvent : GameEvent
             case EventStage.ACCEPT:
                 EventState.currentEventText = "\"Oh okay, I'll try again next season. Thanks!\" the woman says as she leaves.";
                 EventState.currentEventOptions = EventState.OK_OPTION;
-                EventState.PushEvent(new OutOfStockReturnEvent(mProductType), GameState.quarter + 1, 0.6f);
+                EventState.PushEvent(new OutOfStockReturnEvent(mProductType), GameData.singleton.quarter + 1, 0.6f);
                 return EventResult.DONE;
             case EventStage.REFUSE:
                 EventState.currentEventText = "\"Oh okay. I'll have to look elsewhere,\" she says. She takes her leave.";
                 EventState.currentEventOptions = EventState.OK_OPTION;
-                CustomerState.storePopularity *= 0.95f;
-                nextAllowedQuarter = GameState.quarter + 2;
+                GameData.singleton.storePopularity *= 0.95f;
+                nextAllowedQuarter = GameData.singleton.quarter + 2;
                 return EventResult.DONE;
         }
         return EventResult.CONTINUE;
@@ -86,18 +86,18 @@ public class OutOfStockEvent : GameEvent
                 case EventStage.ACCEPT:
                     EventState.currentEventText = "She thanks you and pays for her potion.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    CustomerState.storePopularity *= 1.1f;
+                    GameData.singleton.storePopularity *= 1.1f;
                     BusinessSystem.SellProduct((int)mProductType);
                     break;
                 case EventStage.REFUSE:
                     EventState.currentEventText = "The woman is visibly annoyed. She leaves briskly.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    CustomerState.storePopularity *= 0.85f; EventState.currentEventText = "\"Oh okay, I'll try again next season. Thanks!\" the woman says as she leaves.";
+                    GameData.singleton.storePopularity *= 0.85f; EventState.currentEventText = "\"Oh okay, I'll try again next season. Thanks!\" the woman says as she leaves.";
                     break;
                 case EventStage.UNABLE:
                     EventState.currentEventText = "She looks disappointed as she leaves the store empty-handed.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    CustomerState.storePopularity *= 0.9f;
+                    GameData.singleton.storePopularity *= 0.9f;
                     break;
             }
             return EventResult.DONE;
@@ -105,7 +105,7 @@ public class OutOfStockEvent : GameEvent
 
         protected override EventResult EventStart()
         {
-            mHasPotion = BusinessState.inventory[(int)mProductType] > 0;
+            mHasPotion = GameData.singleton.inventory[(int)mProductType] > 0;
             return EventResult.CONTINUE;
         }
     }

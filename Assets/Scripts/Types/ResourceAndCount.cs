@@ -1,4 +1,5 @@
 ﻿// a simple struct that represents a resource and a count.
+[System.Serializable]
 public struct ResourceAndCount
 {
     public ResourceAndCount(ResourceType type, int count)

@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class SonEventChain
 {
-    private static bool letSonHelpBottle = false;
-
     public static void Init()
     {
-        EventState.PushEvent(new SonEventOne(), GameState.quarter + 1);
+        EventState.PushEvent(new SonEventOne(), GameData.singleton.quarter + 1);
     }
 
     private class SonEventOne : GameEvent
@@ -46,17 +44,15 @@ public class SonEventChain
                     EventState.currentEventImage = "";
                     EventState.currentEventText = "Excited, he grabs some empty bottles and runs over to the cauldron.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    RelationshipState.sonRelationship += 10;
-                    letSonHelpBottle = true;
-                    EventState.PushEvent(new SonDropBottlesEvent(), GameState.quarter);
+                    GameData.singleton.sonRelationship += 10;
+                    EventState.PushEvent(new SonDropBottlesEvent(), GameData.singleton.quarter);
                     return EventResult.DONE;
                 case EventStage.REFUSE:
                     EventState.currentEventImage = "faceSonSad";
                     EventState.currentEventText = "\"Okayy.\" He walks upstairs, looking dejected.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    RelationshipState.sonRelationship -= 10;
-                    letSonHelpBottle = false;
-                    EventState.PushEvent(new SonEventTwo(), GameState.quarter + 2);
+                    GameData.singleton.sonRelationship -= 10;
+                    EventState.PushEvent(new SonEventTwo(), GameData.singleton.quarter + 2);
                     return EventResult.DONE;
             }
             return EventResult.CONTINUE;
@@ -73,7 +69,7 @@ public class SonEventChain
             {
                 int potionType = Random.Range(0, (int)ProductType.PT_MAX);
                 int maxChecks = (int)ProductType.PT_MAX;
-                while(BusinessState.inventory[potionType] == 0 && maxChecks > 0)
+                while(GameData.singleton.inventory[potionType] == 0 && maxChecks > 0)
                 {
                     potionType = (potionType + 1) % (int)ProductType.PT_MAX;
                     --maxChecks;
@@ -84,8 +80,8 @@ public class SonEventChain
                 }
                 potions.Add(potionType);
                 Debug.Log("son breaking " + (ProductType)potionType);
-                --BusinessState.inventory[potionType];
-                BusinessState.quarterlyReport.miscLosses[potionType]++;
+                --GameData.singleton.inventory[potionType];
+                GameData.singleton.miscLosses[potionType]++;
             }
             
             if(potions.Count == 0)
@@ -121,15 +117,15 @@ public class SonEventChain
                     EventState.currentEventImage = "faceSonNeutral";
                     EventState.currentEventText = "He fetches a broom and helps you clean up. Then he decides to go outside.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    EventState.PushEvent(new SonEventTwo(), GameState.quarter + 2); // schedule another event for next quarter
-                    RelationshipState.sonRelationship += 5;
+                    EventState.PushEvent(new SonEventTwo(), GameData.singleton.quarter + 2); // schedule another event for next quarter
+                    GameData.singleton.sonRelationship += 5;
                     return EventResult.DONE;
                 case EventStage.GO_OUTSIDE:
                     EventState.currentEventImage = "faceSonSad";
                     EventState.currentEventText = "He sniffles and heads upstairs.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    EventState.PushEvent(new SonEventTwo(), GameState.quarter + 2); // schedule another event for next quarter
-                    RelationshipState.sonRelationship -= 5;
+                    EventState.PushEvent(new SonEventTwo(), GameData.singleton.quarter + 2); // schedule another event for next quarter
+                    GameData.singleton.sonRelationship -= 5;
                     return EventResult.DONE;
             }
             return EventResult.CONTINUE;
@@ -146,7 +142,7 @@ public class SonEventChain
                 case EventStage.START:
                     EventState.currentEventImage = "faceWifeNeutral";
                     EventState.currentEventText = string.Format("{0} comes up to you. She suggests buying a special toy for your son's birthday.", WifeEventChain.NAME);
-                    if(BusinessState.money >= toyCost)
+                    if(GameData.singleton.money >= toyCost)
                     {
                         EventState.currentEventOptions = new string[]
                         {
@@ -167,21 +163,21 @@ public class SonEventChain
                 case EventStage.ACCEPT:
                     EventState.currentEventImage = "faceWifeHappy";
                     EventState.currentEventText = "\"I think this will make him very happy.\" She gives you a quick kiss and leaves the shop.";
-                    EventState.PushEvent(new SonEventBirthday(), GameState.quarter+1);
-                    RelationshipState.wifeRelationship += 5;
+                    EventState.PushEvent(new SonEventBirthday(), GameData.singleton.quarter+1);
+                    GameData.singleton.wifeRelationship += 5;
                     BusinessState.MoneyChangeFromEvent(-toyCost);
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     return EventResult.DONE;                    
                 case EventStage.REFUSE:
                     EventState.currentEventImage = "faceWifeSad";
-                    if(BusinessState.money <= toyCost * 5)
+                    if(GameData.singleton.money <= toyCost * 5)
                     {
                         EventState.currentEventText = "\"That's too bad. I know things are tough right now. He'll understand.\"";
                     }
-                    else if(BusinessState.money >= toyCost * 10)
+                    else if(GameData.singleton.money >= toyCost * 10)
                     {
                         EventState.currentEventText = "\"I think we could spare it. How can you neglect our son like that?\" She goes outside.";
-                        RelationshipState.wifeRelationship -= 10;
+                        GameData.singleton.wifeRelationship -= 10;
                     }
                     else
                     {
@@ -205,7 +201,7 @@ public class SonEventChain
                     EventState.currentEventImage = "faceSonHappy";
                     EventState.currentEventText = "\"Dad! Thank you for my birthday present!\" He gives you a big hug and then runs outside.";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
-                    RelationshipState.sonRelationship += 10;
+                    GameData.singleton.sonRelationship += 10;
                     return EventResult.DONE;
             }
 

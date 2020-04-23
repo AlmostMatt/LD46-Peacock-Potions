@@ -55,14 +55,14 @@ public class EventState
 
     public static GameEvent PopEvent()
     {
-        List<ScheduledEvent> eventQueue = eventQueues[(int)GameState.currentStage];
+        List<ScheduledEvent> eventQueue = eventQueues[(int)GameData.singleton.currentStage];
         if(eventQueue.Count == 0) return null;
 
         ScheduledEvent e = eventQueue[0];
 
-        if(e.mMinDelay > GameState.quarterTime) return null; // TODO: generalize "quarterTime" to "stageTime" I guess
+        if(e.mMinDelay > GameData.singleton.quarterTime) return null; // TODO: generalize "quarterTime" to "stageTime" I guess
         
-        if(e.mQuarter <= GameState.quarter)
+        if(e.mQuarter <= GameData.singleton.quarter)
         {
             eventQueue.RemoveAt(0);
             return e.mEvent;
@@ -75,10 +75,10 @@ public class EventState
     {
         get
         {
-            List<ScheduledEvent> eventQueue = eventQueues[(int)GameState.currentStage];
+            List<ScheduledEvent> eventQueue = eventQueues[(int)GameData.singleton.currentStage];
             if(eventQueue.Count == 0) return false;
 
-            if(eventQueue[0].mQuarter > GameState.quarter) return false;
+            if(eventQueue[0].mQuarter > GameData.singleton.quarter) return false;
 
             return true;
         }

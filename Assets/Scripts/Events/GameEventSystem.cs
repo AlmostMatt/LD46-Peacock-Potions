@@ -11,10 +11,10 @@ public class GameEventSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {        
-        if(mPrevStage != GameState.currentStage)
+        if(mPrevStage != GameData.singleton.currentStage)
         {
             mEventTimer = 0;
-            mPrevStage = GameState.currentStage;
+            mPrevStage = GameData.singleton.currentStage;
         }
 
         if(EventState.currentEvent == null)

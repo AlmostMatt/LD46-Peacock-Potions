@@ -4,83 +4,36 @@ using UnityEngine;
 
 public class Peacock
 {
-    private float mHealth = 75;
-    public float health
+    public static void SetQuarterlyExtra(int extraType, bool active)
     {
-        get { return mHealth; }
-        set { mHealth = Mathf.Clamp(value, 0, 100); }
-    }
-    public float happiness = 25;
-    public float comfort = 35;
-
-    public FoodType quarterlyFoodType = FoodType.FT_BASIC;
-    public PeacockActivityType quarterlyActivity = PeacockActivityType.PA_SING;
-
-    private int mQuarterlyTotalCost = FoodType.FT_BASIC.GetPrice();
-    public int quarterlyTotalCost
-    {
-        get { return mQuarterlyTotalCost; }
-    }
-    private int mQuarterlyFoodCost = FoodType.FT_BASIC.GetPrice();
-    public int quarterlyFoodCost
-    {
-        get { return mQuarterlyFoodCost; }
-        set
-        {
-            mQuarterlyTotalCost -= mQuarterlyFoodCost;
-            mQuarterlyFoodCost = value;
-            mQuarterlyTotalCost += value;
-        }
-    }
-    private bool[] mQuarterlyExtras = new bool[(int)PeacockExtraType.ET_MAX];
-    private int mNumExtras = 0;
-    public void SetQuarterlyExtra(int extraType, bool active)
-    {
-        if(mQuarterlyExtras[extraType] != active)
+        if(GameData.singleton.peacockQuarterlyExtras[extraType] != active)
         {
             int price = ((PeacockExtraType)extraType).GetPrice();
             if(active)
             {
-                mQuarterlyTotalCost += price;
-                ++mNumExtras;
+                GameData.singleton.peacockQuarterlyTotalCost += price;                
             }
             else
             {
-                mQuarterlyTotalCost -= price;
-                --mNumExtras;
+                GameData.singleton.peacockQuarterlyTotalCost -= price;
             }
-            mQuarterlyExtras[extraType] = active;
+            GameData.singleton.peacockQuarterlyExtras[extraType] = active;
         }
     }
-    public bool HasQuarterlyExtra(int extraType)
+    public static bool HasQuarterlyExtra(int extraType)
     {
-        return mQuarterlyExtras[extraType];
+        return GameData.singleton.peacockQuarterlyExtras[extraType];
     }
 
-    public class QuarterlyReport
-    {
-        public string foodDesc = "Fed it good food.";
-        public string activityDesc = "Read it a story every night.";
-        public string extraDesc = "Gave it nothing extra.";
-        public string generalDesc = "It looks healthy, relaxed, and happy.";
-        public List<ResourceAndCount> featherCounts = new List<ResourceAndCount>();
-    }
-    public QuarterlyReport quarterlyReport = new QuarterlyReport();
-
-    private static ResourceType[] producableResources = new ResourceType[]
+    public static ResourceType[] producableResources = new ResourceType[]
     {
         ResourceType.RT_GREEN_FEATHER,
         ResourceType.RT_RED_FEATHER,
         ResourceType.RT_GOLD_FEATHER,
         ResourceType.RT_BLUE_FEATHER
     };
-    private float[] mProductionDistribution = new float[producableResources.Length];
 
-    public void StartQuarter()
-    {
-    }
-
-    private void Normalize(float[] dist)
+    private static void Normalize(float[] dist)
     {
         float totalDist = 0;
         for(int i = 0; i < dist.Length; ++i)
@@ -93,139 +46,138 @@ public class Peacock
         }
     }
 
-    public void QuarterOver()
+    public static void EndOfQuarter()
     {
-        quarterlyReport = new QuarterlyReport();
-
         // update health and stuff based on what it got during the quarter
-        switch(quarterlyFoodType)
+        switch(GameData.singleton.peacockQuarterlyFoodType)
         {
             case FoodType.FT_CRAP:
-                health -= 20;
-                quarterlyReport.foodDesc = "Fed it cheap food.";
+                GameData.singleton.peacockHealth -= 20;
+                GameData.singleton.peacockReportFoodDesc = "Fed it cheap food.";
                 break;
             case FoodType.FT_BASIC:
-                quarterlyReport.foodDesc = "Fed it basic food.";
+                GameData.singleton.peacockReportFoodDesc = "Fed it basic food.";
                 break;
             case FoodType.FT_DELUXE:
-                quarterlyReport.foodDesc = "Fed it deluxe food.";
-                happiness += 5;
+                GameData.singleton.peacockReportFoodDesc = "Fed it deluxe food.";
+                GameData.singleton.peacockHappiness += 5;
                 break;
         }
 
-        switch(quarterlyActivity)
+        switch(GameData.singleton.peacockQuarterlyActivity)
         {
             case PeacockActivityType.PA_STORY:
-                quarterlyReport.activityDesc = "Read it tales of other lands.";
-                comfort += 2;
+                GameData.singleton.peacockReportActivityDesc = "Read it tales of other lands.";
+                GameData.singleton.peacockComfort += 2;
                 break;
             case PeacockActivityType.PA_SING:
-                quarterlyReport.activityDesc = "Sang it to sleep with seasonal songs.";
-                comfort += 10;
-                happiness += 1;
+                GameData.singleton.peacockReportActivityDesc = "Sang it to sleep with seasonal songs.";
+                GameData.singleton.peacockComfort += 10;
+                GameData.singleton.peacockHappiness += 1;
                 break;
             case PeacockActivityType.PA_HUG:
-                quarterlyReport.activityDesc = "Hugged it every day.";
-                happiness += 15;
+                GameData.singleton.peacockReportActivityDesc = "Hugged it every day.";
+                GameData.singleton.peacockHappiness += 15;
                 break;
         }
 
-        if(mQuarterlyExtras[(int)PeacockExtraType.ET_MEDICINE])
+        if(GameData.singleton.peacockQuarterlyExtras[(int)PeacockExtraType.ET_MEDICINE])
         {
-            if(health >= 50)
+            if(GameData.singleton.peacockHealth >= 50)
             {
-                health -= 30; // don't give medicine to a healthly peacock!
+                GameData.singleton.peacockHealth -= 30; // don't give medicine to a GameData.singleton.peacockHealthly peacock!
             }
-            else if(health < 50)
+            else if(GameData.singleton.peacockHealth < 50)
             {
-                health = 50;
+                GameData.singleton.peacockHealth = 50;
             }
         }
 
-        if(mQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
+        if(GameData.singleton.peacockQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
         {
-            health -= 20;
+            GameData.singleton.peacockHealth -= 20;
         }
 
-        if(Random.Range(0f, 1f) < 0.1f && health > 20)
+        if(Random.Range(0f, 1f) < 0.1f && GameData.singleton.peacockHealth > 20)
         {
-            health -= 15;
+            GameData.singleton.peacockHealth -= 15;
             // sometimes it just gets sick
         }
 
-        if(health < 50 && health > 25)
+        if(GameData.singleton.peacockHealth < 50 && GameData.singleton.peacockHealth > 25)
         {
-            health += 1; // sometimes it gets better on its own
+            GameData.singleton.peacockHealth += 1; // sometimes it gets better on its own
         }
 
-        switch(GameState.season)
+        float[] productionDistribution = null;
+        switch(GameData.singleton.season)
         {
             case GameState.Season.SPRING:
-                mProductionDistribution = new float[] { 60, 20, 0, 20 };
+                productionDistribution = new float[] { 60, 20, 0, 20 };
                 break;
             case GameState.Season.SUMMER:
-                mProductionDistribution = new float[] { 20, 60, 20, 0 };
+                productionDistribution = new float[] { 20, 60, 20, 0 };
                 break;
             case GameState.Season.FALL:
-                mProductionDistribution = new float[] { 0, 20, 60, 20 };
+                productionDistribution = new float[] { 0, 20, 60, 20 };
                 break;
             case GameState.Season.WINTER:                
-                mProductionDistribution = new float[] { 20, 0, 20, 60 };
+                productionDistribution = new float[] { 20, 0, 20, 60 };
                 break;
         }
 
-        Normalize(mProductionDistribution);
+        Normalize(productionDistribution);
 
-        bool readStory = quarterlyActivity == PeacockActivityType.PA_STORY;
+        bool readStory = GameData.singleton.peacockQuarterlyActivity == PeacockActivityType.PA_STORY;
         if(readStory)
         {
-            for(int i = 0; i < mProductionDistribution.Length; ++i)
+            for(int i = 0; i < productionDistribution.Length; ++i)
             {
-                mProductionDistribution[i] = Mathf.Lerp(mProductionDistribution[i], 0.5f, 0.3f);
+                productionDistribution[i] = Mathf.Lerp(productionDistribution[i], 0.5f, 0.3f);
             }
 
-            Normalize(mProductionDistribution);
+            Normalize(productionDistribution);
         }
-        else if(quarterlyActivity == PeacockActivityType.PA_SING)
+        else if(GameData.singleton.peacockQuarterlyActivity == PeacockActivityType.PA_SING)
         {
-            for(int i = 0; i < mProductionDistribution.Length; ++i)
+            for(int i = 0; i < productionDistribution.Length; ++i)
             {
-                if(i == (int)GameState.season)
+                if(i == (int)GameData.singleton.season)
                 {
-                    mProductionDistribution[i] *= 1.5f;
+                    productionDistribution[i] *= 1.5f;
                 }
                 else
                 {
-                    mProductionDistribution[i] *= 0.5f;
+                    productionDistribution[i] *= 0.5f;
                 }
             }
-            Normalize(mProductionDistribution);
+            Normalize(productionDistribution);
         }
 
-        bool hasBlanket = mQuarterlyExtras[(int)PeacockExtraType.ET_PILLOW];
+        bool hasBlanket = GameData.singleton.peacockQuarterlyExtras[(int)PeacockExtraType.ET_PILLOW];
         float[] mBlanketModifier = new float[] { 1, 1.5f, 1, 0.5f };
         if(hasBlanket)
         {
-            for(int i = 0; i < mProductionDistribution.Length; ++i)
+            for(int i = 0; i < productionDistribution.Length; ++i)
             {
-                mProductionDistribution[i] *= mBlanketModifier[i];
+                productionDistribution[i] *= mBlanketModifier[i];
             }
-            Normalize(mProductionDistribution);
+            Normalize(productionDistribution);
 
-            switch(GameState.season)               
+            switch(GameData.singleton.season)               
             {
                 case GameState.Season.SUMMER:
-                    comfort -= 20;
-                    health -= 10;
+                    GameData.singleton.peacockComfort -= 20;
+                    GameData.singleton.peacockHealth -= 10;
                     break;
             }
         }
         else
         {
-            switch(GameState.season)
+            switch(GameData.singleton.season)
             {
                 case GameState.Season.WINTER:
-                    comfort -= 10;
+                    GameData.singleton.peacockComfort -= 10;
                     break;
             }
         }
@@ -238,65 +190,66 @@ public class Peacock
             switch(resource)
             {
                 case ResourceType.RT_BLUE_FEATHER:
-                    mProductionDistribution[i] = GameState.season == GameState.Season.WINTER ? 70 : (GameState.season == GameState.Season.SUMMER ? 0 : 15};
-                    // mProductionDistribution[i] = ((1 - (happiness / 100)) + (comfort / 100)) * 0.5f;
+                    productionDistribution[i] = GameData.singleton.season == GameState.Season.WINTER ? 70 : (GameData.singleton.season == GameState.Season.SUMMER ? 0 : 15};
+                    // productionDistribution[i] = ((1 - (GameData.singleton.peacockHappiness / 100)) + (GameData.singleton.peacockComfort / 100)) * 0.5f;
                     break;
                 case ResourceType.RT_GREEN_FEATHER:
-                    mProductionDistribution[i] = GameState.season == GameState.Season.SPRING ? 70 : 0;
-                    //mProductionDistribution[i] = (1 - (health / 100));
+                    productionDistribution[i] = GameData.singleton.season == GameState.Season.SPRING ? 70 : 0;
+                    //productionDistribution[i] = (1 - (GameData.singleton.peacockHealth / 100));
                     break;
                 case ResourceType.RT_GOLD_FEATHER:
-                    mProductionDistribution[i] = GameState.season == GameState.Season.FALL ? 1 : 0;
-                    // mProductionDistribution[i] = (happiness / 100);
+                    productionDistribution[i] = GameData.singleton.season == GameState.Season.FALL ? 1 : 0;
+                    // productionDistribution[i] = (GameData.singleton.peacockHappiness / 100);
                     break;
                 case ResourceType.RT_RED_FEATHER:
-                    mProductionDistribution[i] = GameState.season == GameState.Season.SUMMER ? 1 : 0;
-                    // mProductionDistribution[i] = ((health / 100) + (1 - (comfort / 100))) * 0.5f;
+                    productionDistribution[i] = GameData.singleton.season == GameState.Season.SUMMER ? 1 : 0;
+                    // productionDistribution[i] = ((GameData.singleton.peacockHealth / 100) + (1 - (GameData.singleton.peacockComfort / 100))) * 0.5f;
                     break;
                 
             }
         }
         */
 
-        float baseNumFeathers = Mathf.Lerp(0, 20, 0.5f * ((happiness / 100) + (comfort / 100)));
-        if(quarterlyFoodType == FoodType.FT_DELUXE)
+        float baseNumFeathers = Mathf.Lerp(0, 20, 0.5f * ((GameData.singleton.peacockHappiness / 100) + (GameData.singleton.peacockComfort / 100)));
+        if(GameData.singleton.peacockQuarterlyFoodType == FoodType.FT_DELUXE)
         {
             baseNumFeathers += 10;
         }
 
-        if(mQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
+        if(GameData.singleton.peacockQuarterlyExtras[(int)PeacockExtraType.ET_HORMONES])
         {
             baseNumFeathers *= 1.5f;
         }
 
+        GameData.singleton.peacockReportFeatherCounts.Clear();
         int totalFeathers = Mathf.RoundToInt(baseNumFeathers * Random.Range(0.9f, 1.1f));
         for(int i = 0; i < producableResources.Length; ++i)
         {
             int resource = (int)producableResources[i];
-            int numFeathers = Mathf.RoundToInt(totalFeathers * mProductionDistribution[i]);
-            quarterlyReport.featherCounts.Add(new ResourceAndCount((ResourceType)resource, numFeathers));
-            BusinessState.resources[resource] += numFeathers;
+            int numFeathers = Mathf.RoundToInt(totalFeathers * productionDistribution[i]);
+            GameData.singleton.peacockReportFeatherCounts.Add(new ResourceAndCount((ResourceType)resource, numFeathers));
+            GameData.singleton.resources[resource] += numFeathers;
         }
 
         string extraDesc = "Gave it ";
         int numExtrasSoFar = 0;
-        if(mNumExtras == 0)
+        if(GameData.singleton.peacockNumQuarterlyExtras == 0)
         {
             extraDesc += "nothing extra";
         }
         else
         {
-            for(int i = 0; i < mQuarterlyExtras.Length; ++i)
+            for(int i = 0; i < GameData.singleton.peacockQuarterlyExtras.Length; ++i)
             {
-                if(mQuarterlyExtras[i])
+                if(GameData.singleton.peacockQuarterlyExtras[i])
                 {
                     string name = ((PeacockExtraType)i).GetName();
-                    if(mNumExtras == 1)
+                    if(GameData.singleton.peacockNumQuarterlyExtras == 1)
                     {
                         extraDesc += name;
                         break;
                     }
-                    else if(mNumExtras == 2)
+                    else if(GameData.singleton.peacockNumQuarterlyExtras == 2)
                     {
                         if(numExtrasSoFar == 0)
                         {
@@ -308,7 +261,7 @@ public class Peacock
                             break;
                         }
                     }
-                    else // mNumExtras == 3
+                    else // GameData.singleton.peacockNumQuarterlyExtras == 3
                     {
                         switch(numExtrasSoFar)
                         {
@@ -326,16 +279,16 @@ public class Peacock
             }
         }
         extraDesc += ".";
-        quarterlyReport.extraDesc = extraDesc;
+        GameData.singleton.peacockReportExtraDesc = extraDesc;
 
         string generalDesc;
         List<string> goodStrings = new List<string>();
         List<string> badStrings = new List<string>();
-        if(health < 25)
+        if(GameData.singleton.peacockHealth < 25)
         {
             badStrings.Add("very sick");
         }
-        else if(health < 50)
+        else if(GameData.singleton.peacockHealth < 50)
         {
             badStrings.Add("a little sick");
         }
@@ -344,15 +297,15 @@ public class Peacock
             goodStrings.Add("healthy");
         }
 
-        if(comfort <= 25)
+        if(GameData.singleton.peacockComfort <= 25)
         {
             badStrings.Add("very uncomfortable");
         }
-        else if(comfort <= 40)
+        else if(GameData.singleton.peacockComfort <= 40)
         {
             badStrings.Add("a bit distressed");
         }
-        else if(comfort <= 60)
+        else if(GameData.singleton.peacockComfort <= 60)
         {
             goodStrings.Add("comfortable");
         }
@@ -361,15 +314,15 @@ public class Peacock
             goodStrings.Add("very relaxed");
         }
 
-        if(happiness <= 25)
+        if(GameData.singleton.peacockHappiness <= 25)
         {
             badStrings.Add("quite upset");
         }
-        else if(happiness <= 40)
+        else if(GameData.singleton.peacockHappiness <= 40)
         {
             badStrings.Add("a little sad");
         }
-        else if(happiness <= 60)
+        else if(GameData.singleton.peacockHappiness <= 60)
         {
             goodStrings.Add("content");
         }
@@ -394,7 +347,6 @@ public class Peacock
         {
             generalDesc = string.Format("It looks {0} and {1}, but {2}.", badStrings[0], badStrings[1], goodStrings[0]);
         }
-        quarterlyReport.generalDesc = generalDesc;
-
+        GameData.singleton.peacockReportGeneralDesc = generalDesc;
     }
 }

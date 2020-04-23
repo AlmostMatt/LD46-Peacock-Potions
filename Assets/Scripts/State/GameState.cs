@@ -34,27 +34,27 @@ public class GameState
     // Game over, events, and the time-skip will not use this.
     public static void GameLoopGotoNextStage()
     {
-        GameStage prevStage = currentStage;
-        switch (currentStage)
+        GameStage prevStage = GameData.singleton.currentStage;
+        switch (GameData.singleton.currentStage)
         {
             case GameStage.GS_SIMULATION:
                 /* End the Quarter */
                 MainGameSystem.EndCurrentQuarter();
-                currentStage = GameStage.GS_OVERLAY_POTION_SALES;
+                GameData.singleton.currentStage = GameStage.GS_OVERLAY_POTION_SALES;
                 break;
             case GameStage.GS_OVERLAY_POTION_SALES:
-                currentStage = GameStage.GS_OVERLAY_FINANCIAL_SUMMARY;
+                GameData.singleton.currentStage = GameStage.GS_OVERLAY_FINANCIAL_SUMMARY;
                 break;
             case GameStage.GS_OVERLAY_FINANCIAL_SUMMARY:
                 /* Pay rent when the OK button is clicked */
                 MainGameSystem.PayEndOfQuarterExpenses();
-                currentStage = GameStage.GS_OVERLAY_FEATHER_COLLECTION;
+                GameData.singleton.currentStage = GameStage.GS_OVERLAY_FEATHER_COLLECTION;
                 break;
             case GameStage.GS_OVERLAY_FEATHER_COLLECTION:
-                currentStage = GameStage.GS_RESOURCE_ALLOCATION;
+                GameData.singleton.currentStage = GameStage.GS_RESOURCE_ALLOCATION;
                 break;
             case GameStage.GS_RESOURCE_ALLOCATION:
-                currentStage = GameStage.GS_PEACOCK;
+                GameData.singleton.currentStage = GameStage.GS_PEACOCK;
                 GameObject.FindObjectsOfType<UIControllerSystem>()[0].PreparePeacockSummary();
                 break;
             case GameStage.GS_PEACOCK:
@@ -62,27 +62,13 @@ public class GameState
                 MainGameSystem.PayPeacockExpenses();
                 /* Start the next quarter */
                 MainGameSystem.StartNextQuarter();
-                currentStage = GameStage.GS_SIMULATION;
                 break;
             default:
                 // stay in the current stage
                 Debug.LogError("GameLoopGotoNextStage was used from an invalid stage!");
                 break;
         }
-        Debug.Log("Stage change from " + prevStage.ToString() + " to " + currentStage.ToString());
-    }
-
-    public static GameStage currentStage = GameStage.GS_MAIN_MENU;
-    public static int quarter = 0;
-    public static float quarterTime = 0; // seconds elapsed in the current quarter
-    public static int yearsSkipped = 0;
-    public static int year
-    {
-        get { return 452 + (quarter / 4); }
-    }
-    public static int elapsedYears
-    {
-        get { return yearsSkipped + (quarter / 4); }
+        Debug.Log("Stage change from " + prevStage.ToString() + " to " + GameData.singleton.currentStage.ToString());
     }
 
     public enum Season
@@ -92,13 +78,7 @@ public class GameState
         FALL,
         WINTER
     }
-    public static Season season
-    {
-        get { return (Season)(quarter % 4); }
-    }
-
-    public static bool peacockDied = false;
-    public static bool reachedEndOfLife = false;
+    
     public static bool epilogueDirty = false;
     public static List<string> epilogueLines = new List<string>();
 }
@@ -107,7 +87,7 @@ public static class SeasonExtensions
 {
     public static string GetImage(this GameState.Season season)
     {
-        switch (GameState.season) // surely this should be the season passed in, right?
+        switch (season)
         {
             case GameState.Season.SPRING:
                 return "spring";

@@ -35,7 +35,7 @@ public class InvestmentEventChain
                 case EventStage.ACCEPT:
                     EventState.currentEventImage = "faceOther";
                     EventState.currentEventText = "\"You won't regret this!\", he says. He takes your $1000 and leaves.";
-                    EventState.PushEvent(new InvestmentReturnEvent(), GameState.quarter + 4);
+                    EventState.PushEvent(new InvestmentReturnEvent(), GameData.singleton.quarter + 4);
                     BusinessState.MoneyChangeFromEvent(-1000);
                     EventState.currentEventOptions = EventState.OK_OPTION;
                     return EventResult.DONE;

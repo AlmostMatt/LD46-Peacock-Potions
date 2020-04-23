@@ -6,45 +6,18 @@ using UnityEngine;
 
 public class BusinessState
 {
-    public static int rent = 0;
-    public static float money = 0;
-    public static Peacock peacock = new Peacock();    
-    public static int[] resources = new int[(int)ResourceType.RT_MAX];
-    public static int[] inventory = new int[(int)ProductType.PT_MAX];
-    // Set a default price (if not a multiple of 10, modify increments in RenderFunctions)
-    public static float[] prices = Enumerable.Repeat(20f, (int)ProductType.PT_MAX).ToArray();
-
-    public static bool missedRent = false;
-    
-    public class QuarterlyReport
-    {
-        // Inventory as of end-of-quarter
-        public int[] unsoldPotions = new int[(int)ProductType.PT_MAX];
-        public float[] salePrices = new float[(int)ProductType.PT_MAX];
-        public int[] sales = new int[(int)ProductType.PT_MAX];
-        public int[] unfulfilledDemand = new int[(int)ProductType.PT_MAX];
-        public int[] miscLosses = new int[(int)ProductType.PT_MAX];
-
-        public int initialBalance = 0;
-        public int finalBalance = 0;
-        public int livingExpenses = 0;
-        public int eventIncome = 0;
-        public int eventExpenses = 0;
-    }
-    public static QuarterlyReport quarterlyReport = new QuarterlyReport();
-
     public static void MoneyChangeFromEvent(int eventMoney)
     {
         // TODO: make event income and expenses into [string, amount] pairs so that the event can be named
         if (eventMoney > 0)
         {
-            BusinessState.quarterlyReport.eventIncome += eventMoney;
+            GameData.singleton.eventIncome += eventMoney;
         } else
         {
             // Make expenses a positive number
-            BusinessState.quarterlyReport.eventExpenses -= eventMoney;
+            GameData.singleton.eventExpenses -= eventMoney;
         }
-        BusinessState.money += eventMoney;
+        GameData.singleton.money += eventMoney;
     }
 
     public struct PerItemReport
@@ -62,18 +35,12 @@ public class BusinessState
         for (int product = 0; product < (int)ProductType.PT_MAX; product++) {
             PerItemReport report = new PerItemReport();
             report.productType = (ProductType) product;
-            if (quarterlyReport != null)
-            {
-                report.endOfQStock = quarterlyReport.unsoldPotions[product];
-                report.numSold = quarterlyReport.sales[product];
-                report.numLost = quarterlyReport.miscLosses[product];
-                report.salePrice = (int)quarterlyReport.salePrices[product];
-            }
-            else
-            {
-                // do I need to handle the no-report case?
-                report.salePrice = (int)prices[product];
-            }
+
+            report.endOfQStock = GameData.singleton.unsoldPotions[product];
+            report.numSold = GameData.singleton.quarterlySales[product];
+            report.numLost = GameData.singleton.miscLosses[product];
+            report.salePrice = (int)GameData.singleton.quarterlyReportSalePrices[product];
+
             reports.Add(report);
         }
         return reports;

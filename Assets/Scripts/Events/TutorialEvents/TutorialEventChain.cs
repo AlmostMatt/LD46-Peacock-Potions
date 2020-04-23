@@ -53,7 +53,7 @@ public class TutorialEventChain
 
         protected override bool ShouldPersistStill()
         {
-            return (GameState.currentStage == GameState.GameStage.GS_OVERLAY_POTION_SALES);
+            return (GameData.singleton.currentStage == GameState.GameStage.GS_OVERLAY_POTION_SALES);
         }
 
         protected override void EventEnd(int choice)                    
@@ -73,7 +73,7 @@ public class TutorialEventChain
 
         protected override bool ShouldPersistStill()
         {
-            return (GameState.currentStage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY);
+            return (GameData.singleton.currentStage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY);
         }
 
         protected override void EventEnd(int choice)
@@ -93,7 +93,7 @@ public class TutorialEventChain
 
         protected override bool ShouldPersistStill()
         {
-            return (GameState.currentStage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION);
+            return (GameData.singleton.currentStage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION);
         }
 
 

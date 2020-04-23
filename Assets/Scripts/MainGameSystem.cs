@@ -8,23 +8,32 @@ public class MainGameSystem : MonoBehaviour
     void Start()
     {
     }
-
+        
     // Update is called once per frame
     void Update()
     {
         // auto-start the game
         // TODO: 
-        if (GameState.currentStage == GameState.GameStage.GS_MAIN_MENU)
+        if(GameData.singleton.currentStage == GameState.GameStage.GS_MAIN_MENU)
         {
-            InitNewGame();
-            GameState.quarter = -1; // hack it to start at 0
-            StartNextQuarter();
-            // Start with simulation
-            GameState.currentStage = GameState.GameStage.GS_SIMULATION;
+            // testing save/load
+            if(GameData.LoadGame())
+            {
+                Debug.Log("loaded game. resuming at " + GameData.singleton.currentStage.ToString());                
+            }
+            else
+            {
+                InitNewGame();
+                GameData.singleton.quarter = -1; // hack it to start at 0
+                StartNextQuarter();
+                            
+                // Start with simulation
+                GameData.singleton.currentStage = GameState.GameStage.GS_SIMULATION;
+            }
         }
-        else if(GameState.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)
+        else if(GameData.singleton.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)
         {
-            GameState.quarterTime += Time.deltaTime;
+            GameData.singleton.quarterTime += Time.deltaTime;
         }
     }
 
@@ -35,24 +44,24 @@ public class MainGameSystem : MonoBehaviour
         WifeEventChain.Init();
         InvestmentEventChain.Init();
         
-        BusinessState.money = 1000;
-        BusinessState.quarterlyReport.initialBalance = (int)BusinessState.money;
+        GameData.singleton.money = 1000;
+        GameData.singleton.initialBalance = GameData.singleton.money;
         // Set final balance for the previous quarter so that next Q can use it as initial balance
-        BusinessState.quarterlyReport.finalBalance = (int)BusinessState.money;
-        BusinessState.rent = 300;
+        GameData.singleton.finalBalance = GameData.singleton.money;
+        GameData.singleton.rent = 300;
 
         // starting resources
-        for(int i = 0; i < BusinessState.resources.Length; ++i)
+        for(int i = 0; i < GameData.singleton.resources.Length; ++i)
         {
-            BusinessState.resources[i] = 10;
+            GameData.singleton.resources[i] = 10;
         }
 
         // starting inventory
-        for(int i = 0; i < BusinessState.inventory.Length; ++i)
+        for(int i = 0; i < GameData.singleton.inventory.Length; ++i)
         {
-            BusinessState.inventory[i] = 10;
-            BusinessState.prices[i] = 50;
-            BusinessState.quarterlyReport.salePrices[i] = 50;
+            GameData.singleton.inventory[i] = 10;
+            GameData.singleton.potionPrices[i] = 50;
+            GameData.singleton.quarterlyReportSalePrices[i] = 50;
         }
 
         InitWorldParams();
@@ -61,13 +70,13 @@ public class MainGameSystem : MonoBehaviour
     private void InitWorldParams()
     {
         // some initial values for demand calculation
-        CustomerState.totalPopulation = 50;
-        CustomerState.storePopularity = 0.25f;
+        GameData.singleton.totalPopulation = 50;
+        GameData.singleton.storePopularity = 0.25f;
 
         for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
         {
-            CustomerState.productDemand[i] = Random.Range(0.3f, 0.6f); // TODO: ensure they sum to 1? maybe... not necessarily needed, but it would be good to ensure some minimum sum so that players at least get SOME customers
-            CustomerState.optimalPrices[i] = Random.Range(5,150); // TODO: non-uniform distribution
+            GameData.singleton.productDemand[i] = Random.Range(0.3f, 0.6f); // TODO: ensure they sum to 1? maybe... not necessarily needed, but it would be good to ensure some minimum sum so that players at least get SOME customers
+            GameData.singleton.optimalPrices[i] = Random.Range(5,150); // TODO: non-uniform distribution
         }
     }
 
@@ -78,18 +87,29 @@ public class MainGameSystem : MonoBehaviour
 
         // number of customers for a given product:
         // N = (total population) * (demand for product) * (popularity of store) * (price curve)
-        float[] prices = BusinessState.prices;
 
-        CustomerState.totalQuarterlyCustomers = 0;
-        float incomingCustomers = CustomerState.totalPopulation * CustomerState.storePopularity;
+        GameData.singleton.totalQuarterlyCustomers = 0;
+        float incomingCustomers = GameData.singleton.totalPopulation * GameData.singleton.storePopularity;
         for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
         {
-            float willingToPay = Mathf.Clamp(((CustomerState.optimalPrices[i] * 2) - prices[i]) / (CustomerState.optimalPrices[i] * 2), 0, 1);
-            CustomerState.customers[i] = Mathf.RoundToInt(incomingCustomers * CustomerState.productDemand[i] * willingToPay);
-            CustomerState.totalQuarterlyCustomers += CustomerState.customers[i];
-            Debug.Log(CustomerState.customers[i] + " customers are willing to buy " + (ProductType)i + " for " + prices[i]);
+            float willingToPay = Mathf.Clamp(((GameData.singleton.optimalPrices[i] * 2) - GameData.singleton.potionPrices[i]) / (GameData.singleton.optimalPrices[i] * 2), 0, 1);
+            GameData.singleton.quarterlyCustomers[i] = Mathf.RoundToInt(incomingCustomers * GameData.singleton.productDemand[i] * willingToPay);
+            GameData.singleton.totalQuarterlyCustomers += GameData.singleton.quarterlyCustomers[i];
+            Debug.Log(GameData.singleton.quarterlyCustomers[i] + " customers are willing to buy " + (ProductType)i + " for " + GameData.singleton.potionPrices[i]);
         }
     }
+
+     private static void ResetQuarterlyReport()
+     {
+        // all the other data is stuff we can leave,
+        // but these ones get inc'd, so they need to have their values reset
+        System.Array.Clear(GameData.singleton.quarterlySales, 0, GameData.singleton.quarterlySales.Length);
+        System.Array.Clear(GameData.singleton.unfulfilledDemand, 0, GameData.singleton.unfulfilledDemand.Length);
+        System.Array.Clear(GameData.singleton.miscLosses, 0, GameData.singleton.miscLosses.Length);        
+        GameData.singleton.miscLosses = new int[(int)ProductType.PT_MAX];        
+        GameData.singleton.eventIncome = 0;
+        GameData.singleton.eventExpenses = 0;
+     }
 
     /**
      * Starts a new quarter (beginning of simulation)
@@ -97,23 +117,23 @@ public class MainGameSystem : MonoBehaviour
      */
     public static void StartNextQuarter()
     {
-        // Set the report's initial balance to the previous report's final balance
-        int newInitialBalance = BusinessState.quarterlyReport.finalBalance;
-        BusinessState.quarterlyReport = new BusinessState.QuarterlyReport();
-        BusinessState.quarterlyReport.initialBalance = newInitialBalance;
+        ResetQuarterlyReport();
 
-        if(GameState.quarter >= 4)
+        if(GameData.singleton.quarter >= 4)
         {
-            CustomerState.storePopularity += 0.02f;
+            GameData.singleton.storePopularity += 0.02f;
         }
 
-        GameState.quarter += 1;
-        GameState.quarterTime = 0;
+        GameData.singleton.quarter += 1;
+        GameData.singleton.quarterTime = 0;
         // Take a snapshot of the current prices for reports
-        System.Array.Copy(BusinessState.prices, BusinessState.quarterlyReport.salePrices,BusinessState.prices.Length);
+        System.Array.Copy(GameData.singleton.potionPrices, GameData.singleton.quarterlyReportSalePrices, GameData.singleton.potionPrices.Length);
 
-        BusinessState.peacock.StartQuarter();
         CalculateDemand();
+
+        GameData.singleton.currentStage = GameState.GameStage.GS_SIMULATION;
+
+        GameData.SaveGame();
     }
 
     /**
@@ -121,29 +141,28 @@ public class MainGameSystem : MonoBehaviour
      */
     public static void EndCurrentQuarter()
     {
-        // expenses. We could do this as an event at the end of the quarter, if we wanted. Though that could get a bit repetitive.
-        BusinessState.quarterlyReport.livingExpenses = BusinessState.rent;
+        GameData.singleton.livingExpenses = GameData.singleton.rent;
         // Take a snapshot of the current inventory for end-of-q report
-        System.Array.Copy(BusinessState.inventory, BusinessState.quarterlyReport.unsoldPotions, BusinessState.inventory.Length);
-        BusinessState.peacock.QuarterOver();
+        System.Array.Copy(GameData.singleton.inventory, GameData.singleton.unsoldPotions, GameData.singleton.inventory.Length);
+        Peacock.EndOfQuarter();
     }
 
     /**
-     * Causess peacock-related payments to happen
+     * Causes peacock-related payments to happen
      */
     public static void PayPeacockExpenses()
     {
-        BusinessState.money -= BusinessState.peacock.quarterlyTotalCost;
+        GameData.singleton.money -= GameData.singleton.peacockQuarterlyTotalCost;
     }
 
     /**
-     * Causess rent payment to actually happen
+     * Causes rent payment to actually happen
      */
     public static void PayEndOfQuarterExpenses()
     {
-        BusinessState.money -= BusinessState.rent;
+        GameData.singleton.money -= GameData.singleton.rent;
         // just after rent payment is the timing that is used for end-of-q and start-of-q balance
-        BusinessState.quarterlyReport.finalBalance = (int)BusinessState.money;
+        GameData.singleton.finalBalance = GameData.singleton.money;
     }
 
     public static void GameOver()
@@ -152,9 +171,9 @@ public class MainGameSystem : MonoBehaviour
         GameState.epilogueLines.Add("<b>Epilogue</b>");
 
         // Summarize family relationships
-        if (RelationshipState.wifeMarried)
+        if (GameData.singleton.wifeMarried)
         {
-            if (RelationshipState.wifeRelationship > 0f)
+            if (GameData.singleton.wifeRelationship > 0f)
             {
                 GameState.epilogueLines.Add("You married " + WifeEventChain.NAME + " and had a happy life together.");
             } else
@@ -168,20 +187,20 @@ public class MainGameSystem : MonoBehaviour
         // wife relationship tiers [<0 >0]
         // son relationship tiers [<0 >0]
 
-        bool happyMarriage = RelationshipState.wifeMarried;
+        bool happyMarriage = GameData.singleton.wifeMarried;
 
         // Did you die of old age?
-        if (GameState.reachedEndOfLife)
+        if (GameData.singleton.reachedEndOfLife)
         {
             // wealth > X
 
-            GameState.epilogueLines.Add("You kept the business alive for " + GameState.elapsedYears + " years before retiring.");
+            GameState.epilogueLines.Add("You kept the business alive for " + GameData.singleton.elapsedYears + " years before retiring.");
             // Did anyone inherit?
             // TODO: is there a more explicit relationship between son and plan to inherit
-            if (RelationshipState.sonWasBorn && RelationshipState.sonRelationship > 5f)
+            if (GameData.singleton.sonWasBorn && GameData.singleton.sonRelationship > 5f)
             {
                 GameState.epilogueLines.Add("Your son inherited the business, so the business will live on for generations to come.");
-            } else if (RelationshipState.sonWasBorn)
+            } else if (GameData.singleton.sonWasBorn)
             {
                 GameState.epilogueLines.Add("Your son had no interest in the business, so it closed down after you retired.");
             }
@@ -192,19 +211,19 @@ public class MainGameSystem : MonoBehaviour
         } else
         {
             // did the peacock die?
-            if(GameState.peacockDied)
+            if(GameData.singleton.peacockDied)
             {
                 string causeOfFailure = ", but its death ended the business.";
-                GameState.epilogueLines.Add("You kept the peacock alive for " + GameState.elapsedYears + " years "+ causeOfFailure);
+                GameState.epilogueLines.Add("You kept the peacock alive for " + GameData.singleton.elapsedYears + " years "+ causeOfFailure);
             }
-            else if(BusinessState.missedRent)
+            else if(GameData.singleton.missedRent)
             {
                 string causeOfFailure = "before going bankrupt.";
-                GameState.epilogueLines.Add("You kept the business alive for " + GameState.elapsedYears + " years "+ causeOfFailure);
+                GameState.epilogueLines.Add("You kept the business alive for " + GameData.singleton.elapsedYears + " years "+ causeOfFailure);
             }
 
         }
 
-        GameState.currentStage = GameState.GameStage.GS_GAME_OVER;
+        GameData.singleton.currentStage = GameState.GameStage.GS_GAME_OVER;
     }
 }

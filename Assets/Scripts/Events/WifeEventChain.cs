@@ -11,8 +11,6 @@ public class WifeEventChain
     }
     public const string NAME = "Susie";
 
-    private static bool DrankLovePotion = false;
-
     private class WifeEventOne : GameEvent
     {
         protected override EventResult OnStage(EventStage currentStage)
@@ -158,7 +156,7 @@ public class WifeEventChain
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.S2 };
                     break;
                 case EventStage.S2:
-                    DrankLovePotion = true;
+                    GameData.singleton.wifeUsedLovePotion = true;
                     EventState.currentEventImage = "facePlayerSurprise";
                     EventState.currentEventText = "Ah! It tastes sweeter than I expected!\nI like it though.";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
@@ -183,13 +181,13 @@ public class WifeEventChain
             {
                 case EventStage.START:
                     EventState.currentEventImage = "faceWifeHappy";
-                    if (DrankLovePotion)
+                    if (GameData.singleton.wifeUsedLovePotion)
                     {
-                        EventState.currentEventText = "You and " + NAME + " ended up going on many dates and growing quite close.";
+                        EventState.currentEventText = "Despite being under the influence of a love potion for the first date, you and " + NAME + " ended up going on many more dates and growing quite close.";
                     }
                     else
                     {
-                        EventState.currentEventText = "Despite being under the influence of a love potion for the first date, you and " + NAME + " ended up going on many more dates and growing quite close.";
+                        EventState.currentEventText = "You and " + NAME + " ended up going on many dates and growing quite close.";
                     }
                     EventState.currentEventOptions = EventState.OK_OPTION;
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.S1 };

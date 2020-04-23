@@ -23,8 +23,6 @@ public class UIControllerSystem : MonoBehaviour
     public GameObject SimulationDefaultContent;
     public GameObject SimulationEventContent;
 
-    public GameObject AnimatedTextPrefab;
-
     private RenderableGroup<BusinessState.PerItemReport> mItemQuarterlySummaryRenderGroup;
     private RenderableGroup<ResourceAndCount> mInventoryResourceRenderGroup;
     private RenderableGroup<ProductAndCount> mInventoryProductRenderGroup;
@@ -494,20 +492,13 @@ public class UIControllerSystem : MonoBehaviour
         return SimulationDefaultContent.transform.Find("Potions").GetChild((int)productType);
     }
 
-    // UI or audio feedback for a sale happening.
+    // TODO: add UI or audio feedback for a sale happening.
     // This is called from BusinessSystem
     public void ShowSale(ProductType productType)
     {
-        Transform potionGroup = GetPotionGroup(productType);
-        // Same position as potion group but not a child of the potion group
-        GameObject animatedText = Instantiate(AnimatedTextPrefab, potionGroup.position, Quaternion.identity, potionGroup.parent);
-        animatedText.GetComponent<Text>().text = string.Format("+{0}", GameData.singleton.potionPrices[(int)productType]);
-        StartCoroutine(SimpleAnimations.FadeInOut(animatedText, 1f));
-        StartCoroutine(SimpleAnimations.MoveOverTime(animatedText, new Vector3(0f, 60f, 0f), 1f));
-        // Destroy it 2s later (1s after animation ends)
-        Destroy(animatedText, 2f);
+        int amount = GameData.singleton.potionPrices[(int)productType];
+        SpecialEffects.ShowNumberChange(GetPotionGroup(productType), amount, Color.yellow);
     }
-
 
     public void RestoreNormalSummaryPosition()
     {

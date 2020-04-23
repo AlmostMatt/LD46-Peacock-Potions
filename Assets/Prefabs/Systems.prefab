@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5334931060514516132}
   - component: {fileID: 8012783006615471526}
   - component: {fileID: 7416541980535410233}
+  - component: {fileID: 117667892708241470}
   m_Layer: 0
   m_Name: Systems
   m_TagString: Untagged
@@ -132,3 +133,17 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: c8f6b783eebaa4e44878ef0a7ea7ac69, type: 3}
   - name: fall
     sprite: {fileID: 21300000, guid: a94d7818350a3594bab276f74a02cdc7, type: 3}
+--- !u!114 &117667892708241470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5334931060514516129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ae2c1613d6e83e4ba7ffe8b45ceb68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floatingTextPrefab: {fileID: 3634520083722111612, guid: 8e077cb78ebc57b428f1da82f040e79f,
+    type: 3}

@@ -23,8 +23,6 @@ public class UIControllerSystem : MonoBehaviour
     public GameObject SimulationDefaultContent;
     public GameObject SimulationEventContent;
 
-    public GameObject AnimatedTextPrefab;
-
     private RenderableGroup<BusinessState.PerItemReport> mItemQuarterlySummaryRenderGroup;
     private RenderableGroup<ResourceAndCount> mInventoryResourceRenderGroup;
     private RenderableGroup<ProductAndCount> mInventoryProductRenderGroup;
@@ -497,14 +495,12 @@ public class UIControllerSystem : MonoBehaviour
         return SimulationDefaultContent.transform.Find("Potions").GetChild((int)productType);
     }
 
-    // UI or audio feedback for a sale happening.
+    // TODO: add UI or audio feedback for a sale happening.
     // This is called from BusinessSystem
     public void ShowSale(ProductType productType)
     {
-        string numericText = string.Format("+{0}", BusinessState.prices[(int)productType]);
-        Transform potionGroup = GetPotionGroup(productType);
-        SimpleAnimations.SpawnFloatingColoredText(
-            AnimatedTextPrefab, potionGroup, numericText, Color.yellow);
+        int amount = (int)BusinessState.prices[(int)productType];
+        SpecialEffects.ShowNumberChange(GetPotionGroup(productType), amount, Color.yellow);
     }
 
     public void RestoreNormalSummaryPosition()

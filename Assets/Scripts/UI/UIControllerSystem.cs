@@ -501,16 +501,11 @@ public class UIControllerSystem : MonoBehaviour
     // This is called from BusinessSystem
     public void ShowSale(ProductType productType)
     {
+        string numericText = string.Format("+{0}", BusinessState.prices[(int)productType]);
         Transform potionGroup = GetPotionGroup(productType);
-        // Same position as potion group but not a child of the potion group
-        GameObject animatedText = Instantiate(AnimatedTextPrefab, potionGroup.position, Quaternion.identity, potionGroup.parent);
-        animatedText.GetComponent<Text>().text = string.Format("+{0}", BusinessState.prices[(int)productType]);
-        StartCoroutine(SimpleAnimations.FadeInOut(animatedText, 1f));
-        StartCoroutine(SimpleAnimations.MoveOverTime(animatedText, new Vector3(0f, 60f, 0f), 1f));
-        // Destroy it 2s later (1s after animation ends)
-        Destroy(animatedText, 2f);
+        SimpleAnimations.SpawnFloatingColoredText(
+            AnimatedTextPrefab, potionGroup, numericText, Color.yellow);
     }
-
 
     public void RestoreNormalSummaryPosition()
     {

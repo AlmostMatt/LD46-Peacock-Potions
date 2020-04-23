@@ -7,6 +7,20 @@ using UnityEngine.UI;
  */
 public class SimpleAnimations
 {
+    public static void SpawnFloatingColoredText(GameObject textPrefab, Transform targetPosition, string textContent, Color color)
+    {
+        // Spawn at the same position of the target transform
+        // but make it a child of the root canvas to avoid messing with layout groups
+        GameObject animatedText = GameObject.Instantiate(textPrefab, targetPosition.position, Quaternion.identity, targetPosition.root);
+        Text text = animatedText.GetComponent<Text>();
+        text.text = textContent;
+        text.color = color;
+        text.StartCoroutine(SimpleAnimations.FadeInOut(animatedText, 1f));
+        text.StartCoroutine(SimpleAnimations.MoveOverTime(animatedText, new Vector3(0f, 60f, 0f), 1f));
+        // Destroy it 2s later (1s after animation ends)
+        GameObject.Destroy(animatedText, 2f);
+    }
+
     public static IEnumerator MoveOverTime(GameObject animatedText, Vector3 offset, float duration)
     {
         float timePassed = 0f;

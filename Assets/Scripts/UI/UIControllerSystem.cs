@@ -142,13 +142,21 @@ public class UIControllerSystem : MonoBehaviour
 
     // Update the visibility of UI elements
     private bool mPrevHasEvent = false;
+    private bool mPrevPeacockActive = false;
     private void UpdateUiVisibility()
     {
         GameState.GameStage stage = GameData.singleton.currentStage;
         // Summary / resource allocation
         SummaryView.SetActive(stage == GameState.GameStage.GS_RESOURCE_ALLOCATION);
         // Peacock UI
-        PeacockView.SetActive(stage == GameState.GameStage.GS_PEACOCK);
+        bool peacockViewActive = stage == GameState.GameStage.GS_PEACOCK;
+        PeacockView.SetActive(peacockViewActive);
+        if(peacockViewActive && !mPrevPeacockActive)
+        {
+            PreparePeacockSummary();
+        }
+        mPrevPeacockActive = peacockViewActive;
+            
         // UI shared by Simulation / Event and visible behind some overlays
         SimulationView.SetActive(
             stage == GameState.GameStage.GS_EVENT

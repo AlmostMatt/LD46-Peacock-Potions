@@ -55,7 +55,6 @@ public class GameState
                 break;
             case GameStage.GS_RESOURCE_ALLOCATION:
                 GameData.singleton.currentStage = GameStage.GS_PEACOCK;
-                GameObject.FindObjectsOfType<UIControllerSystem>()[0].PreparePeacockSummary();
                 break;
             case GameStage.GS_PEACOCK:
                 /* Pay peacock-related expenses*/

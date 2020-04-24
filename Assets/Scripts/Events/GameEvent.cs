@@ -24,6 +24,11 @@ public abstract class GameEvent // <StageEnum> where StageEnum : System.Enum
     protected EventStage[] mCurrentOptionOutcomes;
     private EventStage mCurrentStage = EventStage.START;
 
+    public virtual ScheduledEvent.EventSpecificSaveData GetSaveData()
+    {
+        return null;
+    }
+
     public void DoEvent()
     {
         //mPreviousStage = GameData.singleton.currentStage;

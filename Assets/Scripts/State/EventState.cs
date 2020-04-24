@@ -11,22 +11,7 @@ public class EventState
     public static string[] currentEventOptions = new string[]{ "uninitialized option 1", "uninitialized option 2" };
     public static string[] OK_OPTION = new string[] { "Ok" }; // many events might want this, so this is here for common use
     public static string[] CONTINUE_OPTION = new string[] { "Continue" };
-
-    private class ScheduledEvent
-    {
-        public ScheduledEvent(GameEvent e, int quarter, float minDelay)
-        {
-            mEvent = e;
-            mQuarter = quarter;
-            mMinDelay = minDelay;
-        }
-
-        public GameEvent mEvent;
-        public int mQuarter;
-        public float mMinDelay;
-    }
-
-    //private static List<ScheduledEvent> eventQueue = new List<ScheduledEvent>();
+    
     private static List<ScheduledEvent>[] eventQueues = new List<ScheduledEvent>[(int)GameState.GameStage.MAX_VALUE];
 
     static EventState()
@@ -81,6 +66,26 @@ public class EventState
             if(eventQueue[0].mQuarter > GameData.singleton.quarter) return false;
 
             return true;
+        }
+    }
+
+    public static void SaveData()
+    {
+        GameData.singleton.eventSaveData.Clear();
+        for(int i = 0; i < eventQueues.Length; ++i)
+        {
+            foreach(ScheduledEvent se in eventQueues[i])
+            {
+                Debug.Log("saving " + se.mEvent.ToString() + ", type " + se.mEvent.GetType());
+                ;
+                ScheduledEvent.ScheduledEventSaveData d = new ScheduledEvent.ScheduledEventSaveData(
+                    se,
+                    (GameState.GameStage)i,
+                    se.mEvent.GetSaveData()
+                );
+                
+                GameData.singleton.eventSaveData.Add(d);
+            }
         }
     }
 }

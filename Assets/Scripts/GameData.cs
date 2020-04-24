@@ -105,6 +105,12 @@ public class GameData
     public string peacockReportGeneralDesc = "It looks healthy, relaxed, and happy.";
     public List<ResourceAndCount> peacockReportFeatherCounts = new List<ResourceAndCount>();
 
+    // EventState
+    public List<ScheduledEvent.ScheduledEventSaveData> eventSaveData = new List<ScheduledEvent.ScheduledEventSaveData>();
+
+    // specific events
+    public int outOfStockEventCooldown = 0;
+
     public static bool LoadGame()
     {
         string saveFilename = Application.persistentDataPath + "/pp_savegame.dat";
@@ -133,19 +139,22 @@ public class GameData
 
     public static bool SaveGame()
     {
+        EventState.SaveData(); // TODO: think about if this belongs here or not
+
         string saveFilename = Application.persistentDataPath + "/pp_savegame.dat";
-        File.Delete(saveFilename);
         try
         {
+            File.Delete(saveFilename);
             FileStream file = File.Open(saveFilename, FileMode.Create, FileAccess.Write);
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(file, singleton);
+            file.Close();
             return true;
         }
         catch(Exception e)
         {
-            Debug.Log("couldn't save game");
-            Debug.Log(e.ToString());
+            Debug.LogError("couldn't save game");
+            Debug.LogError(e.ToString());
         }
 
         return false;

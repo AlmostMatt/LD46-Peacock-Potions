@@ -4,13 +4,34 @@ using UnityEngine;
 
 public class OutOfStockEvent : GameEvent
 {
-    public static int nextAllowedQuarter = 0;
+    [System.Serializable]    
+    public class OutOfStockEventSaveData : ScheduledEvent.EventSpecificSaveData
+    {
+        public OutOfStockEventSaveData(ProductType productType)
+        {
+            this.productType = productType;
+        }
+        public ProductType productType;
+    }
 
     private ProductType mProductType;
 
     public OutOfStockEvent(ProductType productType)
     {
         mProductType = productType;
+    }
+
+    // for reloading from a save file
+    public OutOfStockEvent(OutOfStockEventSaveData saveData)
+    {
+        mProductType = saveData.productType;
+        Debug.Log("reloaded out of stock event for type " + mProductType);
+    }
+
+    public override ScheduledEvent.EventSpecificSaveData GetSaveData()
+    {
+        Debug.Log("saving out of stock event for type " + mProductType);
+        return new OutOfStockEventSaveData(mProductType);
     }
 
     protected override EventResult OnStage(EventStage currentStage)
@@ -35,7 +56,7 @@ public class OutOfStockEvent : GameEvent
                 EventState.currentEventText = "\"Oh okay. I'll have to look elsewhere,\" she says. She takes her leave.";
                 EventState.currentEventOptions = EventState.OK_OPTION;
                 GameData.singleton.storePopularity *= 0.95f;
-                nextAllowedQuarter = GameData.singleton.quarter + 2;
+                GameData.singleton.outOfStockEventCooldown = GameData.singleton.quarter + 2;
                 return EventResult.DONE;
         }
         return EventResult.CONTINUE;
@@ -49,6 +70,18 @@ public class OutOfStockEvent : GameEvent
         public OutOfStockReturnEvent(ProductType productType)
         {
             mProductType = productType;
+        }
+
+        public OutOfStockReturnEvent(OutOfStockEventSaveData saveData)
+        {
+            mProductType = saveData.productType;
+            Debug.Log("reloaded out of stock return event for type " + mProductType);
+        }
+
+        public override ScheduledEvent.EventSpecificSaveData GetSaveData()
+        {
+            Debug.Log("saving out of stock return event for type " + mProductType);
+            return new OutOfStockEventSaveData(mProductType);
         }
 
         protected override EventResult OnStage(EventStage currentStage)

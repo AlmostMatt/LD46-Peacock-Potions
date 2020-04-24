@@ -93,10 +93,10 @@ public class BusinessSystem : MonoBehaviour
                         Debug.Log("A customer wanted " + (ProductType)product + " but we were out of stock");
 
                         // get enough of this, and we queue up an event where a customer asks for this type specifically
-                        if(GameData.singleton.unfulfilledDemand[product] > 3 && OutOfStockEvent.nextAllowedQuarter <= GameData.singleton.quarter)
+                        if(GameData.singleton.unfulfilledDemand[product] > 3 && GameData.singleton.outOfStockEventCooldown <= GameData.singleton.quarter)
                         {
                             EventState.PushEvent(new OutOfStockEvent((ProductType)product), GameData.singleton.quarter);
-                            OutOfStockEvent.nextAllowedQuarter = GameData.singleton.quarter + 2;
+                            GameData.singleton.outOfStockEventCooldown = GameData.singleton.quarter + 2;
                         }
                     }
 

@@ -68,6 +68,7 @@ public class GameState
                 Debug.LogError("GameLoopGotoNextStage was used from an invalid stage!");
                 break;
         }
+        GameData.SaveGame();
         Debug.Log("Stage change from " + prevStage.ToString() + " to " + GameData.singleton.currentStage.ToString());
     }
 

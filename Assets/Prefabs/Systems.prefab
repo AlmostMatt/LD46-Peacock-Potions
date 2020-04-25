@@ -92,8 +92,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: a2c801c4f4450524ba59d1ce1f0172db, type: 3}
   - name: feather
     sprite: {fileID: 21300000, guid: be3324ac468905a4a9186f480f34a129, type: 3}
-  - name: money
+  - name: coins
     sprite: {fileID: 21300000, guid: ca4dd7995b11e3741a017cf7344398fa, type: 3}
+  - name: money
+    sprite: {fileID: 21300000, guid: 3023f9679f2158b42ac5ed47cd99bf9e, type: 3}
   playerImages:
   - name: facePlayerHappy
     sprite: {fileID: 21300000, guid: 19757dad27a20794ba9ee3fcbbacf04f, type: 3}

@@ -6,7 +6,11 @@ public class BusinessSystem : MonoBehaviour
 {
     private float mPaymentTimer = 0;
     private float mPaymentTime = 0;
-    private float QUARTER_TIME = 7f; // 2f;
+    private const float QUARTER_TIME = 7f;
+    private float QuarterTime
+    {
+        get { return DebugOverrides.QuarterDuration.GetValueOrDefault(QUARTER_TIME); }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +46,7 @@ public class BusinessSystem : MonoBehaviour
                         GameData.singleton.reachedEndOfLife = true;
                     }
 
-                    if(!EventState.hasMoreEventsRightNow && GameData.singleton.quarterTime >= QUARTER_TIME) // ensure we play through all events before advancing to next quarter
+                    if(!EventState.hasMoreEventsRightNow && GameData.singleton.quarterTime >= QuarterTime) // ensure we play through all events before advancing to next quarter
                     {
                         mPaymentTime = 0;
 
@@ -70,7 +74,7 @@ public class BusinessSystem : MonoBehaviour
                 // running code on state changes really does want an event-driven style thing, I guess
                 if (mPaymentTime == 0)
                 {
-                    mPaymentTime = QUARTER_TIME / GameData.singleton.totalQuarterlyCustomers;
+                    mPaymentTime = QuarterTime / GameData.singleton.totalQuarterlyCustomers;
                     mPaymentTimer = mPaymentTime;
                 }
 

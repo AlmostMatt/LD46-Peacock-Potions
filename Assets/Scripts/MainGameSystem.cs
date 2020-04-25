@@ -17,7 +17,7 @@ public class MainGameSystem : MonoBehaviour
         if(GameData.singleton.currentStage == GameState.GameStage.GS_MAIN_MENU)
         {
             // testing save/load
-            if(GameData.LoadGame())
+            if(DebugOverrides.ShouldLoadSaveData && GameData.LoadGame())
             {
                 Debug.Log("loaded game. resuming at " + GameData.singleton.currentStage.ToString());
                 if (GameData.singleton.eventSaveData != null)
@@ -36,6 +36,12 @@ public class MainGameSystem : MonoBehaviour
                             
                 // Start with simulation
                 GameData.singleton.currentStage = GameState.GameStage.GS_SIMULATION;
+            }
+            if (DebugOverrides.StartState.HasValue)
+            {
+                // TODO: figure out what functions need to be called here to make various stages somewhat functional
+                // OR - just fast-forward and auto-OK until the desired state is reached
+                GameData.singleton.currentStage = DebugOverrides.StartState.Value;
             }
         }
         else if(GameData.singleton.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)

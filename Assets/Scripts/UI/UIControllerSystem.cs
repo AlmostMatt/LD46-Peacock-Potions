@@ -71,14 +71,14 @@ public class UIControllerSystem : MonoBehaviour
     private void SetupButtonCallbacks()
     {
         // Assume that the OK / DONE button is the last button for these views
-        SummaryView.GetComponentsInChildren<Button>().Last().onClick.AddListener(SummaryScreenOK);
-        PeacockView.GetComponentsInChildren<Button>().Last().onClick.AddListener(PeacockScreenOK);
+        SummaryView.GetComponentsInChildren<Button>(true).Last().onClick.AddListener(SummaryScreenOK);
+        PeacockView.GetComponentsInChildren<Button>(true).Last().onClick.AddListener(PeacockScreenOK);
         // Assume that the OK / DONE button is the only button for these views
-        OverlayViewFeathers.GetComponentInChildren<Button>().onClick.AddListener(OverlayScreenOK);
-        OverlayViewFinancial.GetComponentInChildren<Button>().onClick.AddListener(OverlayScreenOK);
-        OverlayViewPotions.GetComponentInChildren<Button>().onClick.AddListener(OverlayScreenOK);
+        OverlayViewFeathers.GetComponentInChildren<Button>(true).onClick.AddListener(OverlayScreenOK);
+        OverlayViewFinancial.GetComponentInChildren<Button>(true).onClick.AddListener(OverlayScreenOK);
+        OverlayViewPotions.GetComponentInChildren<Button>(true).onClick.AddListener(OverlayScreenOK);
         // Set the same callback for all of the buttons in the Event view
-        foreach (Button b in SimulationEventContent.GetComponentsInChildren<Button>())
+        foreach (Button b in SimulationEventContent.GetComponentsInChildren<Button>(true))
         {
             b.onClick.AddListener(() => MakeDecision(b));
         }

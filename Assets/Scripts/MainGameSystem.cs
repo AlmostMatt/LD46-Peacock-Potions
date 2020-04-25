@@ -20,7 +20,13 @@ public class MainGameSystem : MonoBehaviour
             if(GameData.LoadGame())
             {
                 Debug.Log("loaded game. resuming at " + GameData.singleton.currentStage.ToString());
-                GameEventSystem.Load(GameData.singleton.eventSaveData);
+                if (GameData.singleton.eventSaveData != null)
+                {
+                    GameEventSystem.Load(GameData.singleton.eventSaveData);
+                } else
+                {
+                    Debug.LogWarning("eventSaveData was null");
+                }
             }
             else
             {

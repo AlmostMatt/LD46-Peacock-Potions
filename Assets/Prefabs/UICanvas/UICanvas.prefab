@@ -233,8 +233,6 @@ MonoBehaviour:
   EpilogueView: {fileID: 8311855584972663040}
   SimulationDefaultContent: {fileID: 6412913996843647344}
   SimulationEventContent: {fileID: 1802668976437053498}
-  AnimatedTextPrefab: {fileID: 3634520083722111612, guid: 8e077cb78ebc57b428f1da82f040e79f,
-    type: 3}
 --- !u!1001 &785033154961463527
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -741,6 +739,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 849747249279098260, guid: 03dcb2c154db29f429ff5005d5ba21c1,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 849747249279098260, guid: 03dcb2c154db29f429ff5005d5ba21c1,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 8846099239408276575}
@@ -751,6 +754,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2893521845837810570, guid: 03dcb2c154db29f429ff5005d5ba21c1,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2893521845837810570, guid: 03dcb2c154db29f429ff5005d5ba21c1,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 8846099239408276575}
@@ -758,6 +766,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: MakeDecision
+      objectReference: {fileID: 0}
+    - target: {fileID: 7919079130017001525, guid: 03dcb2c154db29f429ff5005d5ba21c1,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7919079130017001525, guid: 03dcb2c154db29f429ff5005d5ba21c1,
         type: 3}
@@ -1170,6 +1183,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 6003660503380100763, guid: 85e920af0e3b0c6408a049120cac1dee,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6003660503380100763, guid: 85e920af0e3b0c6408a049120cac1dee,
         type: 3}

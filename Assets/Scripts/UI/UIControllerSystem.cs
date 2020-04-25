@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 
 /**
  * Manipulates UI objects based on the game state.
@@ -61,9 +62,28 @@ public class UIControllerSystem : MonoBehaviour
             OverlayViewFinancial.transform.Find("Content"),
             RenderFunctions.RenderStringArrayToTextChildren);
 
-
+        SetupButtonCallbacks();
         // don't start with all customers visible
         RandomizeInitialCustomers();
+    }
+
+    // It's a pain to link these via unity UI because there are references from one prefab to another
+    private void SetupButtonCallbacks()
+    {
+        // Assume that the OK / DONE button is the last button for these views
+        SummaryView.GetComponentsInChildren<Button>().Last().onClick.AddListener(SummaryScreenOK);
+        PeacockView.GetComponentsInChildren<Button>().Last().onClick.AddListener(PeacockScreenOK);
+        // Assume that the OK / DONE button is the only button for these views
+        OverlayViewFeathers.GetComponentInChildren<Button>().onClick.AddListener(OverlayScreenOK);
+        OverlayViewFinancial.GetComponentInChildren<Button>().onClick.AddListener(OverlayScreenOK);
+        OverlayViewPotions.GetComponentInChildren<Button>().onClick.AddListener(OverlayScreenOK);
+        // Set the same callback for all of the buttons in the Event view
+        foreach (Button b in SimulationEventContent.GetComponentsInChildren<Button>())
+        {
+            b.onClick.AddListener(() => MakeDecision(b));
+        }
+
+        // TODO: dynammically setup other buttons on peacock and summary screen
     }
 
     // Update is called once per frame

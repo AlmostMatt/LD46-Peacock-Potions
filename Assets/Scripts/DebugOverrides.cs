@@ -21,7 +21,7 @@ public class DebugOverrides
      * Whether or not to start the game with music enabled
      * default: true
      */
-    //public const bool MusicEnabled = true;
+    public const bool MusicEnabled = true;
 
     /**
      * The duration of quarter simulation in seconds.

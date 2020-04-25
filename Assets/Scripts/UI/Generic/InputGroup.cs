@@ -17,9 +17,9 @@ public class InputGroup : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        mButton1 = transform.Find("Button1").GetComponent<Button>();
-        mButton2 = transform.Find("Button2").GetComponent<Button>();
-        mText = transform.Find("Value/Text").GetComponent<Text>();
+        mButton1 = transform.Find("H/Button1").GetComponent<Button>();
+        mButton2 = transform.Find("H/Button2").GetComponent<Button>();
+        mText = transform.Find("H/Value/Text").GetComponent<Text>();
     }
 
     // Update is called once per frame

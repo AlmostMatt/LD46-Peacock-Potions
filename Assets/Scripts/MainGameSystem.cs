@@ -46,7 +46,7 @@ public class MainGameSystem : MonoBehaviour
         }
         else if(GameData.singleton.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)
         {
-            GameData.singleton.quarterTime += Time.deltaTime;
+            GameData.singleton.quarterTimeElapsed += Time.deltaTime;
         }
     }
 
@@ -138,7 +138,7 @@ public class MainGameSystem : MonoBehaviour
         }
 
         GameData.singleton.quarter += 1;
-        GameData.singleton.quarterTime = 0;
+        GameData.singleton.quarterTimeElapsed = 0;
         // Take a snapshot of the current prices for reports
         System.Array.Copy(GameData.singleton.potionPrices, GameData.singleton.quarterlyReportSalePrices, GameData.singleton.potionPrices.Length);
 

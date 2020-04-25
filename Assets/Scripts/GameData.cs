@@ -17,11 +17,59 @@ public class GameData
     // GameState
     public GameState.GameStage currentStage = GameState.GameStage.GS_MAIN_MENU;
     public int quarter = 0;
-    public float quarterTime = 0; // seconds elapsed in the current quarter
+    public float quarterTimeElapsed = 0; // seconds elapsed in the current quarter
     public int yearsSkipped = 0;
     public int year
     {
         get { return 452 + (quarter / 4); }
+    }
+    private int dayOfQuarter
+    {
+        get
+        {
+            float elapsedTime = quarterTimeElapsed / BusinessSystem.QuarterTotalTime;
+            int totalDays = 90;
+            // timeElapsed of 0 should be day 1, timeElapsed of 0.999 should round down to 90
+            int dayOfQuarter = 1 + (int)((totalDays) * elapsedTime);
+            // handle potential edge case of day N+1 showing on the final frame
+            if (dayOfQuarter > totalDays)
+            {
+                dayOfQuarter = totalDays;
+            }
+            return dayOfQuarter;
+        }
+    }
+    public string month
+    {
+        get
+        {
+            // rounding down - to [0,1,2]
+            int monthInt = ((dayOfQuarter-1) / 30);
+            monthInt += (3 * (quarter % 4));
+            // TODO: make fictional month names?
+            return new string[] {
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+            }[monthInt];
+        }
+    }
+    public int dayOfMonth
+    {
+        get
+        {
+            // TODO: make it so months have variable number of days
+            return 1 + ((dayOfQuarter-1) % 30);
+        }
     }
     public int elapsedYears
     {

@@ -45,7 +45,7 @@ public class EventState
 
         ScheduledEvent e = eventQueue[0];
 
-        if(e.mMinDelay > GameData.singleton.quarterTime) return null; // TODO: generalize "quarterTime" to "stageTime" I guess
+        if(e.mMinDelay > GameData.singleton.quarterTimeElapsed) return null; // TODO: generalize "quarterTime" to "stageTime" I guess
         
         if(e.mQuarter <= GameData.singleton.quarter)
         {

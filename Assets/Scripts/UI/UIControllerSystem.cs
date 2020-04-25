@@ -262,6 +262,10 @@ public class UIControllerSystem : MonoBehaviour
             }
             SimulationDefaultContent.transform.Find("Shop/Season").GetComponent<Image>().sprite = null; // clear the sprite in case of weird sprite change bug
             SimulationDefaultContent.transform.Find("Shop/Season").GetComponent<Image>().sprite = SpriteManager.GetSprite(GameData.singleton.season.GetImage());
+
+            // Date
+            SimulationView.transform.Find("Overlay/TopLeft/Date/Month/Text").GetComponent<Text>().text = GameData.singleton.month;
+            SimulationView.transform.Find("Overlay/TopLeft/Date/Day/Text").GetComponent<Text>().text = GameData.singleton.dayOfMonth.ToString() ;
         }
         /**
          * Overlay views

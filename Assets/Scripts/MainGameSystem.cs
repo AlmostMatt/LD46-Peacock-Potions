@@ -227,7 +227,7 @@ public class MainGameSystem : MonoBehaviour
             if(GameData.singleton.peacockDied)
             {
                 string causeOfFailure = ", but its death ended the business.";
-                GameState.epilogueLines.Add("You kept the peacock alive for " + GameData.singleton.elapsedYears + " years "+ causeOfFailure);
+                GameState.epilogueLines.Add("You kept the peacock alive for " + GameData.singleton.elapsedYears + " years"+ causeOfFailure);
             }
             else if(GameData.singleton.missedRent)
             {

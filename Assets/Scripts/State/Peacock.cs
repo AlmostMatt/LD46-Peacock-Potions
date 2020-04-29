@@ -348,5 +348,11 @@ public class Peacock
             generalDesc = string.Format("It looks {0} and {1}, but {2}.", badStrings[0], badStrings[1], goodStrings[0]);
         }
         GameData.singleton.peacockReportGeneralDesc = generalDesc;
+
+        // clear out extra choices. they aren't preserved across seasons.
+        for(int i = 0; i < GameData.singleton.peacockQuarterlyExtras.Length; ++i)
+        {
+            SetQuarterlyExtra(i, false);
+        }
     }
 }

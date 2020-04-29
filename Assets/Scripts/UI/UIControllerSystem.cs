@@ -392,6 +392,7 @@ public class UIControllerSystem : MonoBehaviour
 
     // --------- PEACOCK SCREEN ------------ //
 
+    private float PEACOCK_SCREEN_UNSELECTED_ALPHA = 0.1f;
     public void PeacockScreenOK()
     {
         GameState.GameLoopGotoNextStage();
@@ -453,10 +454,7 @@ public class UIControllerSystem : MonoBehaviour
             PeacockExtraType extra = ((PeacockExtraType)i);
             Transform button = extraPlan.GetChild(i);
             button.GetChild(0).GetComponent<Text>().text = extra.GetLabel();
-            if(Peacock.HasQuarterlyExtra(i))
-            {
-                 button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            }
+            button.GetComponent<Image>().color = new Color(1f, 1f, 1f, Peacock.HasQuarterlyExtra(i) ? 1f : PEACOCK_SCREEN_UNSELECTED_ALPHA);
         }
 
         PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(GameData.singleton.peacockQuarterlyTotalCost);
@@ -472,7 +470,7 @@ public class UIControllerSystem : MonoBehaviour
             Image img = button.GetComponent<Image>();
             if (img != null)
             {
-                img.color = new Color(1f, 1f, 1f, (i == foodType) ? 1f : 0.1f);
+                img.color = new Color(1f, 1f, 1f, (i == foodType) ? 1f : PEACOCK_SCREEN_UNSELECTED_ALPHA);
             }
         }
         FoodType food = ((FoodType)foodType);
@@ -492,7 +490,7 @@ public class UIControllerSystem : MonoBehaviour
             Image img = button.GetComponent<Image>();
             if (img != null)
             {
-                img.color = new Color(1f, 1f, 1f, (i == activityType) ? 1f : 0.1f);
+                img.color = new Color(1f, 1f, 1f, (i == activityType) ? 1f : PEACOCK_SCREEN_UNSELECTED_ALPHA);
             }
         }
 

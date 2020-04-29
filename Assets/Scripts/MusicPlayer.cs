@@ -1,12 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MusicPlayer : MonoBehaviour
 {
     private static MusicPlayer instance;
 
     public bool MusicEnabled = true;
+    public Sprite onImage;
+    public Sprite offImage;
+    public GameObject musicButton;
+
+    private bool mPrevMusicEnabled;
 
     void Start()
     {
@@ -15,6 +21,15 @@ public class MusicPlayer : MonoBehaviour
         if (MusicEnabled)
         {
             GetComponent<AudioSource>().Play();
+        }
+    }
+
+    void Update()
+    {
+        if(mPrevMusicEnabled != MusicEnabled)
+        {
+            musicButton.GetComponent<Image>().sprite = MusicEnabled ? onImage : offImage;
+            mPrevMusicEnabled = MusicEnabled;
         }
     }
 

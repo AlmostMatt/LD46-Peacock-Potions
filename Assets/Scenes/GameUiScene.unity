@@ -330,6 +330,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MusicEnabled: 1
+  onImage: {fileID: 21300000, guid: e814613d1059aef448ee0b0ef14b087f, type: 3}
+  offImage: {fileID: 21300000, guid: 4650f55fe9dd9634eb52fef0071b1c38, type: 3}
+  musicButton: {fileID: 1400559437}
 --- !u!1001 &1400559436
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -687,8 +690,29 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3735317234898556189, guid: b5d07784ae3cca141983501b90c00790,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 437416478}
+    - target: {fileID: 3735317234898556189, guid: b5d07784ae3cca141983501b90c00790,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 3735317234898556189, guid: b5d07784ae3cca141983501b90c00790,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5d07784ae3cca141983501b90c00790, type: 3}
+--- !u!1 &1400559437 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1863804087509422768, guid: b5d07784ae3cca141983501b90c00790,
+    type: 3}
+  m_PrefabInstance: {fileID: 1400559436}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1732857682
 GameObject:
   m_ObjectHideFlags: 0

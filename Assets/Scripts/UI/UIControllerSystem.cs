@@ -422,16 +422,27 @@ public class UIControllerSystem : MonoBehaviour
         PeacockView.transform.Find("ExtraReport").GetComponent<Text>().text = GameData.singleton.peacockReportExtraDesc;
         PeacockView.transform.Find("StatusReport").GetComponent<Text>().text = GameData.singleton.peacockReportGeneralDesc;
         PeacockView.transform.Find("NextQuarterTitle").GetComponent<Text>().text = string.Format("Plan for the {0}: ", GameData.singleton.season.GetNextSeasonName());
-
+        
         Transform foodPlan = PeacockView.transform.Find("FoodPlan");
-        for(int i = 0; i < (int)FoodType.FT_MAX; ++i)
+        for(int i = (int)FoodType.FT_MAX - 1; i >= 0; --i)
         {
-            FoodType food = ((FoodType)i);
+            FoodType food = ((FoodType)i); 
             Transform button = foodPlan.GetChild(i);
             button.GetChild(0).GetComponent<Text>().text = food.GetLabel();
             if((int)GameData.singleton.peacockQuarterlyFoodType == i)
             {
-                 button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                // if we can no longer afford the food we previously bought, force a downgrade
+                int price = food.GetPrice();
+                if(price > GameData.singleton.money)
+                {
+                    GameData.singleton.peacockQuarterlyFoodType = (FoodType)(i - 1); // assumption: the first available food type is free
+                    button.GetComponent<Image>().color = new Color(1f, 1f, 1f, PEACOCK_SCREEN_UNSELECTED_ALPHA);
+                    GameData.singleton.peacockQuarterlyFoodCost = GameData.singleton.peacockQuarterlyFoodType.GetPrice();
+                }
+                else
+                {
+                    button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                }
             }
         }
 
@@ -446,8 +457,7 @@ public class UIControllerSystem : MonoBehaviour
                  button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
             }
         }
-
-
+        
         Transform extraPlan = PeacockView.transform.Find("ExtraPlan");
         for(int i = 0; i < (int)PeacockExtraType.ET_MAX; ++i)
         {
@@ -462,8 +472,18 @@ public class UIControllerSystem : MonoBehaviour
 
     public void PeacockScreenFood(int foodType)
     {
-        Debug.Log("food select " + (FoodType)foodType);
         Transform selections = PeacockView.transform.Find("FoodPlan");
+        bool prevSelected = selections.GetChild(foodType).GetComponent<Image>().color.a == 1f;
+
+        FoodType food = ((FoodType)foodType);
+        Debug.Log("food select " + food);
+        int price = food.GetPrice();
+        if(!prevSelected && GameData.singleton.money - GameData.singleton.peacockQuarterlyTotalCost + GameData.singleton.peacockQuarterlyFoodCost < price)
+        {
+            Debug.Log("not enough money");
+            return;
+        }
+
         for (int i = 0; i < selections.childCount; ++i)
         {
             Transform button = selections.GetChild(i);
@@ -473,8 +493,7 @@ public class UIControllerSystem : MonoBehaviour
                 img.color = new Color(1f, 1f, 1f, (i == foodType) ? 1f : PEACOCK_SCREEN_UNSELECTED_ALPHA);
             }
         }
-        FoodType food = ((FoodType)foodType);
-        int price = food.GetPrice();
+
         GameData.singleton.peacockQuarterlyFoodCost = price;
         PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(GameData.singleton.peacockQuarterlyTotalCost);
         GameData.singleton.peacockQuarterlyFoodType = (FoodType)foodType;
@@ -504,9 +523,17 @@ public class UIControllerSystem : MonoBehaviour
         Transform button = extras.GetChild(extraType);
         Image img = button.GetComponent<Image>();
         bool prevSelected = img.color.a == 1f;
+
+        PeacockExtraType extra = (PeacockExtraType)extraType;
+        int price = extra.GetPrice();
+        if(!prevSelected && GameData.singleton.money - GameData.singleton.peacockQuarterlyTotalCost < price)
+        {
+            Debug.Log("not enough money");
+            return;
+        }
+
         img.color = new Color(1f, 1f, 1f, prevSelected ? 0.1f : 1f);
         Peacock.SetQuarterlyExtra(extraType, !prevSelected);
-
         PeacockView.transform.Find("CostTitle/Cost").GetComponent<Text>().text = Utilities.FormatMoney(GameData.singleton.peacockQuarterlyTotalCost);
     }
 

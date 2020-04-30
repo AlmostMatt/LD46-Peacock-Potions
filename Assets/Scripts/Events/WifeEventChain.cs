@@ -106,7 +106,6 @@ public class WifeEventChain
                 case EventStage.NO_POTION:
                     EventState.currentEventImage = "faceWifeNeutral";
                     EventState.currentEventText = "\"Alright. Well, I'll be around.\"";
-                    BusinessSystem.SellProduct((int)ProductType.PT_LOVE_POTION);
                     EventState.currentEventOptions = EventState.OK_OPTION;
                     EventState.PushEvent(new WifeEventLovePotion(), GameData.singleton.quarter + 1); // schedule another event for next quarter
                     return EventResult.DONE;

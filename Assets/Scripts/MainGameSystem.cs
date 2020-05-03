@@ -72,7 +72,7 @@ public class MainGameSystem : MonoBehaviour
         GameData.singleton.rent = 300;
 
         // Starting unlocks
-        GameData.singleton.feathersUnlocked[(int)FeatherType.FT_RED_FEATHER] = true;
+        GameData.singleton.feathersUnlocked[(int)FeatherType.FT_PINK_FEATHER] = true;
         GameData.singleton.potionsUnlocked[(int)PotionType.PT_LOVE_POTION] = true;
         GameData.singleton.potionsUnlocked[(int)PotionType.PT_FIRE_POTION] = true;
 

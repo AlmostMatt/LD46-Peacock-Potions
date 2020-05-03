@@ -79,22 +79,22 @@ public static class PotionTypeExtensions
         {
             case PotionType.PT_LOVE_POTION:
                 return new FeatherAndCount[] {
-                    new FeatherAndCount(FeatherType.FT_RED_FEATHER, 2)};
+                    new FeatherAndCount(FeatherType.FT_PINK_FEATHER, 2)};
             case PotionType.PT_INVIS_POTION:
                 return new FeatherAndCount[] {
                     new FeatherAndCount(FeatherType.FT_GREEN_FEATHER, 1),
                     new FeatherAndCount(FeatherType.FT_BLUE_FEATHER, 1)};
             case PotionType.PT_FIRE_POTION:
                 return new FeatherAndCount[] {
-                    new FeatherAndCount(FeatherType.FT_GOLD_FEATHER, 1),
+                    new FeatherAndCount(FeatherType.FT_ORANGE_FEATHER, 1),
                     new FeatherAndCount(FeatherType.FT_GREEN_FEATHER, 1)};
             case PotionType.PT_LUCK_POTION:
                 return new FeatherAndCount[] {
-                    new FeatherAndCount(FeatherType.FT_RED_FEATHER, 1),
+                    new FeatherAndCount(FeatherType.FT_PINK_FEATHER, 1),
                     new FeatherAndCount(FeatherType.FT_BLUE_FEATHER, 1)};
             case PotionType.PT_POISON_POTION:
                 return new FeatherAndCount[] {
-                    new FeatherAndCount(FeatherType.FT_GOLD_FEATHER, 1)};
+                    new FeatherAndCount(FeatherType.FT_ORANGE_FEATHER, 1)};
             default: return new FeatherAndCount[] { };
         }
     }

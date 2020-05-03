@@ -28,8 +28,8 @@ public class Peacock
     public static FeatherType[] producableResources = new FeatherType[]
     {
         FeatherType.FT_GREEN_FEATHER,
-        FeatherType.FT_RED_FEATHER,
-        FeatherType.FT_GOLD_FEATHER,
+        FeatherType.FT_PINK_FEATHER,
+        FeatherType.FT_ORANGE_FEATHER,
         FeatherType.FT_BLUE_FEATHER
     };
 

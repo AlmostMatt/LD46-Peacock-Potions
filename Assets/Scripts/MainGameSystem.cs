@@ -63,27 +63,32 @@ public class MainGameSystem : MonoBehaviour
         GameData.singleton.finalBalance = GameData.singleton.money;
         GameData.singleton.rent = 300;
 
-        // starting feathers
-        for(int i = 0; i < GameData.singleton.feathersOwned.Length; ++i)
-        {
-            GameData.singleton.feathersOwned[i] = 10;
-        }
-
-        // starting inventory
-        for(int i = 0; i < GameData.singleton.potionsOwned.Length; ++i)
-        {
-            GameData.singleton.potionsOwned[i] = 10;
-            GameData.singleton.potionPrices[i] = 50;
-            GameData.singleton.quarterlyReportSalePrices[i] = 50;
-        }
-
-        // starting unlocks
-        for (int i=0; i < GameData.singleton.feathersOwned.Length; ++i)
+        // Starting unlocks
+        for (int i = 0; i < GameData.singleton.feathersOwned.Length; ++i)
         {
             GameData.singleton.feathersUnlocked[i] = true;
         }
         GameData.singleton.potionsUnlocked[(int)PotionType.PT_LOVE_POTION] = true;
         GameData.singleton.potionsUnlocked[(int)PotionType.PT_FIRE_POTION] = true;
+
+        // Starting feathers owned
+        for (int i = 0; i < GameData.singleton.feathersOwned.Length; ++i)
+        {
+            GameData.singleton.feathersOwned[i] = GameData.singleton.feathersUnlocked[i] ? 10 : 0;
+        }
+
+        // Starting potions owned and prices
+        for (int i = 0; i < GameData.singleton.potionsOwned.Length; ++i)
+        {
+            GameData.singleton.potionsOwned[i] = GameData.singleton.potionsUnlocked[i] ? 10 : 0;
+            int numFeathersInRecipe = 0;
+            foreach (FeatherAndCount feathAndCount in ((PotionType)i).GetIngredients())
+            {
+                numFeathersInRecipe += feathAndCount.count;
+            }
+            GameData.singleton.potionPrices[i] = 25 * numFeathersInRecipe;
+            GameData.singleton.quarterlyReportSalePrices[i] = 25 * numFeathersInRecipe;
+        }
 
         InitWorldParams();
     }

@@ -246,5 +246,7 @@ public class MainGameSystem : MonoBehaviour
         }
 
         GameData.singleton.currentStage = GameStage.GS_GAME_OVER;
+
+        GameData.EraseGame();
     }
 }

@@ -225,5 +225,7 @@ public class GameData
             Debug.LogError("failed to delete save file");
             Debug.LogError(e.ToString());
         }
+
+        singleton = new GameData();
     }
 }

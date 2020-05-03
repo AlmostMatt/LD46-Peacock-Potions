@@ -30,12 +30,7 @@ public class MainGameSystem : MonoBehaviour
             }
             else
             {
-                InitNewGame();
-                GameData.singleton.quarter = -1; // hack it to start at 0
-                StartNextQuarter();
-                            
-                // Start with simulation
-                GameData.singleton.currentStage = GameStage.GS_SIMULATION;
+                NewGame();
             }
             if (DebugOverrides.StartState.HasValue)
             {
@@ -50,9 +45,22 @@ public class MainGameSystem : MonoBehaviour
         }
     }
 
-    private void InitNewGame()
+    public void NewGame()
     {
+        InitNewGame();
+        GameData.singleton.quarter = -1; // hack it to start at 0
+        StartNextQuarter();
+                                    
+        // Start with simulation
+        GameData.singleton.currentStage = GameStage.GS_SIMULATION;
+    }
+
+    private void InitNewGame()
+    {   
+        GameData.EraseGame();
+
         // initialize events here for the moment..
+        EventState.Clear();
         EventState.PushEvent(new TutorialEventChain.IntroductionEvent(), 0, 0);
         WifeEventChain.Init();
         InvestmentEventChain.Init();
@@ -189,6 +197,7 @@ public class MainGameSystem : MonoBehaviour
     public static void GameOver()
     {
         GameStageExtensions.epilogueDirty = true;
+        GameStageExtensions.epilogueLines.Clear();
         GameStageExtensions.epilogueLines.Add("<b>Epilogue</b>");
 
         // Summarize family relationships
@@ -246,7 +255,5 @@ public class MainGameSystem : MonoBehaviour
         }
 
         GameData.singleton.currentStage = GameStage.GS_GAME_OVER;
-
-        GameData.EraseGame();
     }
 }

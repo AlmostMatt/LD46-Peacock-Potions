@@ -189,6 +189,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36349ba996c72bc429b4f793951ffbbc, type: 3}
+--- !u!114 &78378716 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5334931060514516132, guid: 36349ba996c72bc429b4f793951ffbbc,
+    type: 3}
+  m_PrefabInstance: {fileID: 78378715}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 340d65c928c2fb1469618f6041d620a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &437416475
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,6 +726,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ToggleMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488354550729747556, guid: b5d07784ae3cca141983501b90c00790,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 78378716}
+    - target: {fileID: 2488354550729747556, guid: b5d07784ae3cca141983501b90c00790,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NewGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488354550729747556, guid: b5d07784ae3cca141983501b90c00790,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5d07784ae3cca141983501b90c00790, type: 3}

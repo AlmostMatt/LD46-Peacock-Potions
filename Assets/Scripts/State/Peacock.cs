@@ -354,5 +354,7 @@ public class Peacock
         {
             SetQuarterlyExtra(i, false);
         }
+
+        Debug.Log("health: " + GameData.singleton.peacockHealth);
     }
 }

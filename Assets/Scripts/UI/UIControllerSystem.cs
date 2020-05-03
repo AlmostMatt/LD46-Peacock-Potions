@@ -279,7 +279,7 @@ public class UIControllerSystem : MonoBehaviour
         {
             //OverlayViewPotions.transform.Find("Content/Content").GetComponent<Text>().text = "";
             mOverlayFeatherCollectionFeatherRenderGroup.UpdateRenderables(
-                GameData.singleton.peacockReportFeatherCounts);
+                GameData.singleton.peacockReportFeatherCounts.FindAll(fc => fc.count > 0));
         } else if (OverlayViewPotions.activeInHierarchy)
         {
             mOverlayPotionSalesRenderGroup.UpdateRenderables(BusinessState.GetPerItemReports());

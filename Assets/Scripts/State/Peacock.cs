@@ -25,12 +25,12 @@ public class Peacock
         return GameData.singleton.peacockQuarterlyExtras[extraType];
     }
 
-    public static ResourceType[] producableResources = new ResourceType[]
+    public static FeatherType[] producableResources = new FeatherType[]
     {
-        ResourceType.RT_GREEN_FEATHER,
-        ResourceType.RT_RED_FEATHER,
-        ResourceType.RT_GOLD_FEATHER,
-        ResourceType.RT_BLUE_FEATHER
+        FeatherType.FT_GREEN_FEATHER,
+        FeatherType.FT_RED_FEATHER,
+        FeatherType.FT_GOLD_FEATHER,
+        FeatherType.FT_BLUE_FEATHER
     };
 
     private static void Normalize(float[] dist)
@@ -186,22 +186,22 @@ public class Peacock
         for(int i = 0; i < producableResources.Length; ++i)
         {
 
-            ResourceType resource = producableResources[i];
+            FeatherType resource = producableResources[i];
             switch(resource)
             {
-                case ResourceType.RT_BLUE_FEATHER:
+                case FeatherType.FT_BLUE_FEATHER:
                     productionDistribution[i] = GameData.singleton.season == Season.WINTER ? 70 : (GameData.singleton.season == Season.SUMMER ? 0 : 15};
                     // productionDistribution[i] = ((1 - (GameData.singleton.peacockHappiness / 100)) + (GameData.singleton.peacockComfort / 100)) * 0.5f;
                     break;
-                case ResourceType.RT_GREEN_FEATHER:
+                case FeatherType.FT_GREEN_FEATHER:
                     productionDistribution[i] = GameData.singleton.season == Season.SPRING ? 70 : 0;
                     //productionDistribution[i] = (1 - (GameData.singleton.peacockHealth / 100));
                     break;
-                case ResourceType.RT_GOLD_FEATHER:
+                case FeatherType.FT_GOLD_FEATHER:
                     productionDistribution[i] = GameData.singleton.season == Season.FALL ? 1 : 0;
                     // productionDistribution[i] = (GameData.singleton.peacockHappiness / 100);
                     break;
-                case ResourceType.RT_RED_FEATHER:
+                case FeatherType.FT_RED_FEATHER:
                     productionDistribution[i] = GameData.singleton.season == Season.SUMMER ? 1 : 0;
                     // productionDistribution[i] = ((GameData.singleton.peacockHealth / 100) + (1 - (GameData.singleton.peacockComfort / 100))) * 0.5f;
                     break;
@@ -227,7 +227,7 @@ public class Peacock
         {
             int resource = (int)producableResources[i];
             int numFeathers = Mathf.RoundToInt(totalFeathers * productionDistribution[i]);
-            GameData.singleton.peacockReportFeatherCounts.Add(new ResourceAndCount((ResourceType)resource, numFeathers));
+            GameData.singleton.peacockReportFeatherCounts.Add(new FeatherAndCount((FeatherType)resource, numFeathers));
             GameData.singleton.resources[resource] += numFeathers;
         }
 

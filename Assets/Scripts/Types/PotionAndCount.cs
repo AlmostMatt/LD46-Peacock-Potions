@@ -1,11 +1,11 @@
 ﻿// a simple struct that represents a product and a count.
-public struct ProductAndCount
+public struct PotionAndCount
 {
-    public ProductAndCount(ProductType type, int count)
+    public PotionAndCount(PotionType type, int count)
     {
         this.type = type;
         this.count = count;
     }
-    public ProductType type;
+    public PotionType type;
     public int count;
 }

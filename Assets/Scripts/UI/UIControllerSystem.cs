@@ -25,12 +25,12 @@ public class UIControllerSystem : MonoBehaviour
     public GameObject SimulationEventContent;
 
     private RenderableGroup<BusinessState.PerItemReport> mItemQuarterlySummaryRenderGroup;
-    private RenderableGroup<ResourceAndCount> mInventoryResourceRenderGroup;
-    private RenderableGroup<ProductAndCount> mInventoryProductRenderGroup;
+    private RenderableGroup<FeatherAndCount> mInventoryResourceRenderGroup;
+    private RenderableGroup<PotionAndCount> mInventoryProductRenderGroup;
 
-    private RenderableGroup<ResourceAndCount> mPeacockFeatherRenderGroup;
+    private RenderableGroup<FeatherAndCount> mPeacockFeatherRenderGroup;
 
-    private RenderableGroup<ResourceAndCount> mOverlayFeatherCollectionFeatherRenderGroup;
+    private RenderableGroup<FeatherAndCount> mOverlayFeatherCollectionFeatherRenderGroup;
     private RenderableGroup<BusinessState.PerItemReport> mOverlayPotionSalesRenderGroup;
     private RenderableGroup<string[]> mOverlayFinancialRenderGroup;
 
@@ -41,20 +41,20 @@ public class UIControllerSystem : MonoBehaviour
             SummaryView.transform.Find("ItemSummaries"),
             RenderFunctions.RenderItemQuarterlySummary);
 
-        mInventoryResourceRenderGroup = new RenderableGroup<ResourceAndCount>(
+        mInventoryResourceRenderGroup = new RenderableGroup<FeatherAndCount>(
             InventoryView.transform.Find("InvGroups/InventoryFeathers"),
-            RenderFunctions.RenderResourceAndCount);
-        mInventoryProductRenderGroup = new RenderableGroup<ProductAndCount>(
+            RenderFunctions.RenderFeatherAndCount);
+        mInventoryProductRenderGroup = new RenderableGroup<PotionAndCount>(
             InventoryView.transform.Find("InvGroups/InventoryPotions"),
-            RenderFunctions.RenderProductAndCount);
+            RenderFunctions.RenderPotionAndCount);
 
-        mPeacockFeatherRenderGroup = new RenderableGroup<ResourceAndCount>(
+        mPeacockFeatherRenderGroup = new RenderableGroup<FeatherAndCount>(
             PeacockView.transform.Find("InventoryFeathers"),
-            RenderFunctions.RenderResourceAndCount);
+            RenderFunctions.RenderFeatherAndCount);
         // Overlays
-        mOverlayFeatherCollectionFeatherRenderGroup = new RenderableGroup<ResourceAndCount>(
+        mOverlayFeatherCollectionFeatherRenderGroup = new RenderableGroup<FeatherAndCount>(
             OverlayViewFeathers.transform.Find("Content/InventoryFeathers"),
-            RenderFunctions.RenderResourceAndCount);
+            RenderFunctions.RenderFeatherAndCount);
         mOverlayPotionSalesRenderGroup = new RenderableGroup<BusinessState.PerItemReport>(
             OverlayViewPotions.transform.Find("PotionSaleRows"),
             RenderFunctions.RenderPotionSale);
@@ -215,17 +215,17 @@ public class UIControllerSystem : MonoBehaviour
             InventoryView.transform.Find("InvGroups/InventoryCash/IconAndCount/Count")
                 .GetComponent<Text>().text = string.Format("{0}", GameData.singleton.money);
             // Inventory (feathers)
-            List<ResourceAndCount> resourceCounts = new List<ResourceAndCount>();
-            for (int i = 0; i < (int)ResourceType.RT_MAX; i++)
+            List<FeatherAndCount> resourceCounts = new List<FeatherAndCount>();
+            for (int i = 0; i < (int)FeatherType.FT_MAX; i++)
             {
-                resourceCounts.Add(new ResourceAndCount((ResourceType)i, GameData.singleton.resources[i]));
+                resourceCounts.Add(new FeatherAndCount((FeatherType)i, GameData.singleton.resources[i]));
             }
             mInventoryResourceRenderGroup.UpdateRenderables(resourceCounts);
             // Inventory (feathers)
-            List<ProductAndCount> productCounts = new List<ProductAndCount>();
-            for (int i = 0; i < (int)ProductType.PT_MAX; i++)
+            List<PotionAndCount> productCounts = new List<PotionAndCount>();
+            for (int i = 0; i < (int)PotionType.PT_MAX; i++)
             {
-                productCounts.Add(new ProductAndCount((ProductType)i, GameData.singleton.inventory[i]));
+                productCounts.Add(new PotionAndCount((PotionType)i, GameData.singleton.inventory[i]));
             }
             mInventoryProductRenderGroup.UpdateRenderables(productCounts);
         }
@@ -250,13 +250,13 @@ public class UIControllerSystem : MonoBehaviour
         if (SimulationView.activeInHierarchy)
         {
             // Color and show/hide potions in the shop
-            for (int i = 0; i < (int)ProductType.PT_MAX; i++)
+            for (int i = 0; i < (int)PotionType.PT_MAX; i++)
             {
-                var PotionGroup = GetPotionGroup((ProductType)i);
+                var PotionGroup = GetPotionGroup((PotionType)i);
                 for (int j = 0; j < PotionGroup.childCount; j++)
                 {
                     PotionGroup.GetChild(j).gameObject.SetActive(j < GameData.singleton.inventory[i]);
-                    PotionGroup.GetChild(j).GetComponent<Image>().color = ((ProductType)i).GetColor();
+                    PotionGroup.GetChild(j).GetComponent<Image>().color = ((PotionType)i).GetColor();
                     // TODO: if a potion stopped being visible it was just sold. Show the +money animation there
                 }
             }
@@ -544,17 +544,17 @@ public class UIControllerSystem : MonoBehaviour
         GameStageExtensions.GameLoopGotoNextStage();
     }
 
-    private Transform GetPotionGroup(ProductType productType)
+    private Transform GetPotionGroup(PotionType PotionType)
     {
-        return SimulationDefaultContent.transform.Find("Potions").GetChild((int)productType);
+        return SimulationDefaultContent.transform.Find("Potions").GetChild((int)PotionType);
     }
 
     // TODO: add UI or audio feedback for a sale happening.
     // This is called from BusinessSystem
-    public void ShowSale(ProductType productType)
+    public void ShowSale(PotionType PotionType)
     {
-        int amount = GameData.singleton.potionPrices[(int)productType];
-        SpecialEffects.ShowNumberChange(GetPotionGroup(productType), amount, Color.yellow);
+        int amount = GameData.singleton.potionPrices[(int)PotionType];
+        SpecialEffects.ShowNumberChange(GetPotionGroup(PotionType), amount, Color.yellow);
     }
 
     public void RestoreNormalSummaryPosition()

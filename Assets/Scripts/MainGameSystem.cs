@@ -82,8 +82,8 @@ public class MainGameSystem : MonoBehaviour
         {
             GameData.singleton.feathersUnlocked[i] = true;
         }
-        GameData.singleton.potionsUnlocked[(int)ProductType.PT_LOVE_POTION] = true;
-        GameData.singleton.potionsUnlocked[(int)ProductType.PT_FIRE_POTION] = true;
+        GameData.singleton.potionsUnlocked[(int)PotionType.PT_LOVE_POTION] = true;
+        GameData.singleton.potionsUnlocked[(int)PotionType.PT_FIRE_POTION] = true;
 
         InitWorldParams();
     }
@@ -94,7 +94,7 @@ public class MainGameSystem : MonoBehaviour
         GameData.singleton.totalPopulation = 50;
         GameData.singleton.storePopularity = 0.25f;
 
-        for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
+        for(int i = 0; i < (int)PotionType.PT_MAX; ++i)
         {
             GameData.singleton.productDemand[i] = Random.Range(0.3f, 0.6f); // TODO: ensure they sum to 1? maybe... not necessarily needed, but it would be good to ensure some minimum sum so that players at least get SOME customers
             GameData.singleton.optimalPrices[i] = Random.Range(5,150); // TODO: non-uniform distribution
@@ -111,12 +111,12 @@ public class MainGameSystem : MonoBehaviour
 
         GameData.singleton.totalQuarterlyCustomers = 0;
         float incomingCustomers = GameData.singleton.totalPopulation * GameData.singleton.storePopularity;
-        for(int i = 0; i < (int)ProductType.PT_MAX; ++i)
+        for(int i = 0; i < (int)PotionType.PT_MAX; ++i)
         {
             float willingToPay = Mathf.Clamp(((GameData.singleton.optimalPrices[i] * 2) - GameData.singleton.potionPrices[i]) / (GameData.singleton.optimalPrices[i] * 2), 0, 1);
             GameData.singleton.quarterlyCustomers[i] = Mathf.RoundToInt(incomingCustomers * GameData.singleton.productDemand[i] * willingToPay);
             GameData.singleton.totalQuarterlyCustomers += GameData.singleton.quarterlyCustomers[i];
-            Debug.Log(GameData.singleton.quarterlyCustomers[i] + " customers are willing to buy " + (ProductType)i + " for " + GameData.singleton.potionPrices[i]);
+            Debug.Log(GameData.singleton.quarterlyCustomers[i] + " customers are willing to buy " + (PotionType)i + " for " + GameData.singleton.potionPrices[i]);
         }
     }
 
@@ -127,7 +127,7 @@ public class MainGameSystem : MonoBehaviour
         System.Array.Clear(GameData.singleton.quarterlySales, 0, GameData.singleton.quarterlySales.Length);
         System.Array.Clear(GameData.singleton.unfulfilledDemand, 0, GameData.singleton.unfulfilledDemand.Length);
         System.Array.Clear(GameData.singleton.miscLosses, 0, GameData.singleton.miscLosses.Length);        
-        GameData.singleton.miscLosses = new int[(int)ProductType.PT_MAX];        
+        GameData.singleton.miscLosses = new int[(int)PotionType.PT_MAX];        
         GameData.singleton.eventIncome = 0;
         GameData.singleton.eventExpenses = 0;
      }

@@ -22,7 +22,7 @@ public class BusinessState
 
     public struct PerItemReport
     {
-        public ProductType productType;
+        public PotionType PotionType;
         public int endOfQStock;
         public int numSold;
         public int numLost;
@@ -32,9 +32,9 @@ public class BusinessState
     public static List<PerItemReport> GetPerItemReports()
     {
         List<PerItemReport> reports = new List<PerItemReport>();
-        for (int product = 0; product < (int)ProductType.PT_MAX; product++) {
+        for (int product = 0; product < (int)PotionType.PT_MAX; product++) {
             PerItemReport report = new PerItemReport();
-            report.productType = (ProductType) product;
+            report.PotionType = (PotionType) product;
 
             report.endOfQStock = GameData.singleton.unsoldPotions[product];
             report.numSold = GameData.singleton.quarterlySales[product];

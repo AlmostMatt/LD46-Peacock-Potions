@@ -84,7 +84,7 @@ public class WifeEventChain
                 case EventStage.REFUSE:
                     EventState.currentEventImage = "faceWifeSad";
                     EventState.currentEventText = "\"Aw, okay.\nOn an unrelated note, do you sell love potions?\"";
-                    if (GameData.singleton.inventory[(int)ProductType.PT_LOVE_POTION] > 0)
+                    if (GameData.singleton.inventory[(int)PotionType.PT_LOVE_POTION] > 0)
                     {
                         EventState.currentEventOptions = new string[] { "Yes" };
                         mCurrentOptionOutcomes = new EventStage[] { EventStage.HAS_POTION };
@@ -99,7 +99,7 @@ public class WifeEventChain
                     EventState.currentEventImage = "faceWifeNeutral";
                     GameData.singleton.wifeRelationship += 1f;
                     EventState.currentEventText = "\"I'll buy one love potion then!\"\n<i>She pays the price and heads out.</i>";
-                    BusinessSystem.SellProduct((int)ProductType.PT_LOVE_POTION);
+                    BusinessSystem.SellProduct((int)PotionType.PT_LOVE_POTION);
                     EventState.currentEventOptions = EventState.OK_OPTION;
                     EventState.PushEvent(new WifeEventLovePotion(), GameData.singleton.quarter + 1); // schedule another event for next quarter
                     return EventResult.DONE;

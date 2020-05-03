@@ -19,24 +19,24 @@ public class RenderFunctions
         }
     }
 
-    // Render a ResourceAndCount (struct) to an IconAndCount (prefab)
-    public static void RenderResourceAndCount(ResourceAndCount resAndCount, GameObject obj)
+    // Render a FeatherAndCount (struct) to an IconAndCount (prefab)
+    public static void RenderFeatherAndCount(FeatherAndCount feathAndCount, GameObject obj)
     {
-        obj.SetActive(GameData.singleton.feathersUnlocked[(int)resAndCount.type]);
+        obj.SetActive(GameData.singleton.feathersUnlocked[(int)feathAndCount.type]);
         obj.GetComponentInChildren<Image>().sprite = null; // clear the sprite in case of weird sprite change bug
-        obj.GetComponentInChildren<Image>().sprite = SpriteManager.GetSprite(resAndCount.type.GetImage());
-        obj.GetComponentInChildren<Image>().color = resAndCount.type.GetColor();
-        obj.GetComponentInChildren<Text>().text = resAndCount.count.ToString();
+        obj.GetComponentInChildren<Image>().sprite = SpriteManager.GetSprite(feathAndCount.type.GetImage());
+        obj.GetComponentInChildren<Image>().color = feathAndCount.type.GetColor();
+        obj.GetComponentInChildren<Text>().text = feathAndCount.count.ToString();
     }
 
-    // Render a ProductAndCount (struct) to an IconAndCount (prefab)
-    public static void RenderProductAndCount(ProductAndCount prodAndCount, GameObject obj)
+    // Render a PotionAndCount (struct) to an IconAndCount (prefab)
+    public static void RenderPotionAndCount(PotionAndCount potionAndCount, GameObject obj)
     {
-        obj.SetActive(GameData.singleton.potionsUnlocked[(int)prodAndCount.type]);
+        obj.SetActive(GameData.singleton.potionsUnlocked[(int)potionAndCount.type]);
         obj.GetComponentInChildren<Image>().sprite = null; // clear the sprite in case of weird sprite change bug
-        obj.GetComponentInChildren<Image>().sprite = SpriteManager.GetSprite(prodAndCount.type.GetImage());
-        obj.GetComponentInChildren<Image>().color = prodAndCount.type.GetColor();
-        obj.GetComponentInChildren<Text>().text = prodAndCount.count.ToString();
+        obj.GetComponentInChildren<Image>().sprite = SpriteManager.GetSprite(potionAndCount.type.GetImage());
+        obj.GetComponentInChildren<Image>().color = potionAndCount.type.GetColor();
+        obj.GetComponentInChildren<Text>().text = potionAndCount.count.ToString();
     }
 
     /**
@@ -44,10 +44,10 @@ public class RenderFunctions
      */
      public static void RenderPotionSale(BusinessState.PerItemReport report, GameObject obj)
     {
-        obj.SetActive(GameData.singleton.potionsUnlocked[(int)report.productType]);
+        obj.SetActive(GameData.singleton.potionsUnlocked[(int)report.PotionType]);
 
-        obj.transform.Find("H/Name").GetComponent<Text>().text = string.Format("{0}\nPotion", report.productType.GetName());
-        obj.transform.Find("H/Icon").GetComponent<Image>().color = report.productType.GetColor();
+        obj.transform.Find("H/Name").GetComponent<Text>().text = string.Format("{0}\nPotion", report.PotionType.GetName());
+        obj.transform.Find("H/Icon").GetComponent<Image>().color = report.PotionType.GetColor();
 
         obj.transform.Find("H/Sales").GetComponent<Text>().text = string.Format("{0}x", report.numSold);
         obj.transform.Find("H/Profit").GetComponent<Text>().text = string.Format("${0}", report.numSold * report.salePrice);
@@ -60,12 +60,12 @@ public class RenderFunctions
      */
     public static void RenderItemQuarterlySummary(BusinessState.PerItemReport report, GameObject obj)
     {
-        obj.SetActive(GameData.singleton.potionsUnlocked[(int)report.productType]);
+        obj.SetActive(GameData.singleton.potionsUnlocked[(int)report.PotionType]);
 
-        obj.transform.Find("H/Name").GetComponent<Text>().text = string.Format("{0}\nPotion",report.productType.GetName());
+        obj.transform.Find("H/Name").GetComponent<Text>().text = string.Format("{0}\nPotion",report.PotionType.GetName());
         // TODO: customize the image
-        // obj.transform.Find("H/Icon").GetComponent<Image>().sprite = null;   productType
-        obj.transform.Find("H/Icon").GetComponent<Image>().color = report.productType.GetColor();
+        // obj.transform.Find("H/Icon").GetComponent<Image>().sprite = null;   PotionType
+        obj.transform.Find("H/Icon").GetComponent<Image>().color = report.PotionType.GetColor();
 
         // Losses (from events)
         obj.transform.Find("H/Losses").GetComponent<Text>().text = string.Format("{0}", report.numLost);
@@ -81,13 +81,13 @@ public class RenderFunctions
         obj.transform.Find("H/Inventory").GetComponent<Text>().text = string.Format("{0}", report.endOfQStock);
 
         // Show the ingredients necessary to make a product
-        ResourceAndCount[] price = report.productType.GetIngredients();
-        RenderResourceAndCount(price[0], obj.transform.Find("H/Ingredients/IconAndCount").gameObject);
+        FeatherAndCount[] price = report.PotionType.GetIngredients();
+        RenderFeatherAndCount(price[0], obj.transform.Find("H/Ingredients/IconAndCount").gameObject);
         GameObject iconAndCount2 = obj.transform.Find("H/Ingredients/IconAndCount (1)").gameObject;
         iconAndCount2.SetActive(price.Length >= 2);
         if (price.Length >= 2)
         {
-            RenderResourceAndCount(price[1], iconAndCount2);
+            RenderFeatherAndCount(price[1], iconAndCount2);
         }
         if (price.Length > 2)
         {
@@ -99,17 +99,17 @@ public class RenderFunctions
         InputGroup createPotionGroup = obj.transform.Find("H/InputGroup").GetComponent<InputGroup>();
         createPotionGroup.SetInitialValue(0);
         createPotionGroup.SetCanDecrement(createPotionGroup.GetValue() > 0);
-        createPotionGroup.SetCanIncrement(report.productType.PlayerHasIngredients());
-        createPotionGroup.SetOnChangeCallback(NewNumPotionChangeCallback(report.productType));
+        createPotionGroup.SetCanIncrement(report.PotionType.PlayerHasIngredients());
+        createPotionGroup.SetOnChangeCallback(NewNumPotionChangeCallback(report.PotionType));
         // Input group 2: sale price
         InputGroup setPriceGroup = obj.transform.Find("H/InputGroup (1)").GetComponent<InputGroup>();
         setPriceGroup.increments = 5;
         setPriceGroup.SetInitialValue(report.salePrice); // price from the previous quarter
         setPriceGroup.SetCanDecrement(setPriceGroup.GetValue() > setPriceGroup.increments);
         setPriceGroup.SetCanIncrement(setPriceGroup.GetValue() + setPriceGroup.increments <= 150); // TODO: generalize this max price
-        setPriceGroup.SetOnChangeCallback(NewSetPriceCallback(report.productType));
+        setPriceGroup.SetOnChangeCallback(NewSetPriceCallback(report.PotionType));
         // Only show price if current inventory is non-zero
-        setPriceGroup.transform.GetComponent<CanvasGroup>().alpha = (GameData.singleton.inventory[(int)report.productType] == 0 ? 0f : 1f);
+        setPriceGroup.transform.GetComponent<CanvasGroup>().alpha = (GameData.singleton.inventory[(int)report.PotionType] == 0 ? 0f : 1f);
     }
 
     /** 
@@ -117,32 +117,32 @@ public class RenderFunctions
 
      * It's a bit of a hack that this is here. There may also be a way to make this function always exist.
      */
-    public static System.Action<int,int> NewNumPotionChangeCallback(ProductType productType)
+    public static System.Action<int,int> NewNumPotionChangeCallback(PotionType PotionType)
     {
         // Delta indicates how many potions were just created (or refunded)
         return (int delta, int newCount) =>
         {
             while (delta > 0)
             {
-                productType.SpendPlayerIngredients();
-                GameData.singleton.inventory[(int)productType] += 1;
+                PotionType.SpendPlayerIngredients();
+                GameData.singleton.inventory[(int)PotionType] += 1;
                 delta -= 1;
             }
             while (delta < 0)
             {
-                productType.RefundPlayerIngredients();
-                GameData.singleton.inventory[(int)productType] -= 1;
+                PotionType.RefundPlayerIngredients();
+                GameData.singleton.inventory[(int)PotionType] -= 1;
                 delta += 1;
             }
         };
     }
 
-    public static System.Action<int, int> NewSetPriceCallback(ProductType productType)
+    public static System.Action<int, int> NewSetPriceCallback(PotionType PotionType)
     {
         return (int delta, int newValue) =>
         {
-            GameData.singleton.potionPrices[(int)productType] = newValue;
-            Debug.Log("Selling " + productType + " for " + GameData.singleton.potionPrices[(int)productType]);
+            GameData.singleton.potionPrices[(int)PotionType] = newValue;
+            Debug.Log("Selling " + PotionType + " for " + GameData.singleton.potionPrices[(int)PotionType]);
         };
     }
 }

@@ -81,6 +81,10 @@ public class GameData
     }
     public bool reachedEndOfLife = false;
 
+    // Progression
+    public bool[] feathersUnlocked = new bool[(int)ResourceType.RT_MAX];
+    public bool[] potionsUnlocked = new bool[(int)ProductType.PT_MAX];
+
     // BusinessState
     public int rent = 0;
     public int money = 0;

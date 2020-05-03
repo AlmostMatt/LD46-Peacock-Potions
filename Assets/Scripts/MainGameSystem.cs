@@ -77,6 +77,14 @@ public class MainGameSystem : MonoBehaviour
             GameData.singleton.quarterlyReportSalePrices[i] = 50;
         }
 
+        // starting unlocks
+        for (int i=0; i < GameData.singleton.resources.Length; ++i)
+        {
+            GameData.singleton.feathersUnlocked[i] = true;
+        }
+        GameData.singleton.potionsUnlocked[(int)ProductType.PT_LOVE_POTION] = true;
+        GameData.singleton.potionsUnlocked[(int)ProductType.PT_FIRE_POTION] = true;
+
         InitWorldParams();
     }
     

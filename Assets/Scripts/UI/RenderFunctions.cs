@@ -22,6 +22,7 @@ public class RenderFunctions
     // Render a ResourceAndCount (struct) to an IconAndCount (prefab)
     public static void RenderResourceAndCount(ResourceAndCount resAndCount, GameObject obj)
     {
+        obj.SetActive(GameData.singleton.feathersUnlocked[(int)resAndCount.type]);
         obj.GetComponentInChildren<Image>().sprite = null; // clear the sprite in case of weird sprite change bug
         obj.GetComponentInChildren<Image>().sprite = SpriteManager.GetSprite(resAndCount.type.GetImage());
         obj.GetComponentInChildren<Image>().color = resAndCount.type.GetColor();
@@ -31,6 +32,7 @@ public class RenderFunctions
     // Render a ProductAndCount (struct) to an IconAndCount (prefab)
     public static void RenderProductAndCount(ProductAndCount prodAndCount, GameObject obj)
     {
+        obj.SetActive(GameData.singleton.potionsUnlocked[(int)prodAndCount.type]);
         obj.GetComponentInChildren<Image>().sprite = null; // clear the sprite in case of weird sprite change bug
         obj.GetComponentInChildren<Image>().sprite = SpriteManager.GetSprite(prodAndCount.type.GetImage());
         obj.GetComponentInChildren<Image>().color = prodAndCount.type.GetColor();
@@ -42,6 +44,8 @@ public class RenderFunctions
      */
      public static void RenderPotionSale(BusinessState.PerItemReport report, GameObject obj)
     {
+        obj.SetActive(GameData.singleton.potionsUnlocked[(int)report.productType]);
+
         obj.transform.Find("H/Name").GetComponent<Text>().text = string.Format("{0}\nPotion", report.productType.GetName());
         obj.transform.Find("H/Icon").GetComponent<Image>().color = report.productType.GetColor();
 
@@ -56,6 +60,8 @@ public class RenderFunctions
      */
     public static void RenderItemQuarterlySummary(BusinessState.PerItemReport report, GameObject obj)
     {
+        obj.SetActive(GameData.singleton.potionsUnlocked[(int)report.productType]);
+
         obj.transform.Find("H/Name").GetComponent<Text>().text = string.Format("{0}\nPotion",report.productType.GetName());
         // TODO: customize the image
         // obj.transform.Find("H/Icon").GetComponent<Image>().sprite = null;   productType

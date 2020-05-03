@@ -7,31 +7,31 @@ public class OutOfStockEvent : GameEvent
     [System.Serializable]    
     public class OutOfStockEventSaveData : ScheduledEvent.EventSpecificSaveData
     {
-        public OutOfStockEventSaveData(ProductType productType)
+        public OutOfStockEventSaveData(PotionType PotionType)
         {
-            this.productType = productType;
+            this.PotionType = PotionType;
         }
-        public ProductType productType;
+        public PotionType PotionType;
     }
 
-    private ProductType mProductType;
+    private PotionType mPotionType;
 
-    public OutOfStockEvent(ProductType productType)
+    public OutOfStockEvent(PotionType PotionType)
     {
-        mProductType = productType;
+        mPotionType = PotionType;
     }
 
     // for reloading from a save file
     public OutOfStockEvent(OutOfStockEventSaveData saveData)
     {
-        mProductType = saveData.productType;
-        Debug.Log("reloaded out of stock event for type " + mProductType);
+        mPotionType = saveData.PotionType;
+        Debug.Log("reloaded out of stock event for type " + mPotionType);
     }
 
     public override ScheduledEvent.EventSpecificSaveData GetSaveData()
     {
-        Debug.Log("saving out of stock event for type " + mProductType);
-        return new OutOfStockEventSaveData(mProductType);
+        Debug.Log("saving out of stock event for type " + mPotionType);
+        return new OutOfStockEventSaveData(mPotionType);
     }
 
     protected override EventResult OnStage(EventStage currentStage)
@@ -39,7 +39,7 @@ public class OutOfStockEvent : GameEvent
         switch (currentStage)
         {
             case EventStage.START:
-                EventState.currentEventText = string.Format("A woman approaches the counter. \"Do you have any {0} potions?\"", mProductType.GetName().ToLower());
+                EventState.currentEventText = string.Format("A woman approaches the counter. \"Do you have any {0} potions?\"", mPotionType.GetName().ToLower());
                 EventState.currentEventOptions = new string[]
                 {
                     "We've run out, but you should  try again next season.",
@@ -50,7 +50,7 @@ public class OutOfStockEvent : GameEvent
             case EventStage.ACCEPT:
                 EventState.currentEventText = "\"Oh okay, I'll try again next season. Thanks!\" the woman says as she leaves.";
                 EventState.currentEventOptions = EventState.OK_OPTION;
-                EventState.PushEvent(new OutOfStockReturnEvent(mProductType), GameData.singleton.quarter + 1, 0.6f);
+                EventState.PushEvent(new OutOfStockReturnEvent(mPotionType), GameData.singleton.quarter + 1, 0.6f);
                 return EventResult.DONE;
             case EventStage.REFUSE:
                 EventState.currentEventText = "\"Oh okay. I'll have to look elsewhere,\" she says. She takes her leave.";
@@ -64,29 +64,29 @@ public class OutOfStockEvent : GameEvent
 
     private class OutOfStockReturnEvent : GameEvent
     {
-        private ProductType mProductType;
+        private PotionType mPotionType;
         private bool mHasPotion = false;
 
-        public OutOfStockReturnEvent(ProductType productType)
+        public OutOfStockReturnEvent(PotionType PotionType)
         {
-            mProductType = productType;
+            mPotionType = PotionType;
         }
 
         public OutOfStockReturnEvent(OutOfStockEventSaveData saveData)
         {
-            mProductType = saveData.productType;
-            Debug.Log("reloaded out of stock return event for type " + mProductType);
+            mPotionType = saveData.PotionType;
+            Debug.Log("reloaded out of stock return event for type " + mPotionType);
         }
 
         public override ScheduledEvent.EventSpecificSaveData GetSaveData()
         {
-            Debug.Log("saving out of stock return event for type " + mProductType);
-            return new OutOfStockEventSaveData(mProductType);
+            Debug.Log("saving out of stock return event for type " + mPotionType);
+            return new OutOfStockEventSaveData(mPotionType);
         }
 
         protected override EventResult OnStage(EventStage currentStage)
         {
-            string potionNameLower = mProductType.GetName().ToLower();
+            string potionNameLower = mPotionType.GetName().ToLower();
             switch (currentStage)
             {
                 case EventStage.START:
@@ -120,7 +120,7 @@ public class OutOfStockEvent : GameEvent
                     EventState.currentEventText = "She thanks you and pays for her potion.";
                     EventState.currentEventOptions = EventState.OK_OPTION;
                     GameData.singleton.storePopularity *= 1.1f;
-                    BusinessSystem.SellProduct((int)mProductType);
+                    BusinessSystem.SellProduct((int)mPotionType);
                     break;
                 case EventStage.REFUSE:
                     EventState.currentEventText = "The woman is visibly annoyed. She leaves briskly.";
@@ -138,7 +138,7 @@ public class OutOfStockEvent : GameEvent
 
         protected override EventResult EventStart()
         {
-            mHasPotion = GameData.singleton.inventory[(int)mProductType] > 0;
+            mHasPotion = GameData.singleton.potionsOwned[(int)mPotionType] > 0;
             return EventResult.CONTINUE;
         }
     }

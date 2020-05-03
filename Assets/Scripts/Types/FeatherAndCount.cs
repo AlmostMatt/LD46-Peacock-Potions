@@ -1,12 +1,12 @@
 ﻿// a simple struct that represents a resource and a count.
 [System.Serializable]
-public struct ResourceAndCount
+public struct FeatherAndCount
 {
-    public ResourceAndCount(ResourceType type, int count)
+    public FeatherAndCount(FeatherType type, int count)
     {
         this.type = type;
         this.count = count;
     }
-    public ResourceType type;
+    public FeatherType type;
     public int count;
 }

@@ -82,23 +82,23 @@ public class GameData
     public bool reachedEndOfLife = false;
 
     // Progression
-    public bool[] feathersUnlocked = new bool[(int)ResourceType.RT_MAX];
-    public bool[] potionsUnlocked = new bool[(int)ProductType.PT_MAX];
+    public bool[] feathersUnlocked = new bool[(int)FeatherType.FT_MAX];
+    public bool[] potionsUnlocked = new bool[(int)PotionType.PT_MAX];
 
     // BusinessState
     public int rent = 0;
     public int money = 0;
-    public int[] resources = new int[(int)ResourceType.RT_MAX];
-    public int[] inventory = new int[(int)ProductType.PT_MAX];
-    public int[] potionPrices = new int[(int)ProductType.PT_MAX];
+    public int[] feathersOwned = new int[(int)FeatherType.FT_MAX];
+    public int[] potionsOwned = new int[(int)PotionType.PT_MAX];
+    public int[] potionPrices = new int[(int)PotionType.PT_MAX];
     public bool missedRent = false;
     
     // BusinessState.QuarterlyReport
-    public int[] unsoldPotions = new int[(int)ProductType.PT_MAX];
-    public int[] quarterlyReportSalePrices = new int[(int)ProductType.PT_MAX];
-    public int[] quarterlySales = new int[(int)ProductType.PT_MAX];
-    public int[] unfulfilledDemand = new int[(int)ProductType.PT_MAX];
-    public int[] miscLosses = new int[(int)ProductType.PT_MAX];
+    public int[] unsoldPotions = new int[(int)PotionType.PT_MAX];
+    public int[] quarterlyReportSalePrices = new int[(int)PotionType.PT_MAX];
+    public int[] quarterlySales = new int[(int)PotionType.PT_MAX];
+    public int[] unfulfilledDemand = new int[(int)PotionType.PT_MAX];
+    public int[] miscLosses = new int[(int)PotionType.PT_MAX];
     public int initialBalance = 0;
     public int finalBalance = 0;
     public int livingExpenses = 0;
@@ -108,10 +108,10 @@ public class GameData
     // CustomerState
     public int totalPopulation = 1000;
     public float storePopularity = 0;
-    public float[] productDemand = new float[(int)ProductType.PT_MAX];
-    public float[] optimalPrices = new float[(int)ProductType.PT_MAX];
+    public float[] productDemand = new float[(int)PotionType.PT_MAX];
+    public float[] optimalPrices = new float[(int)PotionType.PT_MAX];
     // recomputed each quarter by MainGameSystem
-    public int[] quarterlyCustomers = new int[(int)ProductType.PT_MAX];
+    public int[] quarterlyCustomers = new int[(int)PotionType.PT_MAX];
     public int totalQuarterlyCustomers = 0;
 
     // RelationshipState
@@ -155,7 +155,7 @@ public class GameData
     public string peacockReportActivityDesc = "Read it a story every night.";
     public string peacockReportExtraDesc = "Gave it nothing extra.";
     public string peacockReportGeneralDesc = "It looks healthy, relaxed, and happy.";
-    public List<ResourceAndCount> peacockReportFeatherCounts = new List<ResourceAndCount>();
+    public List<FeatherAndCount> peacockReportFeatherCounts = new List<FeatherAndCount>();
 
     // EventState
     public List<ScheduledEvent.ScheduledEventSaveData> eventSaveData = new List<ScheduledEvent.ScheduledEventSaveData>();

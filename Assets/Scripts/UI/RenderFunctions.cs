@@ -19,6 +19,12 @@ public class RenderFunctions
         }
     }
 
+    public static void RenderFeatherAndCountIgnoringUnlocks(FeatherAndCount feathAndCount, GameObject obj)
+    {
+        RenderFeatherAndCount(feathAndCount, obj);
+        obj.SetActive(true);
+    }
+
     // Render a FeatherAndCount (struct) to an IconAndCount (prefab)
     public static void RenderFeatherAndCount(FeatherAndCount feathAndCount, GameObject obj)
     {
@@ -82,12 +88,12 @@ public class RenderFunctions
 
         // Show the ingredients necessary to make a product
         FeatherAndCount[] price = report.PotionType.GetIngredients();
-        RenderFeatherAndCount(price[0], obj.transform.Find("H/Ingredients/IconAndCount").gameObject);
+        RenderFeatherAndCountIgnoringUnlocks(price[0], obj.transform.Find("H/Ingredients/IconAndCount").gameObject);
         GameObject iconAndCount2 = obj.transform.Find("H/Ingredients/IconAndCount (1)").gameObject;
         iconAndCount2.SetActive(price.Length >= 2);
         if (price.Length >= 2)
         {
-            RenderFeatherAndCount(price[1], iconAndCount2);
+            RenderFeatherAndCountIgnoringUnlocks(price[1], iconAndCount2);
         }
         if (price.Length > 2)
         {

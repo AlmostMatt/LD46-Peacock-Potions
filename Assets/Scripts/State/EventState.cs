@@ -22,6 +22,19 @@ public class EventState
         }
     }
 
+    public static void Clear()
+    {
+        currentEvent = null;
+        currentEventImage = "";
+        currentEventText = "DEFAULT TEXT!";
+        currentEventOptions = new string[]{ "uninitialized option 1", "uninitialized option 2" };
+        eventQueues = new List<ScheduledEvent>[(int)GameStage.MAX_VALUE];
+        for(int i = 0; i < eventQueues.Length; ++i)
+        {
+            eventQueues[i] = new List<ScheduledEvent>();
+        }
+    }
+
     public static void PushEvent(GameEvent e, int quarter, float minDelay = 1f, GameStage gameStage = GameStage.GS_SIMULATION)
     {
         List<ScheduledEvent> eventQueue = eventQueues[(int)gameStage];

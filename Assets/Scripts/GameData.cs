@@ -163,9 +163,12 @@ public class GameData
     // specific events
     public int outOfStockEventCooldown = 0;
 
+
+
+    // save game stuff. could be in a diff file if we want
+    private static string saveFilename = Application.persistentDataPath + "/pp_savegame.dat";
     public static bool LoadGame()
-    {
-        string saveFilename = Application.persistentDataPath + "/pp_savegame.dat";
+    {        
         Debug.Log("save file is " + saveFilename);
         if(File.Exists(saveFilename))
         {
@@ -193,7 +196,6 @@ public class GameData
     {
         EventState.SaveData(); // TODO: think about if this belongs here or not
 
-        string saveFilename = Application.persistentDataPath + "/pp_savegame.dat";
         try
         {
             File.Delete(saveFilename);
@@ -210,5 +212,20 @@ public class GameData
         }
 
         return false;
+    }
+
+    public static void EraseGame()
+    {
+        try
+        {
+            File.Delete(saveFilename);
+        }
+        catch(Exception e)
+        {
+            Debug.LogError("failed to delete save file");
+            Debug.LogError(e.ToString());
+        }
+
+        singleton = new GameData();
     }
 }

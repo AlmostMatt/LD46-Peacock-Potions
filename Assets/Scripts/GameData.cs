@@ -47,19 +47,24 @@ public class GameData
             int monthInt = ((dayOfQuarter-1) / 30);
             monthInt += (3 * (quarter % 4));
             // TODO: make fictional month names?
+            // Starting in spring 
             return new string[] {
-                "Jan",
-                "Feb",
+                // Spring
                 "Mar",
                 "Apr",
                 "May",
+                // Summer
                 "Jun",
                 "Jul",
                 "Aug",
+                // Fall
                 "Sep",
                 "Oct",
                 "Nov",
+                // Winter
                 "Dec",
+                "Jan",
+                "Feb",
             }[monthInt];
         }
     }

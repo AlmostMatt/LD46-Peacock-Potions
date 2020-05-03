@@ -72,14 +72,18 @@ public class MainGameSystem : MonoBehaviour
         GameData.singleton.rent = 300;
 
         // Starting unlocks
-        GameData.singleton.feathersUnlocked[(int)FeatherType.FT_PINK_FEATHER] = true;
         GameData.singleton.potionsUnlocked[(int)PotionType.PT_LOVE_POTION] = true;
         GameData.singleton.potionsUnlocked[(int)PotionType.PT_FIRE_POTION] = true;
 
         // Starting feathers owned
-        for (int i = 0; i < GameData.singleton.feathersOwned.Length; ++i)
+        GameData.singleton.feathersOwned[(int)FeatherType.FT_GREEN_FEATHER] = 0;
+        GameData.singleton.feathersOwned[(int)FeatherType.FT_PINK_FEATHER] = 0;
+        GameData.singleton.feathersOwned[(int)FeatherType.FT_ORANGE_FEATHER] = 5;
+        GameData.singleton.feathersOwned[(int)FeatherType.FT_BLUE_FEATHER] = 5;
+
+        for (int i = 0; i < (int)FeatherType.FT_MAX; i++)
         {
-            GameData.singleton.feathersOwned[i] = GameData.singleton.feathersUnlocked[i] ? 10 : 0;
+            GameData.singleton.feathersUnlocked[i] = GameData.singleton.feathersOwned[i] > 0;
         }
 
         // Starting potions owned and prices

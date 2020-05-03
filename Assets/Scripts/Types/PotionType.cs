@@ -5,11 +5,11 @@ using UnityEngine;
 public enum PotionType
 {
     PT_LOVE_POTION,
-    PT_INVIS_POTION,
     PT_FIRE_POTION,
-    PT_LUCK_POTION,
     PT_POISON_POTION,
-        
+    PT_INVIS_POTION,
+    PT_LUCK_POTION,
+
     PT_MAX
 }
 
@@ -79,22 +79,24 @@ public static class PotionTypeExtensions
         {
             case PotionType.PT_LOVE_POTION:
                 return new FeatherAndCount[] {
-                    new FeatherAndCount(FeatherType.FT_PINK_FEATHER, 2)};
-            case PotionType.PT_INVIS_POTION:
-                return new FeatherAndCount[] {
                     new FeatherAndCount(FeatherType.FT_GREEN_FEATHER, 1),
                     new FeatherAndCount(FeatherType.FT_BLUE_FEATHER, 1)};
             case PotionType.PT_FIRE_POTION:
                 return new FeatherAndCount[] {
-                    new FeatherAndCount(FeatherType.FT_ORANGE_FEATHER, 1),
-                    new FeatherAndCount(FeatherType.FT_GREEN_FEATHER, 1)};
-            case PotionType.PT_LUCK_POTION:
-                return new FeatherAndCount[] {
                     new FeatherAndCount(FeatherType.FT_PINK_FEATHER, 1),
-                    new FeatherAndCount(FeatherType.FT_BLUE_FEATHER, 1)};
+                    new FeatherAndCount(FeatherType.FT_ORANGE_FEATHER, 1)};
             case PotionType.PT_POISON_POTION:
                 return new FeatherAndCount[] {
+                    new FeatherAndCount(FeatherType.FT_GREEN_FEATHER, 2),
                     new FeatherAndCount(FeatherType.FT_ORANGE_FEATHER, 1)};
+            case PotionType.PT_INVIS_POTION:
+                return new FeatherAndCount[] {
+                    new FeatherAndCount(FeatherType.FT_GREEN_FEATHER, 1),
+                    new FeatherAndCount(FeatherType.FT_BLUE_FEATHER, 3)};
+            case PotionType.PT_LUCK_POTION:
+                return new FeatherAndCount[] {
+                    new FeatherAndCount(FeatherType.FT_PINK_FEATHER, 3),
+                    new FeatherAndCount(FeatherType.FT_ORANGE_FEATHER, 2)};
             default: return new FeatherAndCount[] { };
         }
     }

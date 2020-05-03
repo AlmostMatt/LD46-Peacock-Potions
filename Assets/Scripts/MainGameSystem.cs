@@ -106,6 +106,7 @@ public class MainGameSystem : MonoBehaviour
         }
     }
 
+    // Will be called each quarter
     private static void CalculateDemand()
     {
         // model demand for each product for the quarter, based on some hidden factors
@@ -118,6 +119,11 @@ public class MainGameSystem : MonoBehaviour
         float incomingCustomers = GameData.singleton.totalPopulation * GameData.singleton.storePopularity;
         for(int i = 0; i < (int)PotionType.PT_MAX; ++i)
         {
+            if (!GameData.singleton.potionsUnlocked[i])
+            {
+                GameData.singleton.quarterlyCustomers[i] = 0;
+                continue;
+            }
             float willingToPay = Mathf.Clamp(((GameData.singleton.optimalPrices[i] * 2) - GameData.singleton.potionPrices[i]) / (GameData.singleton.optimalPrices[i] * 2), 0, 1);
             GameData.singleton.quarterlyCustomers[i] = Mathf.RoundToInt(incomingCustomers * GameData.singleton.productDemand[i] * willingToPay);
             GameData.singleton.totalQuarterlyCustomers += GameData.singleton.quarterlyCustomers[i];

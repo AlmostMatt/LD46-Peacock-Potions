@@ -109,7 +109,7 @@ public class RenderFunctions
         setPriceGroup.SetCanIncrement(setPriceGroup.GetValue() + setPriceGroup.increments <= 150); // TODO: generalize this max price
         setPriceGroup.SetOnChangeCallback(NewSetPriceCallback(report.PotionType));
         // Only show price if current inventory is non-zero
-        setPriceGroup.transform.GetComponent<CanvasGroup>().alpha = (GameData.singleton.inventory[(int)report.PotionType] == 0 ? 0f : 1f);
+        setPriceGroup.transform.GetComponent<CanvasGroup>().alpha = (GameData.singleton.potionsOwned[(int)report.PotionType] == 0 ? 0f : 1f);
     }
 
     /** 
@@ -125,13 +125,13 @@ public class RenderFunctions
             while (delta > 0)
             {
                 PotionType.SpendPlayerIngredients();
-                GameData.singleton.inventory[(int)PotionType] += 1;
+                GameData.singleton.potionsOwned[(int)PotionType] += 1;
                 delta -= 1;
             }
             while (delta < 0)
             {
                 PotionType.RefundPlayerIngredients();
-                GameData.singleton.inventory[(int)PotionType] -= 1;
+                GameData.singleton.potionsOwned[(int)PotionType] -= 1;
                 delta += 1;
             }
         };

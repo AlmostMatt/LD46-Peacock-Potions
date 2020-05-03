@@ -138,7 +138,7 @@ public class OutOfStockEvent : GameEvent
 
         protected override EventResult EventStart()
         {
-            mHasPotion = GameData.singleton.inventory[(int)mPotionType] > 0;
+            mHasPotion = GameData.singleton.potionsOwned[(int)mPotionType] > 0;
             return EventResult.CONTINUE;
         }
     }

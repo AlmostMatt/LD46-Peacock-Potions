@@ -87,7 +87,7 @@ public class BusinessSystem : MonoBehaviour
                         product = (product + 1) % (int)PotionType.PT_MAX;
                     }
 
-                    if(GameData.singleton.inventory[product] > 0)
+                    if(GameData.singleton.potionsOwned[product] > 0)
                     {
                         SellProduct(product);
                     }
@@ -115,7 +115,7 @@ public class BusinessSystem : MonoBehaviour
     public static void SellProduct(int product)
     {
         GameData.singleton.money += GameData.singleton.potionPrices[product];
-        GameData.singleton.inventory[product] -= 1;
+        GameData.singleton.potionsOwned[product] -= 1;
         GameData.singleton.quarterlySales[product] += 1;
 
         Debug.Log("Sold a " + (PotionType)product + "! money: " + GameData.singleton.money);

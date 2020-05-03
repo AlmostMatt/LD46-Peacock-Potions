@@ -69,7 +69,7 @@ public class SonEventChain
             {
                 int potionType = Random.Range(0, (int)PotionType.PT_MAX);
                 int maxChecks = (int)PotionType.PT_MAX;
-                while(GameData.singleton.inventory[potionType] == 0 && maxChecks > 0)
+                while(GameData.singleton.potionsOwned[potionType] == 0 && maxChecks > 0)
                 {
                     potionType = (potionType + 1) % (int)PotionType.PT_MAX;
                     --maxChecks;
@@ -80,7 +80,7 @@ public class SonEventChain
                 }
                 potions.Add(potionType);
                 Debug.Log("son breaking " + (PotionType)potionType);
-                --GameData.singleton.inventory[potionType];
+                --GameData.singleton.potionsOwned[potionType];
                 GameData.singleton.miscLosses[potionType]++;
             }
             

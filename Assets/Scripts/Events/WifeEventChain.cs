@@ -84,7 +84,7 @@ public class WifeEventChain
                 case EventStage.REFUSE:
                     EventState.currentEventImage = "faceWifeSad";
                     EventState.currentEventText = "\"Aw, okay.\nOn an unrelated note, do you sell love potions?\"";
-                    if (GameData.singleton.inventory[(int)PotionType.PT_LOVE_POTION] > 0)
+                    if (GameData.singleton.potionsOwned[(int)PotionType.PT_LOVE_POTION] > 0)
                     {
                         EventState.currentEventOptions = new string[] { "Yes" };
                         mCurrentOptionOutcomes = new EventStage[] { EventStage.HAS_POTION };

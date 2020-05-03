@@ -228,7 +228,7 @@ public class Peacock
             int resource = (int)producableResources[i];
             int numFeathers = Mathf.RoundToInt(totalFeathers * productionDistribution[i]);
             GameData.singleton.peacockReportFeatherCounts.Add(new FeatherAndCount((FeatherType)resource, numFeathers));
-            GameData.singleton.resources[resource] += numFeathers;
+            GameData.singleton.feathersOwned[resource] += numFeathers;
         }
 
         string extraDesc = "Gave it ";

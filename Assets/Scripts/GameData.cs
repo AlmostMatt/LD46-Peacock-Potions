@@ -88,8 +88,8 @@ public class GameData
     // BusinessState
     public int rent = 0;
     public int money = 0;
-    public int[] resources = new int[(int)FeatherType.FT_MAX];
-    public int[] inventory = new int[(int)PotionType.PT_MAX];
+    public int[] feathersOwned = new int[(int)FeatherType.FT_MAX];
+    public int[] potionsOwned = new int[(int)PotionType.PT_MAX];
     public int[] potionPrices = new int[(int)PotionType.PT_MAX];
     public bool missedRent = false;
     

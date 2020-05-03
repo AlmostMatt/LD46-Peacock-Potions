@@ -63,22 +63,22 @@ public class MainGameSystem : MonoBehaviour
         GameData.singleton.finalBalance = GameData.singleton.money;
         GameData.singleton.rent = 300;
 
-        // starting resources
-        for(int i = 0; i < GameData.singleton.resources.Length; ++i)
+        // starting feathers
+        for(int i = 0; i < GameData.singleton.feathersOwned.Length; ++i)
         {
-            GameData.singleton.resources[i] = 10;
+            GameData.singleton.feathersOwned[i] = 10;
         }
 
         // starting inventory
-        for(int i = 0; i < GameData.singleton.inventory.Length; ++i)
+        for(int i = 0; i < GameData.singleton.potionsOwned.Length; ++i)
         {
-            GameData.singleton.inventory[i] = 10;
+            GameData.singleton.potionsOwned[i] = 10;
             GameData.singleton.potionPrices[i] = 50;
             GameData.singleton.quarterlyReportSalePrices[i] = 50;
         }
 
         // starting unlocks
-        for (int i=0; i < GameData.singleton.resources.Length; ++i)
+        for (int i=0; i < GameData.singleton.feathersOwned.Length; ++i)
         {
             GameData.singleton.feathersUnlocked[i] = true;
         }
@@ -164,7 +164,7 @@ public class MainGameSystem : MonoBehaviour
     {
         GameData.singleton.livingExpenses = GameData.singleton.rent;
         // Take a snapshot of the current inventory for end-of-q report
-        System.Array.Copy(GameData.singleton.inventory, GameData.singleton.unsoldPotions, GameData.singleton.inventory.Length);
+        System.Array.Copy(GameData.singleton.potionsOwned, GameData.singleton.unsoldPotions, GameData.singleton.potionsOwned.Length);
         Peacock.EndOfQuarter();
     }
 

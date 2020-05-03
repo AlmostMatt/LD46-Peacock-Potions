@@ -110,7 +110,7 @@ public static class PotionTypeExtensions
         }
         for (int r = 0; r < price.Length; r++)
         {
-            if (GameData.singleton.resources[(int)price[r].type] < price[r].count)
+            if (GameData.singleton.feathersOwned[(int)price[r].type] < price[r].count)
             {
                 return false;
             }
@@ -125,7 +125,7 @@ public static class PotionTypeExtensions
         // Decrease funds
         for (int r = 0; r < price.Length; r++)
         {
-            GameData.singleton.resources[(int)price[r].type] -= price[r].count;
+            GameData.singleton.feathersOwned[(int)price[r].type] -= price[r].count;
         }
     }
 
@@ -136,7 +136,7 @@ public static class PotionTypeExtensions
         // Increase funds
         for (int r = 0; r < price.Length; r++)
         {
-            GameData.singleton.resources[(int)price[r].type] += price[r].count;
+            GameData.singleton.feathersOwned[(int)price[r].type] += price[r].count;
         }
     }
 }

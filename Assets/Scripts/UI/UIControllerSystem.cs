@@ -218,14 +218,14 @@ public class UIControllerSystem : MonoBehaviour
             List<FeatherAndCount> resourceCounts = new List<FeatherAndCount>();
             for (int i = 0; i < (int)FeatherType.FT_MAX; i++)
             {
-                resourceCounts.Add(new FeatherAndCount((FeatherType)i, GameData.singleton.resources[i]));
+                resourceCounts.Add(new FeatherAndCount((FeatherType)i, GameData.singleton.feathersOwned[i]));
             }
             mInventoryResourceRenderGroup.UpdateRenderables(resourceCounts);
             // Inventory (feathers)
             List<PotionAndCount> productCounts = new List<PotionAndCount>();
             for (int i = 0; i < (int)PotionType.PT_MAX; i++)
             {
-                productCounts.Add(new PotionAndCount((PotionType)i, GameData.singleton.inventory[i]));
+                productCounts.Add(new PotionAndCount((PotionType)i, GameData.singleton.potionsOwned[i]));
             }
             mInventoryProductRenderGroup.UpdateRenderables(productCounts);
         }
@@ -255,7 +255,7 @@ public class UIControllerSystem : MonoBehaviour
                 var PotionGroup = GetPotionGroup((PotionType)i);
                 for (int j = 0; j < PotionGroup.childCount; j++)
                 {
-                    PotionGroup.GetChild(j).gameObject.SetActive(j < GameData.singleton.inventory[i]);
+                    PotionGroup.GetChild(j).gameObject.SetActive(j < GameData.singleton.potionsOwned[i]);
                     PotionGroup.GetChild(j).GetComponent<Image>().color = ((PotionType)i).GetColor();
                     // TODO: if a potion stopped being visible it was just sold. Show the +money animation there
                 }

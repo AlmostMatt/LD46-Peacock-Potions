@@ -92,7 +92,7 @@ public class UIControllerSystem : MonoBehaviour
         UpdateUiVisibility();
         UpdateUiContent();
 
-        if (GameData.singleton.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)
+        if (GameData.singleton.currentStage == GameStage.GS_SIMULATION && EventState.currentEvent == null)
         {
             UpdateCustomers();
         }
@@ -165,11 +165,11 @@ public class UIControllerSystem : MonoBehaviour
     private bool mPrevPeacockActive = false;
     private void UpdateUiVisibility()
     {
-        GameState.GameStage stage = GameData.singleton.currentStage;
+        GameStage stage = GameData.singleton.currentStage;
         // Summary / resource allocation
-        SummaryView.SetActive(stage == GameState.GameStage.GS_RESOURCE_ALLOCATION);
+        SummaryView.SetActive(stage == GameStage.GS_RESOURCE_ALLOCATION);
         // Peacock UI
-        bool peacockViewActive = stage == GameState.GameStage.GS_PEACOCK;
+        bool peacockViewActive = stage == GameStage.GS_PEACOCK;
         PeacockView.SetActive(peacockViewActive);
         if(peacockViewActive && !mPrevPeacockActive)
         {
@@ -179,34 +179,34 @@ public class UIControllerSystem : MonoBehaviour
             
         // UI shared by Simulation / Event and visible behind some overlays
         SimulationView.SetActive(
-            stage == GameState.GameStage.GS_EVENT
-            || stage == GameState.GameStage.GS_SIMULATION
-            || stage == GameState.GameStage.GS_OVERLAY_POTION_SALES
-            || stage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY
-            || stage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION
+            stage == GameStage.GS_EVENT
+            || stage == GameStage.GS_SIMULATION
+            || stage == GameStage.GS_OVERLAY_POTION_SALES
+            || stage == GameStage.GS_OVERLAY_FINANCIAL_SUMMARY
+            || stage == GameStage.GS_OVERLAY_FEATHER_COLLECTION
         );
         // Overlay UIs
-        OverlayViewFeathers.SetActive(stage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION);
-        OverlayViewPotions.SetActive(stage == GameState.GameStage.GS_OVERLAY_POTION_SALES);
-        OverlayViewFinancial.SetActive(stage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY);
+        OverlayViewFeathers.SetActive(stage == GameStage.GS_OVERLAY_FEATHER_COLLECTION);
+        OverlayViewPotions.SetActive(stage == GameStage.GS_OVERLAY_POTION_SALES);
+        OverlayViewFinancial.SetActive(stage == GameStage.GS_OVERLAY_FINANCIAL_SUMMARY);
 
-        InventoryView.SetActive(stage != GameState.GameStage.GS_GAME_OVER);
+        InventoryView.SetActive(stage != GameStage.GS_GAME_OVER);
         // Simulation
         // Fade the background?
-        //SimulationDefaultContent.GetComponent<CanvasGroup>().alpha = (stage == GameState.GameStage.GS_SIMULATION ? 1.0f : 0.5f);
+        //SimulationDefaultContent.GetComponent<CanvasGroup>().alpha = (stage == GameStage.GS_SIMULATION ? 1.0f : 0.5f);
         // Event
         bool hasEvent = EventState.currentEvent != null;        
         SimulationEventContent.SetActive(hasEvent || mPrevHasEvent); // hack a one-frame delay on hiding the event display, in case we want to show 2 in a row. Does mean there's a 1-frame window for the player to click the button when there's no event...
         mPrevHasEvent = hasEvent;
 
         // ending
-        EpilogueView.SetActive(stage == GameState.GameStage.GS_GAME_OVER);
+        EpilogueView.SetActive(stage == GameStage.GS_GAME_OVER);
     }
 
     // Change text and other fields in UI content
     private void UpdateUiContent()
     {
-        GameState.GameStage stage = GameData.singleton.currentStage;
+        GameStage stage = GameData.singleton.currentStage;
         /**
          * Inventory
          */
@@ -375,7 +375,7 @@ public class UIControllerSystem : MonoBehaviour
         }
         // TODO: populate production based on the inputGroup values
 
-        GameState.GameLoopGotoNextStage();
+        GameStageExtensions.GameLoopGotoNextStage();
         Debug.Log("game stage is now " + GameData.singleton.currentStage);
     }
 
@@ -395,7 +395,7 @@ public class UIControllerSystem : MonoBehaviour
     private float PEACOCK_SCREEN_UNSELECTED_ALPHA = 0.1f;
     public void PeacockScreenOK()
     {
-        GameState.GameLoopGotoNextStage();
+        GameStageExtensions.GameLoopGotoNextStage();
     }
 
     /**
@@ -541,7 +541,7 @@ public class UIControllerSystem : MonoBehaviour
 
     public void OverlayScreenOK()
     {
-        GameState.GameLoopGotoNextStage();
+        GameStageExtensions.GameLoopGotoNextStage();
     }
 
     private Transform GetPotionGroup(ProductType productType)
@@ -582,15 +582,15 @@ public class UIControllerSystem : MonoBehaviour
 
     public void UpdateEpilogueText()
     {
-        if(GameState.epilogueDirty)
+        if(GameStageExtensions.epilogueDirty)
         {
             string text = "";
-            for(int i = 0; i < GameState.epilogueLines.Count; ++i)
+            for(int i = 0; i < GameStageExtensions.epilogueLines.Count; ++i)
             {
-                text += GameState.epilogueLines[i] + "\n";
+                text += GameStageExtensions.epilogueLines[i] + "\n";
             }
             EpilogueView.transform.Find("Text").GetComponent<Text>().text = text;
-            GameState.epilogueDirty = false;
+            GameStageExtensions.epilogueDirty = false;
         }
     }
 }

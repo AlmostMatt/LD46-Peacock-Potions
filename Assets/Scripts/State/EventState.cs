@@ -12,7 +12,7 @@ public class EventState
     public static string[] OK_OPTION = new string[] { "Ok" }; // many events might want this, so this is here for common use
     public static string[] CONTINUE_OPTION = new string[] { "Continue" };
     
-    private static List<ScheduledEvent>[] eventQueues = new List<ScheduledEvent>[(int)GameState.GameStage.MAX_VALUE];
+    private static List<ScheduledEvent>[] eventQueues = new List<ScheduledEvent>[(int)GameStage.MAX_VALUE];
 
     static EventState()
     {
@@ -22,7 +22,7 @@ public class EventState
         }
     }
 
-    public static void PushEvent(GameEvent e, int quarter, float minDelay = 1f, GameState.GameStage gameStage = GameState.GameStage.GS_SIMULATION)
+    public static void PushEvent(GameEvent e, int quarter, float minDelay = 1f, GameStage gameStage = GameStage.GS_SIMULATION)
     {
         List<ScheduledEvent> eventQueue = eventQueues[(int)gameStage];
         ScheduledEvent se = new ScheduledEvent(e, quarter, minDelay);
@@ -80,7 +80,7 @@ public class EventState
                 ;
                 ScheduledEvent.ScheduledEventSaveData d = new ScheduledEvent.ScheduledEventSaveData(
                     se,
-                    (GameState.GameStage)i,
+                    (GameStage)i,
                     se.mEvent.GetSaveData()
                 );
                 

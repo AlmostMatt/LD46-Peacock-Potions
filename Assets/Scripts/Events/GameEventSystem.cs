@@ -8,7 +8,7 @@ public class GameEventSystem : MonoBehaviour
 {
     private float mEventTimer = 0;
 
-    private GameState.GameStage mPrevStage = GameState.GameStage.GS_MAIN_MENU;
+    private GameStage mPrevStage = GameStage.GS_MAIN_MENU;
 
     // Update is called once per frame
     void Update()

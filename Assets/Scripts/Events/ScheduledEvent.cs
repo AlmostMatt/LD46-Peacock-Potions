@@ -19,7 +19,7 @@ public class ScheduledEvent
     [Serializable]
     public class ScheduledEventSaveData
     {
-        public ScheduledEventSaveData(ScheduledEvent se, GameState.GameStage gameStage, EventSpecificSaveData specificData)
+        public ScheduledEventSaveData(ScheduledEvent se, GameStage gameStage, EventSpecificSaveData specificData)
         {
             this.gameStage = gameStage;
             eventType = se.mEvent.GetType();
@@ -28,7 +28,7 @@ public class ScheduledEvent
             this.specificData = specificData;
         }
 
-        public GameState.GameStage gameStage;
+        public GameStage gameStage;
         public Type eventType;
         public int quarter;
         public float minDelay;

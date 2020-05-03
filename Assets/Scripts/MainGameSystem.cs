@@ -14,7 +14,7 @@ public class MainGameSystem : MonoBehaviour
     {
         // auto-start the game
         // TODO: 
-        if(GameData.singleton.currentStage == GameState.GameStage.GS_MAIN_MENU)
+        if(GameData.singleton.currentStage == GameStage.GS_MAIN_MENU)
         {
             // testing save/load
             if(DebugOverrides.ShouldLoadSaveData && GameData.LoadGame())
@@ -35,7 +35,7 @@ public class MainGameSystem : MonoBehaviour
                 StartNextQuarter();
                             
                 // Start with simulation
-                GameData.singleton.currentStage = GameState.GameStage.GS_SIMULATION;
+                GameData.singleton.currentStage = GameStage.GS_SIMULATION;
             }
             if (DebugOverrides.StartState.HasValue)
             {
@@ -44,7 +44,7 @@ public class MainGameSystem : MonoBehaviour
                 GameData.singleton.currentStage = DebugOverrides.StartState.Value;
             }
         }
-        else if(GameData.singleton.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)
+        else if(GameData.singleton.currentStage == GameStage.GS_SIMULATION && EventState.currentEvent == null)
         {
             GameData.singleton.quarterTimeElapsed += Time.deltaTime;
         }
@@ -144,7 +144,7 @@ public class MainGameSystem : MonoBehaviour
 
         CalculateDemand();
 
-        GameData.singleton.currentStage = GameState.GameStage.GS_SIMULATION;
+        GameData.singleton.currentStage = GameStage.GS_SIMULATION;
 
         // GameData.SaveGame();
     }
@@ -180,22 +180,22 @@ public class MainGameSystem : MonoBehaviour
 
     public static void GameOver()
     {
-        GameState.epilogueDirty = true;
-        GameState.epilogueLines.Add("<b>Epilogue</b>");
+        GameStageExtensions.epilogueDirty = true;
+        GameStageExtensions.epilogueLines.Add("<b>Epilogue</b>");
 
         // Summarize family relationships
         if (GameData.singleton.wifeMarried)
         {
             if (GameData.singleton.wifeRelationship > 0f)
             {
-                GameState.epilogueLines.Add("You married " + WifeEventChain.NAME + " and had a happy life together.");
+                GameStageExtensions.epilogueLines.Add("You married " + WifeEventChain.NAME + " and had a happy life together.");
             } else
             {
-                GameState.epilogueLines.Add("You married " + WifeEventChain.NAME + ", and had happy beginnings but some disagreements later in life.");
+                GameStageExtensions.epilogueLines.Add("You married " + WifeEventChain.NAME + ", and had happy beginnings but some disagreements later in life.");
             }
         } else
         {
-            //GameState.epilogueLines.Add("Your wife died");
+            //GameStageExtensions.epilogueLines.Add("Your wife died");
         }
         // wife relationship tiers [<0 >0]
         // son relationship tiers [<0 >0]
@@ -207,19 +207,19 @@ public class MainGameSystem : MonoBehaviour
         {
             // wealth > X
 
-            GameState.epilogueLines.Add("You kept the business alive for " + GameData.singleton.elapsedYears + " years before retiring.");
+            GameStageExtensions.epilogueLines.Add("You kept the business alive for " + GameData.singleton.elapsedYears + " years before retiring.");
             // Did anyone inherit?
             // TODO: is there a more explicit relationship between son and plan to inherit
             if (GameData.singleton.sonWasBorn && GameData.singleton.sonRelationship > 5f)
             {
-                GameState.epilogueLines.Add("Your son inherited the business, so the business will live on for generations to come.");
+                GameStageExtensions.epilogueLines.Add("Your son inherited the business, so the business will live on for generations to come.");
             } else if (GameData.singleton.sonWasBorn)
             {
-                GameState.epilogueLines.Add("Your son had no interest in the business, so it closed down after you retired.");
+                GameStageExtensions.epilogueLines.Add("Your son had no interest in the business, so it closed down after you retired.");
             }
             else
             {
-                GameState.epilogueLines.Add("You had no children, so there was nobody to inherit the business after you retired.");
+                GameStageExtensions.epilogueLines.Add("You had no children, so there was nobody to inherit the business after you retired.");
             }
         } else
         {
@@ -227,16 +227,16 @@ public class MainGameSystem : MonoBehaviour
             if(GameData.singleton.peacockDied)
             {
                 string causeOfFailure = ", but its death ended the business.";
-                GameState.epilogueLines.Add("You kept the peacock alive for " + GameData.singleton.elapsedYears + " years"+ causeOfFailure);
+                GameStageExtensions.epilogueLines.Add("You kept the peacock alive for " + GameData.singleton.elapsedYears + " years"+ causeOfFailure);
             }
             else if(GameData.singleton.missedRent)
             {
                 string causeOfFailure = "before going bankrupt.";
-                GameState.epilogueLines.Add("You kept the business alive for " + GameData.singleton.elapsedYears + " years "+ causeOfFailure);
+                GameStageExtensions.epilogueLines.Add("You kept the business alive for " + GameData.singleton.elapsedYears + " years "+ causeOfFailure);
             }
 
         }
 
-        GameData.singleton.currentStage = GameState.GameStage.GS_GAME_OVER;
+        GameData.singleton.currentStage = GameStage.GS_GAME_OVER;
     }
 }

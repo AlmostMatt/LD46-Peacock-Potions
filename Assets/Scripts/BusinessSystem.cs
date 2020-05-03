@@ -22,7 +22,7 @@ public class BusinessSystem : MonoBehaviour
     void Update()
     {
         // If in any other state (including random event), simulation will be paused
-        if (GameData.singleton.currentStage == GameState.GameStage.GS_SIMULATION && EventState.currentEvent == null)
+        if (GameData.singleton.currentStage == GameStage.GS_SIMULATION && EventState.currentEvent == null)
         {
             if (GameData.singleton.totalQuarterlyCustomers <= 0) // won't make any more money from customers...
             {
@@ -61,7 +61,7 @@ public class BusinessSystem : MonoBehaviour
                         else
                         {
                             // This will call MainGameSystem.EndCurrentQuarter
-                            GameState.GameLoopGotoNextStage();
+                            GameStageExtensions.GameLoopGotoNextStage();
                         }
                         Debug.Log("game stage is now " + GameData.singleton.currentStage);
                         return;

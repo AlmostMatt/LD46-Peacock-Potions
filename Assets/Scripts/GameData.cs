@@ -15,7 +15,7 @@ public class GameData
     public static GameData singleton = new GameData();
     
     // GameState
-    public GameState.GameStage currentStage = GameState.GameStage.GS_MAIN_MENU;
+    public GameStage currentStage = GameStage.GS_MAIN_MENU;
     public int quarter = 0;
     public float quarterTimeElapsed = 0; // seconds elapsed in the current quarter
     public int yearsSkipped = 0;
@@ -75,9 +75,9 @@ public class GameData
     {
         get { return yearsSkipped + (quarter / 4); }
     }
-    public GameState.Season season // TODO: just make Season an enum in its own file
+    public Season season // TODO: just make Season an enum in its own file
     {
-        get { return (GameState.Season)(quarter % 4); }
+        get { return (Season)(quarter % 4); }
     }
     public bool reachedEndOfLife = false;
 

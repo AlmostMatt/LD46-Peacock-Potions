@@ -112,16 +112,16 @@ public class Peacock
         float[] productionDistribution = null;
         switch(GameData.singleton.season)
         {
-            case GameState.Season.SPRING:
+            case Season.SPRING:
                 productionDistribution = new float[] { 60, 20, 0, 20 };
                 break;
-            case GameState.Season.SUMMER:
+            case Season.SUMMER:
                 productionDistribution = new float[] { 20, 60, 20, 0 };
                 break;
-            case GameState.Season.FALL:
+            case Season.FALL:
                 productionDistribution = new float[] { 0, 20, 60, 20 };
                 break;
-            case GameState.Season.WINTER:                
+            case Season.WINTER:                
                 productionDistribution = new float[] { 20, 0, 20, 60 };
                 break;
         }
@@ -166,7 +166,7 @@ public class Peacock
 
             switch(GameData.singleton.season)               
             {
-                case GameState.Season.SUMMER:
+                case Season.SUMMER:
                     GameData.singleton.peacockComfort -= 20;
                     GameData.singleton.peacockHealth -= 10;
                     break;
@@ -176,7 +176,7 @@ public class Peacock
         {
             switch(GameData.singleton.season)
             {
-                case GameState.Season.WINTER:
+                case Season.WINTER:
                     GameData.singleton.peacockComfort -= 10;
                     break;
             }
@@ -190,19 +190,19 @@ public class Peacock
             switch(resource)
             {
                 case ResourceType.RT_BLUE_FEATHER:
-                    productionDistribution[i] = GameData.singleton.season == GameState.Season.WINTER ? 70 : (GameData.singleton.season == GameState.Season.SUMMER ? 0 : 15};
+                    productionDistribution[i] = GameData.singleton.season == Season.WINTER ? 70 : (GameData.singleton.season == Season.SUMMER ? 0 : 15};
                     // productionDistribution[i] = ((1 - (GameData.singleton.peacockHappiness / 100)) + (GameData.singleton.peacockComfort / 100)) * 0.5f;
                     break;
                 case ResourceType.RT_GREEN_FEATHER:
-                    productionDistribution[i] = GameData.singleton.season == GameState.Season.SPRING ? 70 : 0;
+                    productionDistribution[i] = GameData.singleton.season == Season.SPRING ? 70 : 0;
                     //productionDistribution[i] = (1 - (GameData.singleton.peacockHealth / 100));
                     break;
                 case ResourceType.RT_GOLD_FEATHER:
-                    productionDistribution[i] = GameData.singleton.season == GameState.Season.FALL ? 1 : 0;
+                    productionDistribution[i] = GameData.singleton.season == Season.FALL ? 1 : 0;
                     // productionDistribution[i] = (GameData.singleton.peacockHappiness / 100);
                     break;
                 case ResourceType.RT_RED_FEATHER:
-                    productionDistribution[i] = GameData.singleton.season == GameState.Season.SUMMER ? 1 : 0;
+                    productionDistribution[i] = GameData.singleton.season == Season.SUMMER ? 1 : 0;
                     // productionDistribution[i] = ((GameData.singleton.peacockHealth / 100) + (1 - (GameData.singleton.peacockComfort / 100))) * 0.5f;
                     break;
                 

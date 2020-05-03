@@ -33,7 +33,7 @@ public class TutorialEventChain
                     EventState.currentEventText = "Spring starts, and customers come and go, buying the potions your father made before he passed.";
                     EventState.currentEventOptions = EventState.CONTINUE_OPTION;
                     mCurrentOptionOutcomes = new EventStage[] { EventStage.S4 };
-                    EventState.PushEvent(new ExplainSalesEvent(), 0, 0, GameState.GameStage.GS_OVERLAY_POTION_SALES);
+                    EventState.PushEvent(new ExplainSalesEvent(), 0, 0, GameStage.GS_OVERLAY_POTION_SALES);
                     return EventResult.DONE;
             }
             return EventResult.DONE;
@@ -53,12 +53,12 @@ public class TutorialEventChain
 
         protected override bool ShouldPersistStill()
         {
-            return (GameData.singleton.currentStage == GameState.GameStage.GS_OVERLAY_POTION_SALES);
+            return (GameData.singleton.currentStage == GameStage.GS_OVERLAY_POTION_SALES);
         }
 
         protected override void EventEnd(int choice)                    
         {
-            EventState.PushEvent(new ExplainExpensesEvent(), 0, 0, GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY);
+            EventState.PushEvent(new ExplainExpensesEvent(), 0, 0, GameStage.GS_OVERLAY_FINANCIAL_SUMMARY);
         }
     }
 
@@ -73,12 +73,12 @@ public class TutorialEventChain
 
         protected override bool ShouldPersistStill()
         {
-            return (GameData.singleton.currentStage == GameState.GameStage.GS_OVERLAY_FINANCIAL_SUMMARY);
+            return (GameData.singleton.currentStage == GameStage.GS_OVERLAY_FINANCIAL_SUMMARY);
         }
 
         protected override void EventEnd(int choice)
         {
-            EventState.PushEvent(new ExplainFeathersEvent(), 0, 0, GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION);
+            EventState.PushEvent(new ExplainFeathersEvent(), 0, 0, GameStage.GS_OVERLAY_FEATHER_COLLECTION);
         }
     }
 
@@ -93,13 +93,13 @@ public class TutorialEventChain
 
         protected override bool ShouldPersistStill()
         {
-            return (GameData.singleton.currentStage == GameState.GameStage.GS_OVERLAY_FEATHER_COLLECTION);
+            return (GameData.singleton.currentStage == GameStage.GS_OVERLAY_FEATHER_COLLECTION);
         }
 
 
         protected override void EventEnd(int choice)
         {
-            EventState.PushEvent(new ExplainBrewingEvent(), 0, 0, GameState.GameStage.GS_RESOURCE_ALLOCATION);
+            EventState.PushEvent(new ExplainBrewingEvent(), 0, 0, GameStage.GS_RESOURCE_ALLOCATION);
             GameObject.FindObjectsOfType<UIControllerSystem>()[0].RestoreNormalEventOverlayPosition();
         }
     }
@@ -130,7 +130,7 @@ public class TutorialEventChain
                 case EventStage.S3:
                     EventState.currentEventText = "\"Some potions just aren't as popular as others... and people's tastes can change, too. It's important to adapt!\"";
                     EventState.currentEventOptions = EventState.OK_OPTION;
-                    EventState.PushEvent(new ExplainPeacockEvent(), 0, 0, GameState.GameStage.GS_PEACOCK);
+                    EventState.PushEvent(new ExplainPeacockEvent(), 0, 0, GameStage.GS_PEACOCK);
                     return EventResult.DONE;
             }
             return EventResult.DONE;

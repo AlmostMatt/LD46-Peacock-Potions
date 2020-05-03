@@ -19,7 +19,7 @@ public abstract class GameEvent // <StageEnum> where StageEnum : System.Enum
         get { return mEventStatus == EventResult.PERSISTENT; }
     }
 
-    private GameState.GameStage mPreviousStage;
+    private GameStage mPreviousStage;
     private EventResult mEventStatus = EventResult.CONTINUE;
     protected EventStage[] mCurrentOptionOutcomes;
     private EventStage mCurrentStage = EventStage.START;
@@ -32,7 +32,7 @@ public abstract class GameEvent // <StageEnum> where StageEnum : System.Enum
     public void DoEvent()
     {
         //mPreviousStage = GameData.singleton.currentStage;
-        //GameData.singleton.currentStage = GameState.GameStage.GS_EVENT; // pause the simulation
+        //GameData.singleton.currentStage = GameStage.GS_EVENT; // pause the simulation
         EventState.currentEvent = this; // set self as the callback for the UI. This also signals to other systems that they may need to pause.
 
         mEventStatus = EventStart(); // derived classes override this to do whatever, including populating the UI

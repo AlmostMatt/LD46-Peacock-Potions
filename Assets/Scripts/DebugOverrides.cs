@@ -9,7 +9,7 @@ public class DebugOverrides
      * 
      * Warning: this is very likely to result in undefined behaviour
      */
-    public static GameState.GameStage? StartState = null;
+    public static GameStage? StartState = null;
 
     /**
      * Whether or not to load save data at the start of the game

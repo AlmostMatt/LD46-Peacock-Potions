@@ -172,6 +172,7 @@ public class GameData
 
     // save game stuff. could be in a diff file if we want
     private static string saveFilename = Application.persistentDataPath + "/pp_savegame.dat";
+    private static string backupSaveFilename = Application.persistentDataPath + "/pp_savegame_bk.dat";
     public static bool LoadGame()
     {        
         Debug.Log("save file is " + saveFilename);
@@ -191,6 +192,8 @@ public class GameData
                 Debug.Log("exception loading game: " + e);
                 if(file != null)
                     file.Close();
+
+                // TODO: check for a backup file and try to use it?
             }
         }
 
@@ -201,21 +204,50 @@ public class GameData
     {
         EventState.SaveData(); // TODO: think about if this belongs here or not
 
+        // back up existing save
         try
         {
-            File.Delete(saveFilename);
+            File.Delete(backupSaveFilename);
+            if(File.Exists(saveFilename))
+            {
+                File.Move(saveFilename, backupSaveFilename);
+            }
+        }
+        catch(Exception e)
+        {
+            Debug.LogError("couldn't save game. couldn't backup the current save file.");
+            Debug.LogError(e.ToString());
+
+            return false;
+        }
+
+        // make a new save
+        try
+        { 
             FileStream file = File.Open(saveFilename, FileMode.Create, FileAccess.Write);
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(file, singleton);
             file.Close();
-            return true;
         }
         catch(Exception e)
         {
-            Debug.LogError("couldn't save game");
+            Debug.LogError("couldn't write a new save file.");
             Debug.LogError(e.ToString());
-        }
 
+            // try to restore the backup
+            try
+            {
+                File.Move(backupSaveFilename, saveFilename);
+            }
+            catch(Exception restoreException)
+            {
+                Debug.LogError("failed to restore the backup save file. oh no.");
+                Debug.LogError(restoreException.ToString());
+            }
+
+            return false;
+        }
+        
         return false;
     }
 
@@ -224,6 +256,7 @@ public class GameData
         try
         {
             File.Delete(saveFilename);
+            File.Delete(backupSaveFilename);
         }
         catch(Exception e)
         {

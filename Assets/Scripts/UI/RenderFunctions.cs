@@ -50,7 +50,7 @@ public class RenderFunctions
      */
      public static void RenderPotionSale(BusinessState.PerItemReport report, GameObject obj)
     {
-        obj.SetActive(GameData.singleton.potionsUnlocked[(int)report.PotionType]);
+        obj.SetActive(GameData.singleton.potionsUnlocked[(int)report.PotionType] || report.numSold > 0);
 
         obj.transform.Find("H/Name").GetComponent<Text>().text = string.Format("{0}\nPotion", report.PotionType.GetName());
         obj.transform.Find("H/Icon").GetComponent<Image>().color = report.PotionType.GetColor();

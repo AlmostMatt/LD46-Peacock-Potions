@@ -254,6 +254,8 @@ public class WifeEventChain
 
     private class WifeEventFive : GameEvent
     {
+        private const int COST = 300;
+
         protected override EventResult OnStage(EventStage currentStage)
         {
             switch (currentStage)
@@ -261,12 +263,21 @@ public class WifeEventChain
                 case EventStage.START:
                     EventState.currentEventImage = "facePlayerNeutral";
                     EventState.currentEventText = "\"Ah, " + NAME + "'s birthday is coming up!\"";
-                    EventState.currentEventOptions = new string[]
-                        {"Buy her a gift (-$300)","I don't have any money to spare"};
-                    mCurrentOptionOutcomes = new EventStage[] { EventStage.ACCEPT, EventStage.REFUSE };
+                    if(GameData.singleton.money > COST)
+                    {
+                        EventState.currentEventOptions = new string[]
+                        {string.Format("Buy her a gift (-{0})", Utilities.FormatMoney(COST)),"I don't have any money to spare"};
+                        mCurrentOptionOutcomes = new EventStage[] { EventStage.ACCEPT, EventStage.REFUSE };
+                    }
+                    else
+                    {
+                        EventState.currentEventOptions = new string[] {"I don't have any money to spare"};
+                        mCurrentOptionOutcomes = new EventStage[] { EventStage.REFUSE };
+                    }
+                    
                     break;
                 case EventStage.ACCEPT:
-                    BusinessState.MoneyChangeFromEvent(-300);
+                    BusinessState.MoneyChangeFromEvent(-COST);
                     GameData.singleton.wifeRelationship += 11f;
                     EventState.currentEventImage = "facePlayerHappy";
                     EventState.currentEventText = "\"I know just the thing to get! I hope she likes it.\"";

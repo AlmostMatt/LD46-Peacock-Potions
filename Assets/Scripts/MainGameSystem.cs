@@ -74,6 +74,11 @@ public class MainGameSystem : MonoBehaviour
         // Starting unlocks
         GameData.singleton.potionsUnlocked[(int)PotionType.PT_LOVE_POTION] = true;
         GameData.singleton.potionsUnlocked[(int)PotionType.PT_FIRE_POTION] = true;
+        // Queue timed unlocks of other potion types
+        // The game starts in quarter 0
+        EventState.PushEvent(new UnlockPotionEvent(PotionType.PT_POISON_POTION), 1);
+        EventState.PushEvent(new UnlockPotionEvent(PotionType.PT_INVIS_POTION), 2);
+        EventState.PushEvent(new UnlockPotionEvent(PotionType.PT_LUCK_POTION), 3);
 
         // Starting feathers owned
         GameData.singleton.feathersOwned[(int)FeatherType.FT_GREEN_FEATHER] = 0;

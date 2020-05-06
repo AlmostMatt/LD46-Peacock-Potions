@@ -323,9 +323,11 @@ public class UIControllerSystem : MonoBehaviour
             Sprite focusSprite = SpriteManager.GetSprite(EventState.currentEventImage);
             SimulationEventContent.transform.Find("Face").GetComponent<Image>().sprite = null; // clear sprite to reset size information
             SimulationEventContent.transform.Find("Face").GetComponent<Image>().sprite = focusSprite;
+            SimulationEventContent.transform.Find("Face").GetComponent<Image>().color = EventState.currentEventImageColor;
             SimulationEventContent.transform.Find("Face").gameObject.SetActive(isFace && focusSprite != null);
             SimulationEventContent.transform.Find("NonFace/Image").GetComponent<Image>().sprite = null; // clear the sprite in case of weird sprite change bug
             SimulationEventContent.transform.Find("NonFace/Image").GetComponent<Image>().sprite = focusSprite;
+            SimulationEventContent.transform.Find("NonFace/Image").GetComponent<Image>().color = EventState.currentEventImageColor;
             SimulationEventContent.transform.Find("NonFace").gameObject.SetActive(isOtherImage && focusSprite != null);
             // Set the text and options
             // Set option text on the event buttons

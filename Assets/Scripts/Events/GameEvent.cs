@@ -97,6 +97,7 @@ public abstract class GameEvent // <StageEnum> where StageEnum : System.Enum
         // This way the next event that happens won't accidentally get any values from the previous event
         EventState.currentEvent = null;
         EventState.currentEventImage = "";
+        EventState.currentEventImageColor = Color.white;
         EventState.currentEventOptions = new string[] { };
     }
 }

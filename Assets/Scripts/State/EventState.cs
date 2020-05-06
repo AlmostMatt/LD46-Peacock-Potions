@@ -7,6 +7,7 @@ public class EventState
     // populate this data and the event UI will pull from it
     public static GameEvent currentEvent;
     public static string currentEventImage = "";
+    public static Color currentEventImageColor = Color.white;
     public static string currentEventText = "DEFAULT TEXT!";
     public static string[] currentEventOptions = new string[]{ "uninitialized option 1", "uninitialized option 2" };
     public static string[] OK_OPTION = new string[] { "Ok" }; // many events might want this, so this is here for common use
@@ -26,6 +27,7 @@ public class EventState
     {
         currentEvent = null;
         currentEventImage = "";
+        currentEventImageColor = Color.white;
         currentEventText = "DEFAULT TEXT!";
         currentEventOptions = new string[]{ "uninitialized option 1", "uninitialized option 2" };
         eventQueues = new List<ScheduledEvent>[(int)GameStage.MAX_VALUE];

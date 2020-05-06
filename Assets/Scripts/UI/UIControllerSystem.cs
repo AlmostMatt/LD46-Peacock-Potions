@@ -431,21 +431,20 @@ public class UIControllerSystem : MonoBehaviour
             FoodType food = ((FoodType)i); 
             Transform button = foodPlan.GetChild(i);
             button.GetChild(0).GetComponent<Text>().text = food.GetLabel();
-            if((int)GameData.singleton.peacockQuarterlyFoodType == i)
+            bool isActiveFood = (int)GameData.singleton.peacockQuarterlyFoodType == i;
+            if(isActiveFood)
             {
                 // if we can no longer afford the food we previously bought, force a downgrade
                 int price = food.GetPrice();
                 if(price > GameData.singleton.money)
                 {
+                    isActiveFood = false;
                     GameData.singleton.peacockQuarterlyFoodType = (FoodType)(i - 1); // assumption: the first available food type is free
-                    button.GetComponent<Image>().color = new Color(1f, 1f, 1f, PEACOCK_SCREEN_UNSELECTED_ALPHA);
                     GameData.singleton.peacockQuarterlyFoodCost = GameData.singleton.peacockQuarterlyFoodType.GetPrice();
                 }
-                else
-                {
-                    button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-                }
             }
+
+            button.GetComponent<Image>().color = new Color(1f, 1f, 1f, isActiveFood ? 1f : PEACOCK_SCREEN_UNSELECTED_ALPHA);            
         }
 
         Transform activityPlan = PeacockView.transform.Find("ActivityPlan");

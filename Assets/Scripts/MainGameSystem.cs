@@ -64,6 +64,7 @@ public class MainGameSystem : MonoBehaviour
         EventState.PushEvent(new TutorialEventChain.IntroductionEvent(), 0, 0);
         WifeEventChain.Init();
         InvestmentEventChain.Init();
+        EventState.PushEvent(new PoisonDemandChangeEvent(), 3);
         
         GameData.singleton.money = 1000;
         GameData.singleton.initialBalance = GameData.singleton.money;

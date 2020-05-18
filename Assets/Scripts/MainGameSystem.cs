@@ -48,9 +48,9 @@ public class MainGameSystem : MonoBehaviour
     public void NewGame()
     {
         InitNewGame();
-        GameData.singleton.quarter = -1; // hack it to start at 0
+        GameData.singleton.quarter = DebugOverrides.StartingQuarter - 1; // -1 gets incremented to 0 in StartNextQuarter
         StartNextQuarter();
-                                    
+
         // Start with simulation
         GameData.singleton.currentStage = GameStage.GS_SIMULATION;
     }
@@ -64,6 +64,7 @@ public class MainGameSystem : MonoBehaviour
         EventState.PushEvent(new TutorialEventChain.IntroductionEvent(), 0, 0);
         WifeEventChain.Init();
         InvestmentEventChain.Init();
+        FestivalEventChain.Init();
         EventState.PushEvent(new PoisonDemandChangeEvent(), 3);
         
         GameData.singleton.money = 1000;

@@ -32,6 +32,11 @@ public class DebugOverrides
     public static float? QuarterDuration = null;
 
     /**
+     * The quarter to start in. Won't skip events.
+     */
+    public static int StartingQuarter = 0;
+
+    /**
      * Possible additions:
      * - a boolean that disables all debug overrides
      * - starting money, feathers, potions

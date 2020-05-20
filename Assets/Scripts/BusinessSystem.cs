@@ -30,10 +30,26 @@ public class BusinessSystem : MonoBehaviour
                 {
                     if(GameData.singleton.money < GameData.singleton.rent && !GameData.singleton.missedRent)
                     {
-                        EventState.PushEvent(new MissedRentEvent(), GameData.singleton.quarter, 0); // going to miss rent? add event
-                        GameData.singleton.missedRent = true;
+                        if(GameData.singleton.lastMissedRentQuarter == -1)
+                        {
+                            EventState.PushEvent(new MissedRentEvents.MissedRentEvent(), GameData.singleton.quarter, 0); // going to miss rent? add event
+                            GameData.singleton.lastMissedRentQuarter = GameData.singleton.quarter;
+                        }
+                        else if(GameData.singleton.lastMissedRentQuarter == GameData.singleton.quarter - 1)
+                        {
+                            EventState.PushEvent(new MissedRentEvents.MissedRentAgainEvent(), GameData.singleton.quarter, 0); // game over
+                            GameData.singleton.missedRent = true;
+                        }
+                        else
+                        {
+                            Debug.LogError("Missed rent in quarter " + GameData.singleton.lastMissedRentQuarter + " but it's now " + GameData.singleton.quarter + ", and somehow it wasn't cleared?");
+                        }
                     }
-
+                    else if(GameData.singleton.lastMissedRentQuarter < GameData.singleton.quarter)
+                    {
+                        GameData.singleton.lastMissedRentQuarter = -1;
+                    }
+                    
                     if(GameData.singleton.peacockHealth <= 0 && !GameData.singleton.peacockDied)
                     {
                         EventState.PushEvent(new PeacockSickEvent(), GameData.singleton.quarter, 0);

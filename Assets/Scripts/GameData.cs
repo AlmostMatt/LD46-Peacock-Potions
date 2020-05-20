@@ -96,7 +96,8 @@ public class GameData
     public int[] feathersOwned = new int[(int)FeatherType.FT_MAX];
     public int[] potionsOwned = new int[(int)PotionType.PT_MAX];
     public int[] potionPrices = new int[(int)PotionType.PT_MAX];
-    public bool missedRent = false;
+    public int lastMissedRentQuarter = -1;
+    public bool missedRent = false; // set to true if you lost the game due to missing rent
     
     // BusinessState.QuarterlyReport
     public int[] unsoldPotions = new int[(int)PotionType.PT_MAX];

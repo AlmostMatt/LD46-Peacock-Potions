@@ -85,7 +85,7 @@ public class Peacock
         {
             if(GameData.singleton.peacockHealth >= 50)
             {
-                GameData.singleton.peacockHealth -= 30; // don't give medicine to a GameData.singleton.peacockHealthly peacock!
+                GameData.singleton.peacockHealth -= 30; // don't give medicine to a healthy peacock!
             }
             else if(GameData.singleton.peacockHealth < 50)
             {

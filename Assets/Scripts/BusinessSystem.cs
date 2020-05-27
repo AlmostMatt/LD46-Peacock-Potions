@@ -20,73 +20,23 @@ public class BusinessSystem : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        // If in any other state (including random event), simulation will be paused
-        if (GameData.singleton.currentStage == GameStage.GS_SIMULATION && EventState.currentEvent == null)
+    {        
+        if(EventState.currentEvent != null) return; // no updating while an event is happening
+
+        if (GameData.singleton.currentStage == GameStage.GS_SIMULATION)
         {
-            if (GameData.singleton.totalQuarterlyCustomers <= 0) // won't make any more money from customers...
+            if(GameData.singleton.totalQuarterlyCustomers <= 0) // no more customers to handle
             {
-                if(!EventState.hasMoreEventsRightNow) // won't make any more money from events...
-                {
-                    if(GameData.singleton.money < GameData.singleton.rent && !GameData.singleton.missedRent)
-                    {
-                        if(GameData.singleton.lastMissedRentQuarter == -1)
-                        {
-                            EventState.PushEvent(new MissedRentEvents.MissedRentEvent(), GameData.singleton.quarter, 0); // going to miss rent? add event
-                            GameData.singleton.lastMissedRentQuarter = GameData.singleton.quarter;
-                        }
-                        else if(GameData.singleton.lastMissedRentQuarter == GameData.singleton.quarter - 1)
-                        {
-                            EventState.PushEvent(new MissedRentEvents.MissedRentAgainEvent(), GameData.singleton.quarter, 0); // game over
-                            GameData.singleton.missedRent = true;
-                        }
-                        else
-                        {
-                            Debug.LogError("Missed rent in quarter " + GameData.singleton.lastMissedRentQuarter + " but it's now " + GameData.singleton.quarter + ", and somehow it wasn't cleared?");
-                        }
-                    }
-                    else if(GameData.singleton.lastMissedRentQuarter < GameData.singleton.quarter)
-                    {
-                        GameData.singleton.lastMissedRentQuarter = -1;
-                    }
-                    
-                    if(GameData.singleton.peacockHealth <= 0 && !GameData.singleton.peacockDied)
-                    {
-                        EventState.PushEvent(new PeacockSickEvent(), GameData.singleton.quarter, 0);
-                        GameData.singleton.peacockDied = true;
-                    }
-
-                    if(GameData.singleton.quarter >= 16 && !GameData.singleton.reachedEndOfLife && !GameData.singleton.missedRent && !GameData.singleton.peacockDied)
-                    {
-                        EventState.PushEvent(new EndOfLifeEvent(), GameData.singleton.quarter, 0);
-                        GameData.singleton.reachedEndOfLife = true;
-                    }
-
-                    if(!EventState.hasMoreEventsRightNow && GameData.singleton.quarterTimeElapsed >= QuarterTotalTime) // ensure we play through all events before advancing to next quarter
-                    {
-                        mPaymentTime = 0;
-
-                        Debug.Log("All customers served this quarter.");
-                        // Advance to the next quarter and update any other affected state
-                        // Go tho the end-of-quarter summary state (or game over state)
-                        if (GameData.singleton.reachedEndOfLife)
-                        {
-                            // TODO: something somewhere will check for proper game over (player death or business going under)
-                            MainGameSystem.GameOver();
-                        }
-                        else
-                        {
-                            // This will call MainGameSystem.EndCurrentQuarter
-                            GameStageExtensions.GameLoopGotoNextStage();
-                        }
-                        Debug.Log("game stage is now " + GameData.singleton.currentStage);
-                        return;
-                    }
+                if(!EventState.hasMoreEventsRightNow && GameData.singleton.quarterTimeElapsed >= QuarterTotalTime)
+                {                    
+                    // transition to "end of quarter" stage
+                    Debug.Log("All customers served this quarter.");
+                    GameStageExtensions.GameLoopGotoNextStage();
                 }
             }
             else
             {
-                 // yeah like it's slightly gross to do this here in this way...
+                // yeah like it's slightly gross to do this here in this way...
                 // running code on state changes really does want an event-driven style thing, I guess
                 if (mPaymentTime == 0)
                 {
@@ -124,6 +74,60 @@ public class BusinessSystem : MonoBehaviour
                     GameData.singleton.quarterlyCustomers[product] -= 1;
                     --GameData.singleton.totalQuarterlyCustomers;
                 }
+            }
+        }
+        else if(GameData.singleton.currentStage == GameStage.GS_END_OF_QUARTER)
+        {
+            if(GameData.singleton.money < GameData.singleton.rent && !GameData.singleton.missedRent)
+            {
+                if(GameData.singleton.lastMissedRentQuarter == -1)
+                {
+                    EventState.PushEvent(new MissedRentEvents.MissedRentEvent(), GameData.singleton.quarter, 0, GameStage.GS_END_OF_QUARTER); // going to miss rent? add event
+                    GameData.singleton.lastMissedRentQuarter = GameData.singleton.quarter;
+                }
+                else if(GameData.singleton.lastMissedRentQuarter == GameData.singleton.quarter - 1)
+                {
+                    EventState.PushEvent(new MissedRentEvents.MissedRentAgainEvent(), GameData.singleton.quarter, 0, GameStage.GS_END_OF_QUARTER); // game over
+                    GameData.singleton.missedRent = true;
+                }
+                else
+                {
+                    Debug.LogError("Missed rent in quarter " + GameData.singleton.lastMissedRentQuarter + " but it's now " + GameData.singleton.quarter + ", and somehow it wasn't cleared?");
+                }
+            }
+            else if(GameData.singleton.lastMissedRentQuarter < GameData.singleton.quarter)
+            {
+                GameData.singleton.lastMissedRentQuarter = -1;
+            }
+
+            if(GameData.singleton.peacockHealth <= 0 && !GameData.singleton.peacockDied)
+            {
+                EventState.PushEvent(new PeacockSickEvent(), GameData.singleton.quarter, 0, GameStage.GS_END_OF_QUARTER);
+                GameData.singleton.peacockDied = true;
+            }
+
+            if(GameData.singleton.quarter >= 16 && !GameData.singleton.reachedEndOfLife && !GameData.singleton.missedRent && !GameData.singleton.peacockDied)
+            {
+                EventState.PushEvent(new EndOfLifeEvent(), GameData.singleton.quarter, 0);
+                GameData.singleton.reachedEndOfLife = true;
+            }
+
+            if(!EventState.hasMoreEventsRightNow) // ensure we play through all events before advancing to next quarter
+            {
+                mPaymentTime = 0;
+
+                // Advance to the next quarter and update any other affected state
+                // Go tho the end-of-quarter summary state (or game over state)
+                if (GameData.singleton.reachedEndOfLife)
+                {
+                    MainGameSystem.GameOver();
+                }
+                else
+                {
+                    // This will advance to the summaries after the end of the quarter
+                    GameStageExtensions.GameLoopGotoNextStage();
+                }
+                Debug.Log("game stage is now " + GameData.singleton.currentStage);
             }
         }
     }

@@ -176,11 +176,12 @@ public class UIControllerSystem : MonoBehaviour
             PreparePeacockSummary();
         }
         mPrevPeacockActive = peacockViewActive;
-            
+
         // UI shared by Simulation / Event and visible behind some overlays
         SimulationView.SetActive(
             stage == GameStage.GS_EVENT
             || stage == GameStage.GS_SIMULATION
+            || stage == GameStage.GS_END_OF_QUARTER
             || stage == GameStage.GS_OVERLAY_POTION_SALES
             || stage == GameStage.GS_OVERLAY_FINANCIAL_SUMMARY
             || stage == GameStage.GS_OVERLAY_FEATHER_COLLECTION

@@ -14,6 +14,8 @@ public enum GameStage
     GS_SIMULATION,
     // time is paused - an event has occurred and a decision is being made
     GS_EVENT,
+    // end of quarter: updating peacock and checking for game over
+    GS_END_OF_QUARTER,
     // shop with overlay: Potions sold
     GS_OVERLAY_POTION_SALES,
     // shop with overlay: Financial summary
@@ -41,6 +43,11 @@ public class GameStageExtensions
         {
             case GameStage.GS_SIMULATION:
                 /* End the Quarter */
+                MainGameSystem.CurrentQuarterEnding();
+                GameData.singleton.currentStage = GameStage.GS_END_OF_QUARTER;
+                break;
+            case GameStage.GS_END_OF_QUARTER:
+                /* Advance to summary screens */
                 MainGameSystem.EndCurrentQuarter();
                 GameData.singleton.currentStage = GameStage.GS_OVERLAY_POTION_SALES;
                 break;

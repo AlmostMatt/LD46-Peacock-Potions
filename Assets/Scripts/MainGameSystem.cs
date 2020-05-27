@@ -183,6 +183,14 @@ public class MainGameSystem : MonoBehaviour
 
         // GameData.SaveGame();
     }
+    
+    /**
+     * End of all sales and events for the current quarter (but special game-over events could trigger after this, still
+     */
+    public static void CurrentQuarterEnding()
+    {
+        Peacock.EndOfQuarter();
+    }
 
     /**
      * End of simulation (prepare end-of-Q reports)
@@ -192,7 +200,6 @@ public class MainGameSystem : MonoBehaviour
         GameData.singleton.livingExpenses = GameData.singleton.rent;
         // Take a snapshot of the current inventory for end-of-q report
         System.Array.Copy(GameData.singleton.potionsOwned, GameData.singleton.unsoldPotions, GameData.singleton.potionsOwned.Length);
-        Peacock.EndOfQuarter();
     }
 
     /**

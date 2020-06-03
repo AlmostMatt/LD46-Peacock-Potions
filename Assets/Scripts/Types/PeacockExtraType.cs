@@ -18,7 +18,7 @@ public static class PeacockExtraTypeExtensions
         switch(extraType)
         {
             case PeacockExtraType.ET_MEDICINE:
-                return 1500;
+                return 400;
             case PeacockExtraType.ET_PILLOW:
                 return 100;
             case PeacockExtraType.ET_HORMONES:

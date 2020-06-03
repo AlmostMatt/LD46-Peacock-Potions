@@ -65,9 +65,9 @@ public class MainGameSystem : MonoBehaviour
         WifeEventChain.Init();
         InvestmentEventChain.Init();
         FestivalEventChain.Init();
-        EventState.PushEvent(new PoisonDemandChangeEvent(), 3);
+        PoisonDemandChangeEventChain.Init();
         
-        GameData.singleton.money = 1000;
+        GameData.singleton.money = DebugOverrides.StartingMoney;
         GameData.singleton.initialBalance = GameData.singleton.money;
         // Set final balance for the previous quarter so that next Q can use it as initial balance
         GameData.singleton.finalBalance = GameData.singleton.money;

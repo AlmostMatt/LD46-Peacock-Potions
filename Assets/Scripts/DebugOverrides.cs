@@ -37,6 +37,11 @@ public class DebugOverrides
     public static int StartingQuarter = 0;
 
     /**
+     * Player's starting money
+     */
+    public static int StartingMoney = 1000;
+
+    /**
      * Possible additions:
      * - a boolean that disables all debug overrides
      * - starting money, feathers, potions
